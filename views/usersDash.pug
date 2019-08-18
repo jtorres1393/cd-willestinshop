@@ -1,0 +1,19 @@
+extend layout
+
+block content
+    #sectionEditor.edit.mbMed.colSkip
+        p.mbMed.tTitle Users
+        for item in data
+            .singleArtist.mbSm.bBlack.bBot.flex.pbXs.flexACenter.tCap
+                .names.col4.tCap
+                    span #{item.firstName} 
+                    span #{item.lastName}
+                a.col4.tGray(href="/admin/user-editor?id="+item.id onclick="return confirm('Are you sure?')")
+                        div.btn.fullWidth.relative(class=item.role === 1 ? "btn-sec":"btn-toggle")
+                            p.tBold editor
+                a.col4.tGray(href="/admin/user-admin?id="+item.id onclick="return confirm('Are you sure?')")
+                        .btn.fullWidth.relative(class=item.role === 2 ? "btn-sec":"btn-toggle")
+                            p.tBold admin
+                a.col4.tGray(href="/admin/user-delete?id="+item.id onclick="return confirm('Are you sure?')")
+                        .btn.fullWidth.btn-toggle.relative
+                            p.tBold remove

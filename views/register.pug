@@ -1,0 +1,30 @@
+doctype html
+html
+    head
+        meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+        link(rel='stylesheet' href='/static/css/server.css')
+    header
+        title Wille's Tin Shop - #{page}
+    Body.bgBlack.tWhite
+        .fullStage.eCenter.ptMed
+            .fullWidth.bWhite.bBotSm.mbLrg.pbXs
+                .loginMenu.col23.flex.flexStart.colSkip
+                    a(href="/admin/login")
+                        .tBold.prSm Login
+                    a(href="/admin/register")
+                        .tBold Register
+            .fullWidth.flex.mbLrg            
+                .col3.tBold Wille's Tin Shop
+                .col23
+                    .col2 
+                        #bwEdit.edit.loginInfo.twoColumn.eCenter.tCap
+                                form#resourceEditForm.tWhite.bWhite(method='POST', action='/admin/register')
+                                    input.form-control.mbSm(name='firstName', type='text', placeholder="First Name")      
+                                    input.form-control.mbSm(name='lastName', type='text',placeholder="Last Name")     
+                                    input.form-control.mbSm(name='email', type='text', placeholder="Email")
+                                    input.form-control.mbSm(name='password', type='password', placeholder="Password")
+                                    input.form-control.mbSm(name='passConfirm', type='password', placeholder="Confirm Password")
+                                    .errorHold.mbMed
+                                        for item in messages
+                                            p=item
+                                    input.btn.cta.btn-prime.btn-prime-invert.tCap(type='submit' value="register")

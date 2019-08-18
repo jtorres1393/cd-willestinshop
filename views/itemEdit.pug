@@ -1,0 +1,176 @@
+extend layout
+
+block content
+    for item in data
+        form#mainForm.fullWidth.flex(method='POST', action='/admin/shop-edit?id='+currID+'&cat='+cat, enctype='multipart/form-data')
+            #menuPanel
+                p.mbMed.tTitle Settings
+                .menuSave.menuItem.mbXs
+                    input.menuOp.tCap(type="submit", value="Save Changes")
+                .menuTrash.menuItem.mbLrg
+                    a.tCap.menuOp(href="/admin/shop-delete?itemremove="+item.id+"&cat="+cat, onclick="return confirm('Are you sure?')")="Delete "+cat+" Item" 
+                .menuFold.menuItem.mbMed
+                    a.tCap.menuOp(href="/admin/shop-add?catID="+catID+"&cat="+cat)=`Add New ${cat} Item`
+            #content.col23.colSkip
+                p.mbMed.tTitle
+                    a(href="/admin/shop")
+                        span.tGray Shop /  
+                    a(href="/admin/shop/category?cat="+cat)
+                        span.tGray=cat+" / "   
+                    span=page+item.title
+                .content-form.fullWidth.flex.mbSm
+                    .fullWidth.mbSm
+                        label title
+                        p
+                        input.prime-input(name="title", type="text", value=item.title, required)
+                    .fullWidth.mbSm
+                        label sub-title
+                        p
+                        input.prime-input(name="subTitle", type="text", value=item.subTitle, required)
+                    .fullWidth.mbSm
+                        label Description
+                        p
+                        textarea.prime-input(name="about", type="text",value=item.about, required)=item.about
+                    .fullWidth.mbSm
+                        label Details
+                        p
+                        textarea.prime-input(name="details", type="text",value=item.details, required)=item.details
+                    .col2.mbMed
+                        label Price
+                        p
+                        input.prime-input(name="price", type="number", step="any",value=item.price/100, required)
+                    .col2.mbMed
+                        label Shipping
+                        p
+                        input.prime-input(name="shipping", type="number", step="any",value=item.shipping/100, required)
+            
+                .tTitle.mbSm Stock Info
+                .stockHold.fullWidth.flex.tTitle.mbXs
+                    .col3
+                        p.tBold Option
+                    .col3
+                        p.tBold Stock
+                    .col3
+                -   var sortCount2 = 1
+                #sort2.fullWidth
+                    input.form-control(name='sort2', type='hidden')
+                    for opt in data[0].shopOptions
+                        .sort2.singleOpt.flex.bBot.bBlack.mbSm.flexACenter(data-id=opt.id, data-order=sortCount2)
+                            .col3.relative
+                                .sortHandle.sortLeft
+                                p.plSm.tCap=sortCount2+". "+opt.title
+                            p.col3.tCap=opt.stock
+                            .col3.flex
+                                .col2
+                                    a(href="/admin/shopOption-edit?id="+opt.id+"&cat="+cat+"&itemID="+item.id)
+                                        .btn-sec.btn
+                                            p Edit
+                                .col2
+                                    a(href="/admin/shopOption-delete?id="+opt.id+"&cat="+cat+"&item="+item.id, onclick="return confirm('Are you sure?')")
+                                        .btn-sec.btn
+                                            p Delete
+                        -   sortCount2++
+                .newOption.fullWidth.flex
+                    input.col3(type="text", name="newOpt", placeholder="New Option")
+                    input.col3(type="number", name="newStock", placeholder="New Stock")
+                    input.col3.bgGray.tWhite(type="submit",  value="+ Add New Option")
+
+                .tTitle.mbMed.mtLrg Product Images
+                #sort1.galleryHold.flex.flexAStart
+                    input.form-control(name='sort1', type='hidden')
+                    input.form-control(name='cat', type='hidden', value=cat)
+                    input.form-control(name='currID', type='hidden', value=currID)
+                    -   var sortCount1 = 1
+                    for img in data[0].media
+                        .sort1.singleImg.col3.tGray(data-id=img.id, data-order=sortCount1)
+                            img(src=img.url)
+                            .fullWidth.ptXs.pbXs.tBold.deleteBtn.flex.relative
+                                p.tBold=sortCount1+"."
+                                a(href="/admin/media-delete?id="+img.id+"&item="+item.id+"&cat="+cat onclick="return confirm('Are you sure?')")
+                                    p.fullWidth.tBold.tRight.removeText × Remove
+                                    .sortHandle
+                        -   sortCount1++
+                    label.tBold.tWhite.col3.addButton.bgGray.relative(for="imgProject")
+                        .r34
+                        .cCenter
+                            p.menuItem.menuImgInvert.tBold add new image
+                        input#imgProject.menuOp(name="imgItems", type="file", style="display: none", accept="images/*", multiple="multiple")
+
+        script.
+                var form = document.getElementById('mainForm');
+
+                form.onsubmit = function() {
+                    var img =  document.querySelector('input[name=imgItems]');
+                    var cat =  document.querySelector('input[name=cat]')
+                    var currID =  document.querySelector('input[name=currID]')
+                    var contents = " ";
+                    if(img.files.length){
+                        contents = contents+" "+img.files[0].name
+                    }
+                    var formData = new FormData(form);
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', form.getAttribute('action'), true);
+                    xhr.upload.onprogress = function(e) {
+                            console.log(contents)
+                        if (e.lengthComputable) {
+                            var loader = document.querySelector('#vidLoader')
+                            var count = document.querySelector('#count')
+                            var percent = parseInt((e.loaded / e.total) * 100);
+                            loader.style.width = percent+"%";
+                            count.innerHTML = contents+": "+percent+"%";
+                        }
+                    };
+
+                    xhr.upload.onload = function() {
+                            window.location.href = "/admin/shop-edit?id="+currID.value+"&cat="+cat.value;
+                    };
+                    xhr.onerror = function(e) {
+                        console.log('Error');
+                        console.log(e);
+                    };
+                    xhr.send(formData)
+                    return false;
+
+                }
+
+                var el1 = document.getElementById('sort1');
+                var sortable1 = Sortable.create(el1,{handle:".sortHandle", ghostClass: "sortable-ghost", onEnd: function(){
+                var el = document.getElementsByClassName('sort1');
+                var currentNumber = 1;
+                let sort1Obj = [];
+                
+                
+                Array.prototype.forEach.call(el , function(elem){
+                            elem.setAttribute("data-order", currentNumber);
+                            currentNumber++
+                            
+
+                            sort1Obj.push( { id:elem.getAttribute("data-id"), "order":elem.getAttribute("data-order")} )
+
+                        });
+                        sort1 = document.querySelector('input[name=sort1]');
+                        sort1.value = JSON.stringify(sort1Obj);
+                
+                }
+            });
+
+                var el2 = document.getElementById('sort2');
+                var sortable2 = Sortable.create(el2,{handle:".sortHandle", ghostClass: "sortable-ghost", onEnd: function(){
+                var el = document.getElementsByClassName('sort2');
+                var currentNumber = 1;
+                let sort1Obj = [];
+                
+                
+                Array.prototype.forEach.call(el , function(elem){
+                            elem.setAttribute("data-order", currentNumber);
+                            currentNumber++
+                            
+
+                            sort1Obj.push( { id:elem.getAttribute("data-id"), "order":elem.getAttribute("data-order")} )
+
+                        });
+                        sort1 = document.querySelector('input[name=sort2]');
+                        sort1.value = JSON.stringify(sort1Obj);
+                
+                }
+            });

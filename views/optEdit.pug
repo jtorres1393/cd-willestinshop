@@ -1,0 +1,29 @@
+extend layout
+
+block content
+    for item in data
+        form#mainForm.fullWidth.flex(method='POST', action=`/admin/shopOption-edit?id=${item.id}&cat=${cat}&itemID=${itemID}`)
+            #menuPanel
+                p.mbMed.tTitle Settings
+                .menuSave.menuItem.mbXs
+                    input.menuOp.tCap(type="submit", value="Save Changes")
+                .menuTrash.menuItem.mbLrg
+                    a.menuOp(href=`/admin/shopOption-delete?id=${item.id}&cat=${cat}&item=${itemID}`, onclick="return confirm('Are you sure?')") Delete Option
+            #content.col23.colSkip
+                p.mbMed.tTitle
+                    a(href="/admin/shop")
+                        span.tGray Shop /  
+                    a(href="/admin/shop/category?cat="+cat)
+                        span.tGray=cat+" / "
+                    a(href="/admin/shop-edit?id="+itemID+"&cat="+cat)
+                        span.tGray=itemName+" / "    
+                    span Stock Info Edit
+            
+                .stockHold.fullWidth.flex.tTitle.mbXs
+                    .col2
+                        p.tBold Option
+                    .col2
+                        p.tBold Stock
+                .newOption.fullWidth.flex
+                    input.col2(type="text", name="title", value=item.title)
+                    input.col2(type="number", name="stock", value=item.stock)

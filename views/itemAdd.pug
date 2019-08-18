@@ -1,0 +1,85 @@
+extend layout
+
+block content
+    form#mainForm.fullWidth.flex(method='POST', action='/admin/shop-add?catID='+catID+'&cat='+cat, enctype='multipart/form-data')
+        #menuPanel
+            p.mbMed.tTitle Settings
+            .menuSave.menuItem
+                input.menuOp.tCap(type="submit", value="Add New Item")
+        #content.col23.colSkip
+            p.mbMed.tTitle
+                a(href="/admin/shop")
+                    span.tGray Shop /  
+                a(href="/admin/shop/category?cat="+cat)
+                    span.tGray=cat+" / "   
+                span=page
+            .content-form.fullWidth.flex.mbSm
+                .fullWidth.mbSm
+                    label title
+                    p
+                    input.prime-input(name="title", type="text", required)
+                .fullWidth.mbSm
+                    label sub-title
+                    p
+                    input.prime-input(name="subTitle", type="text", required)
+                .fullWidth.mbMed
+                    label Description
+                    p
+                    textarea.prime-input(name="about", type="text", required)
+                .fullWidth.mbMed
+                    label Details
+                    p
+                    textarea.prime-input(name="details", type="text", required)
+                .col2.mbMed
+                    label Price
+                    p
+                    input.prime-input(name="price", type="number", step="any", required)
+                .col2.mbMed
+                    label Shipping
+                    p
+                    input.prime-input(name="shipping", type="number", step="any", required)
+            .tTitle.mbMed Product Images
+            #sort1.galleryHold.flex.flexAStart
+                input.form-control(name='sort1', type='hidden')
+                input.form-control(name='cat', type='hidden', value=cat)
+                label.tBold.tWhite.col3.addButton.bgGray.relative(for="imgProject")
+                    .r34
+                    .cCenter
+                        p.menuItem.menuImgInvert.tBold add new image
+                    input#imgProject.menuOp(name="imgItems", type="file", style="display: none", accept="images/*", multiple="multiple")
+
+    script.
+            var form = document.getElementById('mainForm');
+
+            form.onsubmit = function() {
+                var img =  document.querySelector('input[name=imgItems]');
+                var cat =  document.querySelector('input[name=cat]')
+                var contents = " ";
+                if(img.files.length){
+                    contents = contents+" "+img.files[0].name
+                }
+                var formData = new FormData(form);
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', form.getAttribute('action'), true);
+                xhr.upload.onprogress = function(e) {
+                        console.log(contents)
+                    if (e.lengthComputable) {
+                        var loader = document.querySelector('#vidLoader')
+                        var count = document.querySelector('#count')
+                        var percent = parseInt((e.loaded / e.total) * 100);
+                        loader.style.width = percent+"%";
+                        count.innerHTML = contents+": "+percent+"%";
+                    }
+                };
+
+                xhr.upload.onload = function() {
+                        window.location.href = "/admin/shop/category?cat="+cat.value;
+                };
+                xhr.onerror = function(e) {
+                    console.log('Error');
+                    console.log(e);
+                };
+                xhr.send(formData)
+                return false;
+
+            }

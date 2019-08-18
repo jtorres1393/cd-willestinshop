@@ -1,0 +1,67 @@
+extend layout
+
+block content
+    form#mainForm.fullWidth.flex(method='POST', action='/admin/shop')
+        #menuPanel
+            p.mbMed.tTitle Settings
+            .menuSave.menuItem.mbLrg
+                input.menuOp(type="submit", value="Save Changes")
+
+            p.mbMed.tTitle Categories
+            .catLabelHold.fullWidth.mbMed
+                for item in data
+                    a(href="/admin/shop/category?cat="+item.slug)
+                        p.tCap.mbXs=item.title
+            input.mbSm(type="text", placeholder="New Category", name="newCat")
+            .menuFold.menuItem.mbLrg
+                input.menuOp(type="submit", value="Add New Category")
+            
+            p.mbSm.tTitle Orders
+                a(href="/admin/shop/orders")
+                    p.mbXs Open
+                a(href="/admin/shop/archive")
+                    p Archive
+
+
+        #sectionEditor.edit.mbMed.colSkip.col23
+            p.mbMed.tTitle=page
+            input.form-control(name='sort1', type='hidden')
+            -   var sortCount1 = 1
+            #sort1.principalHold.mbLrg
+                for item in data          
+                    .sort1.singleCat.mbSm.fullWidth.flex.flexACenter(data-id=item.id, data-order=sortCount1)
+                        .col3.relative
+                            .sortHandle
+                            p.plSm.tCap=sortCount1+". "+item.title
+                        a.col3(href="/admin/shop/category?cat="+item.slug)
+                            .btn.btn-sec.fullWidth.relative
+                                p.tBold Edit
+                        a.col3(href="/admin/shop-delete?catremove="+item.slug onclick="return confirm('Are you sure?')")
+                                .btn.btn-sec.fullWidth.relative
+                                    p.tBold Delete
+                    -   sortCount1++
+            Label Tax (%)
+            br
+            input(placeholder=info[0].tax/100, type="number", name="tax", step="any")
+
+    script.
+            var el1 = document.getElementById('sort1');
+            var sortable1 = Sortable.create(el1,{handle:".sortHandle", ghostClass: "sortable-ghost", onEnd: function(){
+                var el = document.getElementsByClassName('sort1');
+                var currentNumber = 1;
+                let sort1Obj = [];
+                
+                
+                Array.prototype.forEach.call(el , function(elem){
+                            elem.setAttribute("data-order", currentNumber);
+                            currentNumber++
+                            
+
+                            sort1Obj.push( { id:elem.getAttribute("data-id"), "order":elem.getAttribute("data-order")} )
+
+                        });
+                        sort1 = document.querySelector('input[name=sort1]');
+                        sort1.value = JSON.stringify(sort1Obj);
+                
+                }
+            });

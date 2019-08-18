@@ -1,0 +1,65 @@
+extend layout
+
+block content
+    for item in data
+        form#mainForm.fullWidth.flex(method='POST', action='/admin/shop/category?cat='+cat)
+            #menuPanel
+                p.mbMed.tTitle Settings
+                .menuSave.menuItem.mbXs
+                    input.menuOp(type="submit", value="Save Changes")
+                .menuTrash.menuItem.mbLrg
+                    a.menuOp(href="/admin/shop-delete?catremove="+item.slug, onclick="return confirm('Are you sure?')") Delete Category
+                .menuFold.menuItem.mbMed
+                    a.menuOp(href="/admin/shop-add?catID="+item.id+"&cat="+item.slug) Add New Item
+                
+                    
+                    
+
+            #content.col23.colSkip
+                p.mbMed.tTitle
+                    a(href="/admin/shop")
+                        span.tGray Shop /  
+                    span=page
+                #sort1.galleryHold.flex.flexAEnd.mbLrg
+                    input.form-control(name='sort1', type='hidden')
+                    -   var sortCount1 = 1
+                    for shopItems in data[0].shopItems
+                        .sort1.singleImg.col3.tGray(data-id=shopItems.id, data-order=sortCount1)
+                            a(href="/admin/shop-edit?id="+shopItems.id+"&cat="+item.slug+"&catID="+item.id)
+                                if shopItems.media.length
+                                    .media.fullWidth
+                                        img(src=shopItems.media[0].url)
+                                else
+                                    .r34.bgGray
+                            .fullWidth.ptXs.pbXs.tBold.deleteBtn.flex.relative
+                                p=sortCount1+"."+" "+shopItems.title
+                                a(href="/admin/shop-delete?itemremove="+shopItems.id+"&cat="+item.slug onclick="return confirm('Are you sure?')")
+                                    p.fullWidth.tBold.tRight.removeText × Remove
+                                    .sortHandle
+                        -   sortCount1++
+                    a.tBold.tWhite.col3.addButton.bgGray.relative(href="/admin/shop-add?catID="+item.id+"&cat="+item.slug)
+                        .r34
+                        .cCenter
+                            p.menuItem.menuFoldInvert.tBold.tCap add new Item
+
+    script.
+            var el1 = document.getElementById('sort1');
+            var sortable1 = Sortable.create(el1,{handle:".sortHandle", ghostClass: "sortable-ghost", onEnd: function(){
+                var el = document.getElementsByClassName('sort1');
+                var currentNumber = 1;
+                let sort1Obj = [];
+                
+                
+                Array.prototype.forEach.call(el , function(elem){
+                            elem.setAttribute("data-order", currentNumber);
+                            currentNumber++
+                            
+
+                            sort1Obj.push( { id:elem.getAttribute("data-id"), "order":elem.getAttribute("data-order")} )
+
+                        });
+                        sort1 = document.querySelector('input[name=sort1]');
+                        sort1.value = JSON.stringify(sort1Obj);
+                
+                }
+            });

@@ -1,0 +1,39 @@
+.nav{
+    background: url('/images/button-info.svg') 0 0 no-repeat;
+    width:40px;
+    height:50px;
+    z-index:999;
+    position:fixed;
+    right: 5vw;
+    top: 5vw;
+    cursor: pointer;
+
+}
+.bgVid{
+   z-index: 0;
+    
+}
+
+.footer{
+    position: fixed;
+    bottom: 0;
+    z-index: 999;
+}
+
+.logoHold{
+    z-index: 500;
+}
+
+.infoHold{
+    z-index: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 1s ease-in-out;
+}
+
+.infoHold.active{
+    opacity:1;
+    pointer-events: all;
+}
+
+
