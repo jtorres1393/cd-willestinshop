@@ -730,7 +730,6 @@ a:visited{text-decoration:none;}
   }
 
   @media all and (max-width: 900px){
-	  h1{font-size:6em;}
 	  .singleName .tTitle{font-size:.875em;}
   }
 
@@ -738,9 +737,8 @@ a:visited{text-decoration:none;}
 	.tStroke{-webkit-text-stroke-width: 3px;}
   }
   @media all and (max-width: 600px){
-	p{font-size: 1.5em;}
-	h1{font-size:3.5em;}
-	h2{font-size:4.5em;}
+	p{font-size: 1em;}
+	h1{font-size:1.5em;}
 	.tDetails{font-size:1em;}
 	.tName{font-size: 2.5em;}
 	input,select{
@@ -750,6 +748,6 @@ a:visited{text-decoration:none;}
 
 @media all and (max-width:500px){
 
-	p{font-size: 1.25em}
+	p{font-size: 1em}
 }
 

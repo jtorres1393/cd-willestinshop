@@ -42,3 +42,14 @@
 }
 
 
+@media all and (max-width:700px){
+    .logoHold{pointer-events: none;padding-bottom:var(--huge)}
+    .goodSpiritsHold{margin-top:var(--med);margin-bottom:var(--med)}
+    .goodSpiritsHold img{width:45%}
+    .footerFlex{justify-content: center;}
+    .iconHold{width:65%;margin-bottom:var(--sm)}
+    .address{width:100%;margin-bottom:var(--sm)}
+    .address p{text-align: center;}
+    .textHold .info{width: 100%;}
+  }
+
