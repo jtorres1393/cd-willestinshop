@@ -88,10 +88,10 @@ class Main extends Component {
             </div>
             <div className="footer fullWidth ">
               <div className="fullStage eCenter flex flexACenter bWhite bTopSm pbSm ptSm footerFlex">
-                <div className="col3 iconHold flex">
+                <div className="col3 iconHold flex flexACenter">
                     <img className="col3" src="images/logo-roxcrew.svg"></img>
                     <div className="col3">
-                    <img className="fullImg" src="images/logo-service.png"></img>
+                      <img className="fullImg" src="images/logo-service.png"></img>
                     </div>
                     <img className="col3" src="images/logo-ca-spirits.svg"></img>
                 </div>
