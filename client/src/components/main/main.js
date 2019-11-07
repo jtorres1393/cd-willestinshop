@@ -188,6 +188,10 @@ class Main extends Component {
     
   }
 
+  fadeIn=(e)=>{
+    e.target.style.opacity = 1;
+  }
+
   goHome=()=>{
     this.checkSection('home');
   }
@@ -207,6 +211,7 @@ class Main extends Component {
     return (
     
       <React.Fragment>
+        
       {info.length ?(
         <div id="appContain" style={{width: this.state.win[0]}} className={`relative ${newsActive?"inverse":""}`}>
             <Link to="/"><div className={`smallLogo ${(this.state.page !== "home" || (this.state.infoActive))?"activeLogo":""}`} data-page="home" onClick={this.goHome.bind(this)}>
@@ -233,7 +238,11 @@ class Main extends Component {
             </div>
 
             )}
-            
+             {newsActive?(
+                              <div className="newsOff backBut" onClick={this.closeNews.bind(this)}>
+                                <img className="fullImg" src="/images/button-back.svg"></img>
+                              </div>
+                            ):('')}
 
             <div className={`relative fullWidth ${newsActive?('newsAct'):('')}`} style={{minHeight:'100vh'}}>
             {(news.length && (this.state.page === "home"))?(
@@ -271,7 +280,7 @@ class Main extends Component {
               <div className={`relative fullWidth ${newsActive?"condenseStage":""}`} style={{minHeight:'100vh'}}>
                 <Switch>
                 <Route path='/shop' render={()=><Shop checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
-                <Route path='/spirits' render={()=><Spirits checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
+                <Route path='/spirits' render={()=><Spirits fadeIn={this.fadeIn} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
                   <Route path='/' render={()=><Home checkSection={this.checkSection} info={this.state.info} win={this.state.win}/>} />
 
                 </Switch>  
@@ -293,6 +302,7 @@ class Main extends Component {
                     </div>
                     <div className="address">
                         <p className="tDetails tWhite tRight tUpper">{`${info[0].email}`}</p>
+                        <p className="tDetails tWhite tRight tUpper">{`${info[0].phone}`}</p>
                     </div>
 
                   </div>

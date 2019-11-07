@@ -24,7 +24,9 @@
 }
 .inactive{
     margin-right: -20vw;
-    filter: blur(5px);
+    filter: blur(7px);
+    pointer-events: none;
+    transition: .5s all ease-out;
 }
 
 
@@ -61,17 +63,23 @@
 }
 
 .productVid{
+    opacity:1;
     position: relative;
     top:0;
     left:0;
-    height:50%;;
+    border-radius:var(--sm);
+    height:50%;
+    transition: opacity 1s ease-out;
+    overflow:hidden;
 }
-
+.spiritVid{opacity:0;transition: opacity 1.5s ease-out;}
 .spiritDeet{
     position: absolute;
     z-index:300;
     width:50%;
     right:0;
+    opacity:0;
+    transition: opacity 1s ease-in;
     top:50%;
     transform:translateY(-50%);
     white-space: pre-wrap;
@@ -88,6 +96,19 @@
     height: 100% !important;
 }
 
+.spiritBut{
+    position:fixed;
+    margin-top:var(--sm);
+    top:var(--huge);
+    right:var(--med);
+    z-index: 999;
+    width:60px;
+}
+
+.singleSpirit img{
+    opacity:0;
+    transition:opacity 1s ease-in;
+}
 
 @media all and (max-width:900px){
     .singleSpirit{
@@ -107,9 +128,21 @@
         transform:translate(-15vw, -20%);
     }
     .spiritMode.spiritContainer{padding-bottom:500px}
+    .productVid{
+        border-radius:5%;
+        height:40%;}
+    .spiritTextHold{padding-top:200px}
     .spiritDeet{display:none;}
     .spiritAbout{padding-top:15vw;width:100vw;padding-right:var(--sm);padding-left:var(--sm)}
     .spiritText{padding-left:var(--med)}
+
+.spiritBut{
+    top:inherit;
+    bottom:50%;
+    left:var(--sm);
+    mix-blend-mode: difference;
+}
+
 }
 
 @media all and (max-width:600px){
@@ -120,6 +153,7 @@
     .inactive{
         margin-right: -70vw;
     }
+    .spiritMode.spiritContainer{padding-bottom:200px}
     
    }
 

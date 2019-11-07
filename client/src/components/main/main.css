@@ -97,6 +97,7 @@
     border:none;
     cursor:default;
     width:95vw;
+    margin-top:var(--huge);
     top:0;
     left:0;
     height:auto;
@@ -105,12 +106,11 @@
     border-radius:0;
     position:relative;
     transform-origin: top left;
-    padding-bottom: 154px;
+    padding-bottom: 160px;
 
 }
 
 .newsAct{
-    padding-top: var(--huge);
     padding-right: 5vw;
     padding-bottom: 2.5vw;
 }
@@ -181,6 +181,20 @@ border: none;
 .mobileMenu .currentPage.shopLink, .mobileMenu .currentPage.spiritsLink{
     color: var(--rust);
 }
+
+.newsOff{
+    mix-blend-mode: difference;
+    position:fixed;
+    top:var(--med);
+    left:var(--sm);
+    z-index: 999;
+    width:60px;
+}
+
+.backBut:hover{
+    animation: point 2s infinite ease-in-out;
+}
+
 @media all and (max-width:1000px){
     .infoHold .flex{display:block;position:relative;transform:none;top:0;left:0;}
     .goodSpiritsHold{width: 40vw; margin-bottom:var(--med);}
@@ -193,12 +207,12 @@ border: none;
    .newsBody{display:block;}
    .newsBody .col23{width:100%; margin-bottom:var(--med);}
    .newsBody .col13{width:100%;} 
-   .newsAct .newsHold{padding-bottom: 250px;}
+   .newsAct .newsHold{padding-bottom: 100px;}
   }
 
 
 @media all and (max-width:700px){
-    .smallLogo{width:100px;}
+    .smallLogo{width:85px;}
     .logoHold{pointer-events: none;padding-bottom:var(--huge)}
     .goodSpiritsHold{width:60vw;margin-bottom:var(--sm);margin-top:var(--sm)}
     /* .goodSpiritsHold img{width:45%} */
@@ -208,6 +222,7 @@ border: none;
     .address p{text-align: center;}
     .textHold .info{width: 100%;}
     .infoHold{padding-top:var(--lrg)}
+    .newsAct .newsHold{padding-bottom: 300px;}
     
   }
   @media all and (max-width:600px){

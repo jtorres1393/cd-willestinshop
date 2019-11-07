@@ -278,6 +278,8 @@ a {text-decoration: none;color:inherit}
 
 a:visited{text-decoration:none;}
 
+a:hover{color: var(--rust);}
+
 .cPointer{
 	cursor: pointer;
 }
@@ -785,6 +787,23 @@ text-align-last:center;
 	animation: button-spin infinite 20s linear;
 }
 
+.onStage{
+	opacity:0;animation: onStage 1s ease-out 1 both; }
+
+
+@keyframes onStage {
+    0%{
+        opacity: 0;
+    }
+    
+    100% {
+      opacity: 1;
+    }
+  }
+
+
+
+
 @keyframes button-spin {
 	from { transform: rotate(0deg); }
 	to { transform: rotate(-360deg); }
@@ -796,6 +815,12 @@ text-align-last:center;
 @keyframes blinker {
     97% {
       opacity: 0;
+    }
+  }
+
+  @keyframes point {
+    50% {
+      transform: translateX(50%);
     }
   }
 
@@ -816,6 +841,7 @@ text-align-last:center;
 	
 	p{font-size: 1em;}
 	h1{font-size:1.5em;}
+	h3, .newsSub{font-size:.875em}
 	.tDetails{font-size:1em;}
 	.tName{font-size: 2.5em;}
 	input,select{
