@@ -68,7 +68,6 @@
 .newsHold{
     z-index:650;
     background-color: transparent;
-    border: 1px solid var(--white);
     position: fixed;
     top: var(--sm);
     width:150px;
@@ -178,6 +177,10 @@ border: none;
 .currentPage.shopLink, .currentPage.spiritsLink{
     color: var(--blue);
 }
+
+.mobileMenu .currentPage.shopLink, .mobileMenu .currentPage.spiritsLink{
+    color: var(--rust);
+}
 @media all and (max-width:1000px){
     .infoHold .flex{display:block;position:relative;transform:none;top:0;left:0;}
     .goodSpiritsHold{width: 40vw; margin-bottom:var(--med);}
@@ -204,7 +207,7 @@ border: none;
     .address{width:100%;margin-bottom:var(--sm)}
     .address p{text-align: center;}
     .textHold .info{width: 100%;}
-    .infoHold{padding-top:var(--med)}
+    .infoHold{padding-top:var(--lrg)}
     
   }
   @media all and (max-width:600px){

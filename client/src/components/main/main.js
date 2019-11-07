@@ -188,6 +188,10 @@ class Main extends Component {
     
   }
 
+  goHome=()=>{
+    this.checkSection('home');
+  }
+
   
 
 
@@ -205,7 +209,7 @@ class Main extends Component {
       <React.Fragment>
       {info.length ?(
         <div id="appContain" style={{width: this.state.win[0]}} className={`relative ${newsActive?"inverse":""}`}>
-            <Link to="/"><div className={`smallLogo ${(this.state.page !== "home" || (this.state.infoActive))?"activeLogo":""}`} data-page="home" onClick={this.checkSection.bind(this)}>
+            <Link to="/"><div className={`smallLogo ${(this.state.page !== "home" || (this.state.infoActive))?"activeLogo":""}`} data-page="home" onClick={this.goHome.bind(this)}>
                 <img className={`fullWidth fullImg `} src={`images/wordmark.svg`} data-page="home"></img>
             </div></Link>
             {mobile?(
@@ -213,7 +217,7 @@ class Main extends Component {
                     <div className="tCTA ptSm pbSm tRight cPointer tUpper mobileButton tWhite" onClick={this.checkMobileMenu.bind(this)}>{mobileMenu?"close":"menu"}</div>                  
                   <div className={`fullScreen mobileMenu bgBlue ${mobileMenu?"active":""}`}>
                     <div className="fullStage centeredContent tWhite tUpper pbHuge">
-                      <Link to="/"><h2 data-page="home" onClick={this.checkSection.bind(this)} className="tCenter mbSm homeLink" >home</h2></Link>     
+                      <Link to="/"><h2 data-page="home" onClick={this.goHome.bind(this)} className="tCenter mbSm homeLink" >home</h2></Link>     
                       <Link to="/spirits"><h2 data-page="spirits" onClick={this.checkSection.bind(this)} className="tCenter mbSm spiritsLink" >spirits</h2></Link>     
                       <Link to="/shop"><h2 data-page="shop" onClick={this.checkSection.bind(this)} className="tCenter mbSm shopLink">shop</h2></Link>
                       <h2 className="cPointer tCenter infoLink" onClick={this.checkInfo.bind(this)}>info</h2>                  
@@ -222,7 +226,7 @@ class Main extends Component {
                 </React.Fragment>
             ):(
             <div className="nav ptSm pbSm  flex flexEnd col2 tUpper tWhite" >
-              <Link to="/"><div data-page="home" onClick={this.checkSection.bind(this)} className=" tRight homeLink" >home</div></Link>     
+              <Link to="/"><div data-page="home" onClick={this.goHome.bind(this)} className=" tRight homeLink" >home</div></Link>     
               <Link to="/spirits"><div data-page="spirits" onClick={this.checkSection.bind(this)} className=" tRight plSm spiritsLink" >spirits</div></Link>     
               <Link to="/shop"><div data-page="shop" onClick={this.checkSection.bind(this)} className="tRight plSm shopLink" >shop</div></Link>
               <div className="plSm tRight cPointer infoLink" onClick={this.checkInfo.bind(this)}>info</div>                  
