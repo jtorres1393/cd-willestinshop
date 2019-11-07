@@ -30,7 +30,7 @@ class Shop extends Component {
     return (
     
       <div className="fullScreen bgRust">
-        <h2 className="centeredContent tWhite tCap pbHuge">coming soon</h2>
+        <h2 className="centeredContent tWhite tCap pbHuge tCenter fullWidth">coming soon</h2>
       
        </div>
     
