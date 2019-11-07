@@ -169,8 +169,8 @@ fs.readFile(filePath, 'utf8', function (err,data) {
   }
   
   // replace the special strings with server generated strings
-  data = data.replace(/\$OG_TITLE/g, "This and That");
-  data = data.replace(/\$OG_DESCRIPTION/g,"an Everyday Getaway");
+  data = data.replace(/\$OG_TITLE/g, "Wille's Tin Shop");
+  data = data.replace(/\$OG_DESCRIPTION/g,"Purveyor of Fine Spirits");
   data = data.replace(/\$OG_IMAGE/g, card.url);
   response.send(data);
 

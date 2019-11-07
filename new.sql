@@ -381,7 +381,7 @@ ALTER TABLE ONLY public."shopOptions" ALTER COLUMN id SET DEFAULT nextval('publi
 --
 
 COPY public.info (id, phone, email, instagram, address, city, about, tax, state, zip, map) FROM stdin;
-1	555.555.5555	info@willestinshop.com	willestinshop	1115 E Wardlow Rd.	long beach	<h1>Craftman's Touch.</h1><h1>California Spirit.</h1><p><br></p><p>A Long Beach institution since 1906, Wille’s Tin Shop embodied the spirit of our city: rigorous ingenuity, creativity, and accommodating service. Rather than leave its legacy in the history books, we let these values drive Wille’s into a new era—bringing its name and ideals of craftsmanship to the world of artisan spirits.</p>	\N	ca	90807	\N
+1	(562)668-7439	info@willestinshop.com	willestinshop	1115 E Wardlow Rd.	long beach	<h1>Craftman's Touch.</h1><h1>California Spirit.</h1><p><br></p><p>A Long Beach institution since 1906, Wille’s Tin Shop embodied the spirit of our city: rigorous ingenuity, creativity, and accommodating service. Rather than leave its legacy in the history books, we let these values drive Wille’s into a new era—bringing its name and ideals of craftsmanship to the world of artisan spirits.</p>	\N	ca	90807	\N
 \.
 
 
@@ -414,12 +414,13 @@ COPY public.knex_migrations_lock (index, is_locked) FROM stdin;
 --
 
 COPY public.media (id, url, "rootPage", "rootID", name, type, section, "order") FROM stdin;
-3	https://storage.googleapis.com/willestinshop/images/115201910111_vodka_png	items	1	images/115201910111_vodka_png	images	product	\N
-4	https://storage.googleapis.com/willestinshop/images/115201913594_vodka_png	items	2	images/115201913594_vodka_png	images	product	\N
-5	https://storage.googleapis.com/willestinshop/images/115201914027_vodka_png	items	3	images/115201914027_vodka_png	images	product	\N
-6	https://storage.googleapis.com/willestinshop/images/115201914155_vodka_png	items	4	images/115201914155_vodka_png	images	product	\N
-7	https://storage.googleapis.com/willestinshop/videos/1152019185320_bgVideo3_mp4_mp4	info	1	videos/1152019185320_bgVideo3_mp4_mp4	videos	landing	\N
 10	https://storage.googleapis.com/willestinshop/images/116201922758_repealDay_svg	news	1	images/116201922758_repealDay_svg	images	articles	\N
+12	https://storage.googleapis.com/willestinshop/images/1172019125353_rum_png	items	4	images/1172019125353_rum_png	images	product	\N
+13	https://storage.googleapis.com/willestinshop/images/1172019125645_gin_2_png	items	3	images/1172019125645_gin_2_png	images	product	\N
+14	https://storage.googleapis.com/willestinshop/images/11720191322_whisky_empty_png	items	2	images/11720191322_whisky_empty_png	images	product	\N
+15	https://storage.googleapis.com/willestinshop/videos/1172019134438_bgVideo_29_mp4	info	1	videos/1172019134438_bgVideo_29_mp4	videos	landing	\N
+16	https://storage.googleapis.com/willestinshop/videos/1172019134612_bgVideo_29_mp4	info	1	videos/1172019134612_bgVideo_29_mp4	videos	landing	\N
+17	https://storage.googleapis.com/willestinshop/images/117201913496_vodka_png	items	1	images/117201913496_vodka_png	images	product	\N
 \.
 
 
@@ -446,10 +447,10 @@ COPY public."shopCategory" (id, "order", title, slug) FROM stdin;
 --
 
 COPY public."shopItems" (id, "order", title, "subTitle", about, shipping, price, "rootID", details, proof, alcvol, type, active) FROM stdin;
+4	4	playa larga	Rum	Coming soon	0	0	1	Coming soon	101	5000	spirit	f
+3	3	ginipero	Gin	Coming soon	0	0	1	Coming soon	101	5000	spirit	f
 2	2	shop whisky	whisky	Coming soon	0	0	1	Coming soon	101	5010	spirit	f
 1	1	long beach water	vodka	Our Vodka, crafted from fermented and distilled corn, is the first manifestation of Wille's new era. Diluted with Long Beach water and redistilled in our custom pot, our legacy and our city is on full display in this very bottle—a taste of what’s to come from the next century of Wille’s Tin Shop.\r\n	1000	3400	1	Distilled from Corn\r\nFiltered with Long Beach Water\r\nCocktail Strength	101	5010	spirit	t
-3	3	ginipero	Gin	Coming soon	0	0	1	Coming soon	101	5000	spirit	f
-4	4	playa larga	Rum	Coming soon	0	0	1	Coming soon	101	5000	spirit	f
 \.
 
 
@@ -495,7 +496,7 @@ SELECT pg_catalog.setval('public.knex_migrations_lock_index_seq', 1, true);
 -- Name: media_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.media_id_seq', 10, true);
+SELECT pg_catalog.setval('public.media_id_seq', 17, true);
 
 
 --

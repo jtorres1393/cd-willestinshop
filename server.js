@@ -66,6 +66,15 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 
+
+//AUTHENTICATION CARD
+app.get('/', async function(request, response) {
+  var page = "default"
+    mods.metaChange(response,page);
+});
+
+
+
 //authentication
 app.use(flash());
 app.use(cookieParser());
