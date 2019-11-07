@@ -157,7 +157,7 @@ metaChange: async function (response, page){
 
   let images = await Media.query().where('rootPage', 'info');
   
-  var card = images[Math.floor(Math.random()*images.length)];
+  var card = images[Math.floor(Math.random()*(images.length-1))];
 
 
 const filePath = path.resolve(__dirname, '../client/build', 'index.html');
