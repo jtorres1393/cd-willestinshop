@@ -168,13 +168,50 @@ ALTER SEQUENCE public.media_id_seq OWNED BY public.media.id;
 
 
 --
+-- Name: news; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.news (
+    id integer NOT NULL,
+    title text,
+    about text,
+    "subTitle" text,
+    date text,
+    tags text,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    "order" integer
+);
+
+
+--
+-- Name: news_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.news_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: news_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.news_id_seq OWNED BY public.news.id;
+
+
+--
 -- Name: shopCategory; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public."shopCategory" (
     id integer NOT NULL,
     "order" integer,
-    title text
+    title text,
+    slug text
 );
 
 
@@ -210,7 +247,11 @@ CREATE TABLE public."shopItems" (
     shipping integer,
     price integer,
     "rootID" integer,
-    details text
+    details text,
+    proof integer,
+    alcvol integer,
+    type text,
+    active boolean
 );
 
 
@@ -308,6 +349,13 @@ ALTER TABLE ONLY public.media ALTER COLUMN id SET DEFAULT nextval('public.media_
 
 
 --
+-- Name: news id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.news ALTER COLUMN id SET DEFAULT nextval('public.news_id_seq'::regclass);
+
+
+--
 -- Name: shopCategory id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -333,7 +381,7 @@ ALTER TABLE ONLY public."shopOptions" ALTER COLUMN id SET DEFAULT nextval('publi
 --
 
 COPY public.info (id, phone, email, instagram, address, city, about, tax, state, zip, map) FROM stdin;
-1	555.555.5555	info@willestinshop.com	willestinshop	1115 E Wardlow Rd.	long beach	<h1>Craftman's Touch.</h1><h1>California Spirit.</h1><p><br></p><p><br></p><p>A Long Beach institution since 1906, Wille’s Tin Shop embodied the spirit of our city: rigorous ingenuity, creativity, and accommodating service. Rather than leave its legacy in the history books, we let these values drive Wille’s into a new era—bringing its name and ideals of craftsmanship to the world of artisan spirits.</p>	\N	ca	90807	\N
+1	555.555.5555	info@willestinshop.com	willestinshop	1115 E Wardlow Rd.	long beach	<h1>Craftman's Touch.</h1><h1>California Spirit.</h1><p><br></p><p>A Long Beach institution since 1906, Wille’s Tin Shop embodied the spirit of our city: rigorous ingenuity, creativity, and accommodating service. Rather than leave its legacy in the history books, we let these values drive Wille’s into a new era—bringing its name and ideals of craftsmanship to the world of artisan spirits.</p>	\N	ca	90807	\N
 \.
 
 
@@ -348,6 +396,7 @@ COPY public.knex_migrations (id, name, batch, migration_time) FROM stdin;
 12	20190524110119_shop.js	1	2019-08-18 09:00:32.27-07
 13	20190524110136_shopItems\n.js	1	2019-08-18 09:00:32.278-07
 14	20190524110148_shopOpts.js	1	2019-08-18 09:00:32.284-07
+15	20191105234534_news.js	2	2019-11-05 23:57:27.674-08
 \.
 
 
@@ -365,7 +414,21 @@ COPY public.knex_migrations_lock (index, is_locked) FROM stdin;
 --
 
 COPY public.media (id, url, "rootPage", "rootID", name, type, section, "order") FROM stdin;
-2	https://storage.googleapis.com/willestinshop/videos/8182019105051_better1_mp4	info	1	videos/8182019105051_better1_mp4	videos	landing	\N
+3	https://storage.googleapis.com/willestinshop/images/115201910111_vodka_png	items	1	images/115201910111_vodka_png	images	product	\N
+4	https://storage.googleapis.com/willestinshop/images/115201913594_vodka_png	items	2	images/115201913594_vodka_png	images	product	\N
+5	https://storage.googleapis.com/willestinshop/images/115201914027_vodka_png	items	3	images/115201914027_vodka_png	images	product	\N
+6	https://storage.googleapis.com/willestinshop/images/115201914155_vodka_png	items	4	images/115201914155_vodka_png	images	product	\N
+7	https://storage.googleapis.com/willestinshop/videos/1152019185320_bgVideo3_mp4_mp4	info	1	videos/1152019185320_bgVideo3_mp4_mp4	videos	landing	\N
+10	https://storage.googleapis.com/willestinshop/images/116201922758_repealDay_svg	news	1	images/116201922758_repealDay_svg	images	articles	\N
+\.
+
+
+--
+-- Data for Name: news; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.news (id, title, about, "subTitle", date, tags, created_at, updated_at, "order") FROM stdin;
+1	wille's tin shop opens at last!	<p>We’re honored to be able to open our Doors on the same day we celebrate Repeal Day. December 5th not only marks a return to celebotary drinking, but also a return to the rich history and tradition of craft fermentation and distillation.</p><p><br></p><p>A Long Beach institution since 1906, Wille’s Tin Shop embodied the spirit of Long Beach: rigorous ingenuity, creativity, and accommodating service. We let these values drive Wille’s into a new era—bringing its ideals of craftsmanship to the world of fine spirits.</p><p><br></p>	Grand Opening	2019-12-05	\r\nCocktails • Food • Music • Patio	2019-11-06 00:46:20.971417-08	2019-11-06 00:46:20.971417-08	1
 \.
 
 
@@ -373,7 +436,8 @@ COPY public.media (id, url, "rootPage", "rootID", name, type, section, "order") 
 -- Data for Name: shopCategory; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public."shopCategory" (id, "order", title) FROM stdin;
+COPY public."shopCategory" (id, "order", title, slug) FROM stdin;
+1	\N	spirits	spirits
 \.
 
 
@@ -381,7 +445,11 @@ COPY public."shopCategory" (id, "order", title) FROM stdin;
 -- Data for Name: shopItems; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public."shopItems" (id, "order", title, "subTitle", about, shipping, price, "rootID", details) FROM stdin;
+COPY public."shopItems" (id, "order", title, "subTitle", about, shipping, price, "rootID", details, proof, alcvol, type, active) FROM stdin;
+2	2	shop whisky	whisky	Coming soon	0	0	1	Coming soon	101	5010	spirit	f
+1	1	long beach water	vodka	Our Vodka, crafted from fermented and distilled corn, is the first manifestation of Wille's new era. Diluted with Long Beach water and redistilled in our custom pot, our legacy and our city is on full display in this very bottle—a taste of what’s to come from the next century of Wille’s Tin Shop.\r\n	1000	3400	1	Distilled from Corn\r\nFiltered with Long Beach Water\r\nCocktail Strength	101	5010	spirit	t
+3	3	ginipero	Gin	Coming soon	0	0	1	Coming soon	101	5000	spirit	f
+4	4	playa larga	Rum	Coming soon	0	0	1	Coming soon	101	5000	spirit	f
 \.
 
 
@@ -413,7 +481,7 @@ SELECT pg_catalog.setval('public.info_id_seq', 1, true);
 -- Name: knex_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.knex_migrations_id_seq', 14, true);
+SELECT pg_catalog.setval('public.knex_migrations_id_seq', 15, true);
 
 
 --
@@ -427,21 +495,28 @@ SELECT pg_catalog.setval('public.knex_migrations_lock_index_seq', 1, true);
 -- Name: media_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.media_id_seq', 2, true);
+SELECT pg_catalog.setval('public.media_id_seq', 10, true);
+
+
+--
+-- Name: news_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.news_id_seq', 4, true);
 
 
 --
 -- Name: shopCategory_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."shopCategory_id_seq"', 1, false);
+SELECT pg_catalog.setval('public."shopCategory_id_seq"', 1, true);
 
 
 --
 -- Name: shopItems_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."shopItems_id_seq"', 1, false);
+SELECT pg_catalog.setval('public."shopItems_id_seq"', 4, true);
 
 
 --
@@ -481,6 +556,14 @@ ALTER TABLE ONLY public.knex_migrations
 
 ALTER TABLE ONLY public.media
     ADD CONSTRAINT media_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: news news_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.news
+    ADD CONSTRAINT news_pkey PRIMARY KEY (id);
 
 
 --

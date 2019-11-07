@@ -17,6 +17,7 @@ const { Info } = require('./models/info');
 const { ShopCategory } = require('./models/shopCategory');
 const { ShopItems } = require('./models/shopItems');
 const { ShopOptions } = require('./models/shopOptions');
+const { News } = require('./models/news');
 
 
 //backend routes
@@ -28,9 +29,13 @@ const catEdit = require('./routes/catEdit')
 const itemAdd = require('./routes/itemAdd')
 const itemEdit = require('./routes/itemEdit')
 const optEdit = require('./routes/optEdit')
+const newsAdd = require('./routes/newsAdd')
+const newsDash = require('./routes/newsDash')
+const newsEdit = require('./routes/newsEdit')
 
 //frontend
 const APIinfo= require('./routes/APIinfo')
+const APIshopCat= require('./routes/APIshopCat')
 
 //login
 //login
@@ -241,6 +246,9 @@ app.use('/admin/media-delete?:id', isLogged, async function(req,res){
   else if(req.query.item){
     res.redirect('/admin/shop-edit?id='+(req.query.item)+"&cat="+(req.query.cat))
   }
+  else if(req.query.news){
+    res.redirect('/admin/news-edit?id='+(req.query.news))
+  }
   else{
   res.redirect('/admin/'+sec)}
 })
@@ -318,6 +326,7 @@ app.use('/admin/shop-delete?:id', isLogged, async function(req,res){
 
 
 
+
 //admin categories
 app.use('/admin/shop/category?:id', isLogged, catEdit)
 app.post('/admin/shop/category?:id', isLogged, async function(req,res){
@@ -354,6 +363,10 @@ app.post('/admin/shop-add?:id',m.fields([{name:"imgItems", maxCount: 10}]) ,asyn
   data.title = (req.body.title).toLowerCase();
   data.about = (req.body.about);
   data.details = req.body.details;
+  data.proof = req.body.proof;
+  data.type = req.body.type;
+  data.active = req.body.active;
+  data.alcvol = req.body.alcvol*100;
   data.subTitle = req.body.subTitle;
   data.rootID = rootID;
   data.shipping = (req.body.shipping)*100;
@@ -388,8 +401,12 @@ app.post('/admin/shop-edit?:id',m.fields([{name:"imgItems", maxCount: 10}]) ,asy
   data.about = (req.body.about);
   data.details = req.body.details;
   data.subTitle = req.body.subTitle;
+  data.type = req.body.type;
   data.shipping = (req.body.shipping)*100;
   data.price = (req.body.price)*100;
+  data.proof = req.body.proof;
+  data.alcvol = req.body.alcvol*100;
+  data.active = req.body.active;
 
   const upData = await ShopItems.query()
                 .where('id', rootID)
@@ -501,6 +518,95 @@ app.post("/admin/info", m.fields([{name:'imgLanding',maxCount: 1},{name:'imgStud
 
 
 
+app.use('/admin/news-add', isLogged, newsAdd)
+app.post('/admin/news-add',m.fields([{name:"imgItems", maxCount: 10}]) ,async function(req,res){
+  let data = {}
+  data.title = (req.body.title).toLowerCase();
+  data.about = req.body.about;
+  data.subTitle = req.body.subTitle;
+  data.date = req.body.date;
+  data.tags = req.body.tags;
+
+  const upData = await News.query()
+                .insert(data)
+  
+  const getID = await News.query()
+        .orderBy("id", "desc")
+        .limit(1);         
+  if(req.files.imgItems){
+    (req.files.imgItems).forEach((e)=>{
+      mods.uploadMedia(e,"images","articles" ,"news",getID[0].id);
+    })
+  }
+
+  res.redirect('/admin/news')
+
+})
+
+app.use('/admin/news', isLogged, newsDash)
+app.post('/admin/news', isLogged, async function(req,res){
+  if(req.body.sort1){
+    mods.sort(req.body.sort1, News)
+  }
+  res.redirect('/admin/news')
+})
+app.use('/admin/news-edit?:id', isLogged, newsEdit)
+app.post('/admin/news-edit?:id',m.fields([{name:"imgItems", maxCount: 10}]) ,async function(req,res){
+  const currID = req.query.id;
+  let data = {}
+  data.title = (req.body.title).toLowerCase();
+  data.about = req.body.about;
+  data.subTitle = req.body.subTitle;
+  data.date = req.body.date;
+  data.tags = req.body.tags;
+
+
+  const upData = await News.query()
+                .where('id', currID)
+                .patch(data)
+         
+  if(req.body.sort1){
+    mods.sort(req.body.sort1, Media)
+  }
+
+  if(req.files.imgItems){
+    (req.files.imgItems).forEach((e)=>{
+      mods.uploadMedia(e,"images","articles" ,"news",currID);
+    })
+  }
+
+  res.redirect('/admin/news-edit?id='+currID)
+
+})
+
+app.use('/admin/news-delete?:id', isLogged, async function(req,res){
+ 
+ if(req.query.id){
+    const currID = req.query.id;
+    const delData = await News.query()
+                .where('id', currID)
+                .delete()
+
+                const media = await Media.query()
+                .where("rootID", currID)
+                .where("rootPage", "news");
+          
+                media.forEach((e)=>{
+                  mods.deleteFile(e.id)
+                })
+                
+                res.redirect('/admin/news')
+  }
+  
+
+
+
+
+})
+
+
+
+
 
 
 
@@ -522,6 +628,7 @@ function isAdmin(req, res, next) {
 //////////////////////////////////
 //API
 app.use('/api/info', APIinfo);
+app.use('/api/shopCat', APIshopCat);
 
 app.listen(port,() => console.log(`server started on port ${port}`));
 

@@ -1,0 +1,139 @@
+.spiritContainer{
+    z-index: 500;
+}
+
+.spiritStage{
+    overflow-x: hidden;
+    overflow-y:visible;
+}
+
+.spiritContainer{
+    height:auto;
+    width:200%;
+    overflow-x:hidden;
+    overflow-y:visible;
+}
+
+.spiritsStage, .singleSpirit, .spiritContainer, .spiritImgHold{
+    transition: all 1s ease-in-out;
+}
+
+.singleSpirit{
+    width:40vw;
+    margin-right: -10vw;
+}
+.inactive{
+    margin-right: -20vw;
+    filter: blur(5px);
+}
+
+
+.spiritMode .singleSpirit{
+    opacity: 0;
+}
+
+.activeSpirit.singleSpirit{
+    opacity:1;
+    margin-top:-50px;
+    position:relative;
+    z-index: 510;
+    width: 50vw;
+    display:block;
+}
+
+.activeSpirit.singleSpirit .spiritImgHold{
+    position:relative;
+    width:100%;
+    z-index:520;
+}
+
+.spiritInfo{
+    position:absolute;
+    top:0;
+    right:0;
+    width:100vw;
+    min-height:100%;
+    z-index:500;
+}
+
+.spiritInfo .details{
+    height: 400px;
+}
+
+.productVid{
+    position: relative;
+    top:0;
+    left:0;
+    height:50%;;
+}
+
+.spiritDeet{
+    position: absolute;
+    z-index:300;
+    width:50%;
+    right:0;
+    top:50%;
+    transform:translateY(-50%);
+    white-space: pre-wrap;
+}
+
+.spiritAbout{
+    width:50%;
+    position: absolute;
+    right:0;
+}
+
+
+.inverse .spiritsStage{
+    height: 100% !important;
+}
+
+
+@media all and (max-width:900px){
+    .singleSpirit{
+        width:49vw;
+        margin-right:-15vw;
+    }
+    .inactive{
+        margin-right: -25vw;
+    }
+   }
+
+
+   @media all and (max-width:700px){
+    .activeSpirit.singleSpirit{
+        position:relative;
+        width: 130vw;
+        transform:translate(-15vw, -20%);
+    }
+    .spiritMode.spiritContainer{padding-bottom:500px}
+    .spiritDeet{display:none;}
+    .spiritAbout{padding-top:15vw;width:100vw;padding-right:var(--sm);padding-left:var(--sm)}
+    .spiritText{padding-left:var(--med)}
+}
+
+@media all and (max-width:600px){
+    .singleSpirit{
+        width:80vw;
+        margin-right:-40vw;
+    }
+    .inactive{
+        margin-right: -70vw;
+    }
+    
+   }
+
+
+   @media all and (max-width:500px){
+    
+    .activeSpirit.singleSpirit{
+       padding-bottom:10%;
+    }
+    .productVid{
+        height:30%;
+    }
+    .spiritText{padding-left:0;padding-right:0;}
+}
+
+ 
+ 

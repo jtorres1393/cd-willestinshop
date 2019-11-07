@@ -1,28 +1,48 @@
-.nav{
-    background: url('/images/button-info.svg') 0 0 no-repeat;
-    width:40px;
-    height:50px;
-    z-index:999;
-    position:fixed;
-    right: 5vw;
-    top: 5vw;
-    cursor: pointer;
-
+#appContain{
+    overflow-x:hidden;
+}
+.nav, .mobileButton{
+    position: fixed;
+    top:var(--sm);
+    right:var(--med);
+    z-index: 999;
 }
 .bgVid{
    z-index: 0;
 }
 
-.bgVid video{
+.bgVid video, .productVid video{
     width:100%;
     height:100%;
     object-fit: cover;
 }
 
+.smallLogo{
+    transition:all 1s ease;
+    opacity:0;
+    width:130px;
+    position:fixed;
+    top:var(--med);
+    left:var(--med);
+    z-index:999;
+}
+
+.smallLogo.activeLogo{
+    opacity:1;
+}
+.footerHold{
+    pointer-events: none;
+    position: absolute;
+    z-index:999;
+    top:0;
+    left:0;
+    transition: .75s all ease-out;
+}
 .footer{
-    position: fixed;
+    position: absolute;
     bottom: 0;
     z-index: 999;
+    pointer-events: fill;
 }
 
 .logoHold{
@@ -30,7 +50,7 @@
 }
 
 .infoHold{
-    z-index: 600;
+    z-index: 651;
     opacity: 0;
     pointer-events: none;
     transition: all 1s ease-in-out;
@@ -45,16 +65,152 @@
     height:auto;
 }
 
+.newsHold{
+    z-index:650;
+    background-color: transparent;
+    border: 1px solid var(--white);
+    position: fixed;
+    top: var(--sm);
+    width:150px;
+    height:150px;
+    margin-left:2.5vw;
+    border-radius: 100%;
+    overflow: hidden;
+    transition: all .5s ease-in;
+    transform-origin: center center;
+    cursor: pointer;
+}
+
+
+
+.newsHold:hover{
+    width:200px;
+    height:200px;
+    background-color: var(--white);
+}
+
+.newsHold:hover .newsAlert{
+    opacity:0;
+    transition: opacity .5s ease-out;
+}
+.newsAct .newsHold{
+    background-color: var(--white);
+    border:none;
+    cursor:default;
+    width:95vw;
+    top:0;
+    left:0;
+    height:auto;
+    overflow-y:auto;
+    overflow-x:hidden;
+    border-radius:0;
+    position:relative;
+    transform-origin: top left;
+    padding-bottom: 154px;
+
+}
+
+.newsAct{
+    padding-top: var(--huge);
+    padding-right: 5vw;
+    padding-bottom: 2.5vw;
+}
+
+.newsContent{
+    opacity:0;
+    transition: opacity .5s ease-out;
+    width:100vw;
+    margin-left:-2.5vw;
+    height:auto;
+}
+
+.newsAct .newsContent, .newsHold:hover .newsContent{
+    opacity:1}
+
+.condenseStage{
+    position: absolute;
+    top:0;
+    height:100%;
+    overflow: hidden;
+}
+
+.inverse .footerHold p {
+    color: var(--rust)
+}
+
+.inverse .footer .bWhite{
+border: none;
+} 
+
+.inverse .footer{
+    
+    bottom: 2.5vw;
+}
+
+.newsBorder{
+    position: absolute;
+    top:0;
+    left:0;
+}
+
+
+
+.mobileMenu{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index: 900;
+    transition: opacity .5s ease-in;
+    pointer-events: none;
+    opacity:0;
+}
+
+.active.mobileMenu{
+    opacity:1;
+    pointer-events: fill;
+    
+}
+
+.currentPage{
+    color: var(--rust)
+}
+
+.currentPage.shopLink, .currentPage.spiritsLink{
+    color: var(--blue);
+}
+@media all and (max-width:1000px){
+    .infoHold .flex{display:block;position:relative;transform:none;top:0;left:0;}
+    .goodSpiritsHold{width: 40vw; margin-bottom:var(--med);}
+    .textHold{width:90%; padding-top:0;}
+    .textHold .info{width: 100%;}
+}
+
+@media all and (max-width:900px){
+   .logoHold .col23{width:100%;}
+   .newsBody{display:block;}
+   .newsBody .col23{width:100%; margin-bottom:var(--med);}
+   .newsBody .col13{width:100%;} 
+   .newsAct .newsHold{padding-bottom: 250px;}
+  }
+
 
 @media all and (max-width:700px){
-   
+    .smallLogo{width:100px;}
     .logoHold{pointer-events: none;padding-bottom:var(--huge)}
-    .goodSpiritsHold{margin-top:var(--med);margin-bottom:var(--med)}
-    .goodSpiritsHold img{width:45%}
+    .goodSpiritsHold{width:60vw;margin-bottom:var(--sm);margin-top:var(--sm)}
+    /* .goodSpiritsHold img{width:45%} */
     .footerFlex{justify-content: center;}
-    .iconHold{width:65%;margin-bottom:var(--sm)}
+    .iconHold{width:70%;margin-bottom:var(--sm)}
     .address{width:100%;margin-bottom:var(--sm)}
     .address p{text-align: center;}
     .textHold .info{width: 100%;}
+    .infoHold{padding-top:var(--med)}
+    
+  }
+  @media all and (max-width:600px){
+    .mobileMenu .centeredContent{
+        transform:translate(-50%, -65%)
+    }
+    
   }
 

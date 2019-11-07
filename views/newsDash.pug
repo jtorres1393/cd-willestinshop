@@ -1,0 +1,52 @@
+extend layout
+
+block content
+    form#mainForm.fullWidth.flex(method='POST', action='/admin/news')
+        #menuPanel
+            p.mbMed.tTitle Settings
+            a.menuImg.menuItem.mbLrg(href="/admin/news-add")
+                .menuOp New Article
+            .menuSave.menuItem.mbXs
+                    input.menuOp.tCap(type="submit", value="Save Changes")
+
+
+        #sectionEditor.edit.mbMed.colSkip.col23
+            p.mbMed.tTitle=page
+            input.form-control(name='sort1', type='hidden')
+            -   var sortCount1 = 1
+            #sort1.principalHold.mbLrg
+                for item in data          
+                    .sort1.singleCat.mbSm.fullWidth.flex.flexACenter(data-id=item.id, data-order=sortCount1)
+                        .col2.relative
+                            .sortHandle
+                            p.plSm.tCap=sortCount1+". "+item.title
+                        .col2.flex
+                            a.col2(href="/admin/news-edit?id="+item.id)
+                                .btn.btn-sec.fullWidth.relative
+                                    p.tBold Edit
+                            a.col2(href="/admin/news-delete?id="+item.id onclick="return confirm('Are you sure?')")
+                                    .btn.btn-sec.fullWidth.relative
+                                        p.tBold Delete
+                    -   sortCount1++
+
+    script.
+            var el1 = document.getElementById('sort1');
+            var sortable1 = Sortable.create(el1,{handle:".sortHandle", ghostClass: "sortable-ghost", onEnd: function(){
+                var el = document.getElementsByClassName('sort1');
+                var currentNumber = 1;
+                let sort1Obj = [];
+                
+                
+                Array.prototype.forEach.call(el , function(elem){
+                            elem.setAttribute("data-order", currentNumber);
+                            currentNumber++
+                            
+
+                            sort1Obj.push( { id:elem.getAttribute("data-id"), "order":elem.getAttribute("data-order")} )
+
+                        });
+                        sort1 = document.querySelector('input[name=sort1]');
+                        sort1.value = JSON.stringify(sort1Obj);
+                
+                }
+            });

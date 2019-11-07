@@ -7,7 +7,8 @@
 :root  {
 	--black: #000;
 	--white: #eae5d3;
-	--green: #5fa391;
+	--green: #3c7748;
+	--yellow: #e8b348;
 	--blue:#2f456b;
 	--rust:#ae4d33;
 	--lav:#a091c1;
@@ -107,46 +108,57 @@ select{
 }
 
 input::placeholder{
-	font-family: 'gt-mono', courier, monospace;
+	font-family: courier, monospace;
 	font-size: 1em;
 	text-transform: uppercase;
 }
 /* font embeds */
 @font-face {
-	font-family: 'sharp';
-	src: url('/fonts/sharp.woff');
-	font-weight: 900;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: 'gt';
-	src: url('/fonts/gt-bold.woff2');
-	font-weight: bold;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: 'gt-mono';
-	src: url('/fonts/gt-mono.woff2');
+	font-family: 'futura';
+	src: url('/fonts/f-medium.woff');
 	font-weight: 500;
 	font-style: normal;
 }
 
 @font-face {
+	font-family: 'futura';
+	src: url('/fonts/f-bold.woff');
+	font-weight: 600;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'futura';
+	src: url('/fonts/f-xbold.woff');
+	font-weight: 900;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'am';
+	src: url('/fonts/at.woff');
+	font-weight: 500;
+	font-style: normal;
+}
+
+
+
+@font-face {
 	font-family: 'windsor';
 	src: url('/fonts/windsor.woff');
-	font-weight: 400;
+	font-weight: 500;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'hera';
+	src: url('/fonts/hera.woff');
+	font-weight: 500;
 	font-style: normal;
 }
 
 
 /* fonts */
-p {
-	font-size: 1.75em;
-	font-family: 'gt', Arial, Helvetica, sans-serif;
-	line-height: 1.45em;
-}
 
 
   
@@ -159,11 +171,36 @@ h1 {
   
   h2 {
 	  font-family: 'windsor', Georgia, 'Times New Roman', Times, serif;
-	  font-size: 6.8125em;
+	  font-size: 4em;
 	  line-height: 1em;
 	letter-spacing: -2px;
-	  font-weight:bold;
+	  font-weight:500;
 	}
+
+	h3, .newsSub {
+		font-family: 'hera', Georgia, 'Times New Roman', Times, serif;
+		font-size: 1.25em;
+		line-height: 1em;
+		font-weight:500;
+	  }
+
+
+	h4, .newsHead{
+		font-family:'futura', Arial, Helvetica, sans-serif;
+		font-size: 12vw;
+		font-weight:900;
+		line-height:1em;
+
+	}
+
+.nav, .tCTA{
+		font-family: 'windsor', Georgia, 'Times New Roman', Times, serif;
+		font-size: 1em;
+		line-height: 1em;
+	  letter-spacing: 0;
+		font-weight:500;
+	  }
+  
 
 .tTitle{
 	font-family: courier, monospace;
@@ -174,9 +211,17 @@ h1 {
 }
 
 .tName{
-	font-family: "windsor", Georgia, 'Times New Roman', Times, serif;
-	font-size: 3em;
+	font-family: "am", Georgia, 'Times New Roman', Times, serif;
+	font-size: 4em;
+	font-weight:500;
 
+}
+
+
+.tNums{
+	font-family: "futura", Arial, Helvetica, sans-serif;
+	font-size: 1.3125em;
+	font-weight:600;
 }
 
 .pSmall{
@@ -185,7 +230,9 @@ h1 {
 
 p{
 	font-size:1em;
-	font-family: "Futura", Arial, Helvetica, sans-serif;
+	font-family: "futura", Arial, Helvetica, sans-serif;
+	font-weight: 500;
+	line-height:1.7em;
 }
 .tDetails{
 		  font-family: 'gt-mono', 'Courier New', Courier, monospace;
@@ -231,7 +278,7 @@ a {text-decoration: none;color:inherit}
 
 a:visited{text-decoration:none;}
 
-.pointer{
+.cPointer{
 	cursor: pointer;
 }
 
@@ -286,10 +333,10 @@ a:visited{text-decoration:none;}
 .bgGreen, .bggreen{
 	background-color: var(--green)
 }
-.bgBlue, .bgblue{
+.bgBlue, .bgblue,.bgvodka{
 	background-color: var(--blue)
 }
-.bgRust, .bgRust{
+.bgRust, .bgrust, .bgwhisky{
 	background-color: var(--rust)
 }
 
@@ -376,6 +423,10 @@ a:visited{text-decoration:none;}
 	width: 90%;
 }
 
+.fullScreen{
+	height:100vh;
+	width:100vw;
+}
 .flex {
 	display: flex;
 	justify-content:space-between;
@@ -403,6 +454,10 @@ a:visited{text-decoration:none;}
 
 .flexStart{
 	justify-content: flex-start;
+}
+
+.flexEnd{
+	justify-content: flex-end;
 }
 
 
@@ -572,6 +627,10 @@ a:visited{text-decoration:none;}
 	padding-bottom: var(--xs);
 }
 
+.pbEnd{
+	padding-bottom: 200px;
+}
+
 .plXs{
 	padding-left: var(--xs);
 }
@@ -638,6 +697,14 @@ a:visited{text-decoration:none;}
   text-align: center;
 }
 
+.tJust{
+	text-align:justify;
+text-justify: inter-word;
+text-align-last:center;
+/* for IE9 */
+-ms-text-align-last:center;
+}
+
 .tRight{
 	text-align: right;
 }
@@ -660,6 +727,15 @@ a:visited{text-decoration:none;}
 .bGray{
 	border-color: var(--gray)
 }
+
+.bBlue{
+	border-color: var(--Blue)
+}
+
+.bRust{
+	border-color: var(--rust)
+}
+
 
 .bWhite{
 	border-color: var(--white)
@@ -737,6 +813,7 @@ a:visited{text-decoration:none;}
 	.tStroke{-webkit-text-stroke-width: 3px;}
   }
   @media all and (max-width: 600px){
+	
 	p{font-size: 1em;}
 	h1{font-size:1.5em;}
 	.tDetails{font-size:1em;}
@@ -747,7 +824,7 @@ a:visited{text-decoration:none;}
 }
 
 @media all and (max-width:500px){
-
+	h2{font-size: 2em}
 	p{font-size: 1em}
 }
 

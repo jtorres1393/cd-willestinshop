@@ -1,68 +1,42 @@
 extend layout
 
 block content
-    form#mainForm.fullWidth.flex(method='POST', action='/admin/shop-add?catID='+catID+'&cat='+cat, enctype='multipart/form-data')
+    form#mainForm.fullWidth.flex(method='POST', action='/admin/news-add?', enctype='multipart/form-data')
         #menuPanel
             p.mbMed.tTitle Settings
             .menuSave.menuItem
-                input.menuOp.tCap(type="submit", value="Add New Item")
+                input.menuOp.tCap(type="submit", value="Add New Article")
         #content.col23.colSkip
             p.mbMed.tTitle
-                a(href="/admin/shop")
-                    span.tGray Shop /  
-                a(href="/admin/shop/category?cat="+cat)
-                    span.tGray=cat+" / "   
-                span=page
+                a(href="/admin/news")
+                    span.tGray  News /    
+                span Add New Article
             .content-form.fullWidth.flex.mbSm
                 .fullWidth.mbSm
-                    label title
+                    label Title
                     p
                     input.prime-input(name="title", type="text", required)
                 .fullWidth.mbSm
-                    label sub-title
+                    label Sub-title
                     p
                     input.prime-input(name="subTitle", type="text", required)
                 .fullWidth.mbMed
-                    label Description
+                    label Tags
                     p
-                    textarea.prime-input(name="about", type="text", required)
-                .col2.mbSm.relative.selectField
-                    label Product Type
+                    textarea.prime-input(name="tags", type="text", required)
+                .col2.mbSm.relative
+                    label Event Date
                     p
-                    select#typeCheck.fullWidth(name="type")
-                        option(value="general" ) general
-                        option(value="spirit" ) spirits
-                #spirit.fullWidth.flex(style="display:none;")
-                    .col3.mbSm
-                        label Proof
-                        p
-                        input.prime-input(name="proof", type="integer")
-                    .col3.mbSm
-                        label ALC/VOL %
-                        p
-                        input.prime-input(name="alcvol", type="number", step="any")
-                    .col3.mbSm
-                        label Active
-                        p
-                        select#typeCheck.fullWidth(name="active")
-                            option(value="false" ) false
-                            option(value="true" ) true
-                .fullWidth.mbMed
-                    label Details
+                    input.prime-input(name="date", type="date", required)
+                .fullWidth.mbHuge
+                    label Body
                     p
-                    textarea.prime-input(name="details", type="text", required)
-                .col2.mbMed
-                    label Price
-                    p
-                    input.prime-input(name="price", type="number", step="any", required)
-                .col2.mbMed
-                    label Shipping
-                    p
-                    input.prime-input(name="shipping", type="number", step="any", required)
+                    input.prime-input(name="about", type="hidden")
+                    div#quill1.quill
+                
             .tTitle.mbMed Product Images
             #sort1.galleryHold.flex.flexAStart
                 input.form-control(name='sort1', type='hidden')
-                input.form-control(name='cat', type='hidden', value=cat)
                 label.tBold.tWhite.col3.addButton.bgGray.relative(for="imgProject")
                     .r34
                     .cCenter
@@ -71,6 +45,12 @@ block content
 
     script.
             var form = document.getElementById('mainForm');
+            var quillBar = [
+                        [{ 'header': [1,2,3, false] }],
+                        ['bold', 'italic'],
+                        [{ list: 'ordered' }, { list: 'bullet' }]
+                        ]
+            var quill1 = new Quill('#quill1',{modules: {toolbar: quillBar},theme: 'snow'});
 
             var checkType = document.getElementById('typeCheck')
             var spirit = document.getElementById('spirit')
@@ -88,6 +68,8 @@ block content
                 
 
             form.onsubmit = function() {
+                var term1 = document.querySelector('input[name=about]');
+                    term1.value = (quill1.root.innerHTML);
                 var img =  document.querySelector('input[name=imgItems]');
                 var cat =  document.querySelector('input[name=cat]')
                 var contents = " ";

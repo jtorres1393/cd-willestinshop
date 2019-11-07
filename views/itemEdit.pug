@@ -31,6 +31,27 @@ block content
                         label Description
                         p
                         textarea.prime-input(name="about", type="text",value=item.about, required)=item.about
+                    .col2.mbSm.relative.selectField
+                        label Product Type
+                        p
+                        select#typeCheck.fullWidth(name="type")
+                            option(value="general" ) general
+                            option(value="spirit", selected=item.type === "spirit" ) spirit
+                    #spirit.fullWidth.flex(style=((item.type === "spirit") ? "display: flex":"display:none"))
+                        .col3.mbSm
+                            label Proof
+                            p
+                            input.prime-input(value=item.proof, name="proof", type="integer")
+                        .col3.mbSm
+                            label ALC/VOL %
+                            p
+                            input.prime-input(value=item.alcvol/100, name="alcvol", type="number", step="any")
+                        .col3.mbSm
+                            label Active
+                            p
+                            select#typeCheck.fullWidth.tUpper(name="active")
+                                option(value=false ) false
+                                option(value=true, selected=item.type === true  ) true
                     .fullWidth.mbSm
                         label Details
                         p
@@ -98,6 +119,19 @@ block content
 
         script.
                 var form = document.getElementById('mainForm');
+                var checkType = document.getElementById('typeCheck')
+                var spirit = document.getElementById('spirit')
+
+                    checkType.onchange = function() {
+                        if (this.value === "spirit") {
+                                spirit.style.display="flex";
+                        }
+                        else{
+                                spirit.style.display="none";
+                            }
+                    
+
+                    }
 
                 form.onsubmit = function() {
                     var img =  document.querySelector('input[name=imgItems]');
