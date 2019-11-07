@@ -199,7 +199,7 @@ border: none;
     .infoHold .flex{display:block;position:relative;transform:none;top:0;left:0;}
     .goodSpiritsHold{width: 40vw; margin-bottom:var(--med);}
     .textHold{width:90%; padding-top:0;}
-    .textHold .info{width: 100%;}
+    .textHold .info{width: 60%;}
 }
 
 @media all and (max-width:900px){
