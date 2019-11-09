@@ -279,7 +279,7 @@ class Main extends Component {
                 </div>
               </div>
             ):('')}
-              <div className={`relative fullWidth ${((newsActive) ?"condenseStage":"")}`} style={{minHeight:'100vh'}}>
+              <div className={`relative fullWidth ${((newsActive) ?"condenseStage":"")}`} style={{minHeight:win[1]}}>
                 <Switch>
                 <Route path='/shop' render={()=><Shop resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
                 <Route path='/spirits' render={()=><Spirits resizeWin={this.resizeWin} fadeIn={this.fadeIn} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 

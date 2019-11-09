@@ -27,9 +27,10 @@ class Shop extends Component {
 
     render() {
       const { info } = this.props;
+      const { win } = this.props;
     return (
     
-      <div className="fullScreen bgRust">
+      <div className="fullScreen bgRust" style={{minHeight: win[1]}}>
         <h2 className="centeredContent tWhite tCap pbHuge tCenter fullWidth">coming soon</h2>
       
        </div>
