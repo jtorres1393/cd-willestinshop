@@ -52,12 +52,15 @@
 .infoHold{
     z-index: 651;
     opacity: 0;
+    min-height: 100vh;
     pointer-events: none;
+    padding-bottom: 180px;
     transition: all 1s ease-in-out;
 }
 
 .infoHold.active{
     opacity:1;
+    position:relative;
     pointer-events: all;
 }
 
@@ -230,4 +233,9 @@ border: none;
         transform:translate(-50%, -65%)
     }
     
+  }
+
+  @media all and (max-width:500px){
+    .logoHold .col23{padding-bottom:var(--sm);}
+    .infoHold{padding-bottom: 140px;}
   }

@@ -36,8 +36,8 @@ class Main extends Component {
       .then(data => this.setState({
           info: data.data,
           news: data.news},()=>{
-            this.resizeWin()
             this.checkSection()
+            this.resizeWin()
           }));
 
     }
@@ -69,14 +69,16 @@ class Main extends Component {
 
 
     resizeWin= () => {
-      this.setState({win:[window.innerWidth,window.innerHeight]})
-      if((window.innerWidth <= 700) && !this.state.mobile){
-        this.setState({mobile:true})
-
-      }
-      else if((window.innerWidth > 700) && this.state.mobile){
-        this.setState({mobile:false})
-      }
+      this.setState({win:[window.innerWidth,window.innerHeight]},()=>{
+        if((window.innerWidth <= 700) && !this.state.mobile){
+          this.setState({mobile:true})
+  
+        }
+        else if((window.innerWidth > 700) && this.state.mobile){
+          this.setState({mobile:false})
+        }
+      })
+      
     }
 
     getTime=(start, noYear)=>{
@@ -244,7 +246,7 @@ class Main extends Component {
                               </div>
                             ):('')}
 
-            <div className={`relative fullWidth ${newsActive?('newsAct'):('')}`} style={{minHeight:'100vh'}}>
+            <div className={`relative fullWidth ${newsActive?('newsAct'):('')} ${((newsActive || infoActive) ?"condenseStage":"")}`} style={{minHeight:'100vh'}}>
             {(news.length && (this.state.page === "home"))?(
               <div className={`newsHold bgWhite ptMed`} onClick={this.clickNews}>
                 {!newsActive?(
@@ -277,7 +279,7 @@ class Main extends Component {
                 </div>
               </div>
             ):('')}
-              <div className={`relative fullWidth ${newsActive?"condenseStage":""}`} style={{minHeight:'100vh'}}>
+              <div className={`relative fullWidth `} style={{minHeight:'100vh'}}>
                 <Switch>
                 <Route path='/shop' render={()=><Shop checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
                 <Route path='/spirits' render={()=><Spirits fadeIn={this.fadeIn} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
@@ -297,7 +299,8 @@ class Main extends Component {
                         <img className="col3" src={`images/logo-ca-spirits${newsActive?"-rust":""}.svg`}></img>
                     </div>
                     <div className="address">
-                        <p className="tDetails tWhite tCenter tUpper">{`${info[0].address}, ${info[0].city}`}</p>
+                        <p className="tDetails tWhite tCenter tUpper">{`${info[0].address}`}</p>
+                        <p className="tDetails tWhite tCenter tUpper">{`${info[0].city}, ${info[0].state}`}</p>
                         
                     </div>
                     <div className="address">
