@@ -31,7 +31,8 @@ class Spirits extends Component {
           var id = url.searchParams.get('item')
           if(id){
             id.toLowerCase();
-            this.setInit(id)
+            this.setInit(id);
+            this.props.resizeWin;
           }
          }));
       

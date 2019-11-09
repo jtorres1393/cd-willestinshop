@@ -16,6 +16,7 @@ class Home extends Component {
 
     componentDidMount(){
       this.props.checkSection();
+      this.props.resizeWin();
       
     }
     
