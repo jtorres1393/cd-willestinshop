@@ -72,7 +72,7 @@ app.set('view engine', 'pug');
 
 
 //AUTHENTICATION CARD
-app.get('/*', async function(request, response) {
+app.get('/', async function(request, response) {
   var page = "default"
     mods.metaChange(response,page);
 });
