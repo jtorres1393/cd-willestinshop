@@ -286,7 +286,7 @@ class Main extends Component {
                     <div className="newsBody fullWidth flex flexAStart ptMed bBotSm bRust ">
                     <div className="col23">
                         {news[0].media.length?(
-                          <img src={news[0].media[0].url}></img>
+                          <img className="fullImg" src={news[0].media[0].url}></img>
                         ):('')}
                     </div>
                     <div className="col13">
