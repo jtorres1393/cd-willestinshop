@@ -355,6 +355,10 @@ a,select{
 	margin-bottom: var(--xs);
 }
 
+.mlSm{
+	margin-left: var(--sm);
+}
+
 
 /* padding formats */
 .ptHuge{
@@ -757,9 +761,10 @@ img,video{
 	font-size: 80%;
 	position: absolute;
 	display: block;
-	top:75%;
-	right: 0;
-	transform: translate(-130%, -50%)
+	top:50%;
+	right: 10px;
+	transform: translate(-100%, 50%);
+	z-index:999;
 }
 
 .orderRSVP .star{

@@ -1,0 +1,42 @@
+extend layout
+
+block content
+        #mainForm.fullWidth.flex
+            #menuPanel
+                p.mbMed.tTitle Settings
+                .menuImg.menuItem.mbLrg
+                    a.tCap.menuOp(href="/admin/news-edit?id="+rootID)="Back to Article" 
+                
+            #content.col23.colSkip
+                p.mbMed.tTitle Guestlist 
+                for item in data
+                    .singleRSVP.bBotSm.bGray.fullWidth.ptMed(class=item.check?"":"inactive")
+                        .contact.fullWidth.flex
+                            .fullWidth.flex.infoBlock.mbSm
+                                .col2.rsvpNum.tCap
+                                    if item.id > 99
+                                        p.tBold.tCap=item.id
+                                            span.tBold.tCap.mlSm=" "+item.lastName+", "
+                                            span.tBold.tCap=item.firstName+" +"+(item.guests-1)
+                                            if item.guests - 1 > 0
+                                                span=" +"+(item.guests-1)
+                                    else
+                                        p.tBold.tCap #{item.id < 100 && item.id < 10 ? "00"+item.id:"0"+item.id }
+                                            span.tBold.tCap.mlSm=" "+item.lastName+", "
+                                            span.tBold.tCap=item.firstName
+                                            if item.guests - 1 > 0
+                                                span=" +"+(item.guests-1)
+
+                                .col2.name.flex.rsvpContact
+                                    a(href="mailto:"+item.email)
+                                        p=item.email
+                                    p=item.phone
+                            .fullWidth
+                                if item.check
+                                else
+                                    a.fullWidth(href="/admin/rsvp-checkin?id="+item.id+"&rsvp="+rootID onclick="return confirm('Are you sure?')")
+                                        .fullWidth.btn.btn-sec.mbSm
+                                            p.tCap.tBold check in
+                     
+                    -   i++
+                        

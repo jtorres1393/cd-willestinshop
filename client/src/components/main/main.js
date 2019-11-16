@@ -4,6 +4,9 @@ import {Route, Switch, Link} from 'react-router-dom';
 import Home from '../home/home.js';
 import Spirits from '../spirits/spirits.js';
 import Shop from '../shop/shop.js';
+import RSVP from '../rsvp/rsvp.js';
+import News from '../news/news.js';
+import About from '../about/about.js';
 
 
 class Main extends Component {
@@ -17,7 +20,8 @@ class Main extends Component {
             page:"home",
             newsActive:false,
             mobile: false,
-            mobileMenu: false
+            mobileMenu: false,
+            rsvpActive: false
 
         }
 
@@ -198,6 +202,14 @@ class Main extends Component {
     this.checkSection('home');
   }
 
+  openRSVP=()=>{
+    this.setState({rsvpActive:true})
+  }
+
+  closeRSVP=()=>{
+    this.setState({rsvpActive:false})
+  }
+
   
 
 
@@ -210,13 +222,14 @@ class Main extends Component {
       const { newsActive } = this.state;
       const { mobile } = this.state;
       const {mobileMenu} = this.state;
+      const {rsvpActive} = this.state;
     return (
     
       <React.Fragment>
         
       {info.length ?(
         <div id="appContain" style={{width: this.state.win[0]}} className={`relative ${newsActive?"inverse":""}`}>
-            <Link to="/"><div className={`smallLogo ${(this.state.page !== "home" || (this.state.infoActive))?"activeLogo":""}`} data-page="home" onClick={this.goHome.bind(this)}>
+            <Link to="/"><div className={`smallLogo ${((this.state.page !== "home" && this.state.page !=="news") || (this.state.infoActive  ) )?"activeLogo":""}`} data-page="home" onClick={this.goHome.bind(this)}>
                 <img className={`fullWidth fullImg `} src={`images/wordmark.svg`} data-page="home"></img>
             </div></Link>
             {mobile?(
@@ -224,31 +237,35 @@ class Main extends Component {
                     <div className="tCTA ptSm pbSm tRight cPointer tUpper mobileButton tWhite ctaLink" onClick={this.checkMobileMenu.bind(this)}>{mobileMenu?"close":"menu"}</div>                  
                   <div className={`fullScreen mobileMenu bgBlue ${mobileMenu?"active":""}`}>
                     <div className="fullStage centeredContent tWhite tUpper pbHuge">
-                      <Link to="/"><h2 data-page="home" onClick={this.goHome.bind(this)} className="tCenter mbSm homeLink" >home</h2></Link>     
+                      <Link to="/"><h2 data-page="home" onClick={this.goHome.bind(this)} className="tCenter mbSm homeLink" >home</h2></Link>
+                      <Link to="/rsvp"><h2 data-page="rsvp" onClick={this.checkSection.bind(this)} className="tCenter mbSm rsvpLink" >RSVP</h2></Link>     
                       <Link to="/spirits"><h2 data-page="spirits" onClick={this.checkSection.bind(this)} className="tCenter mbSm spiritsLink" >spirits</h2></Link>     
                       <Link to="/shop"><h2 data-page="shop" onClick={this.checkSection.bind(this)} className="tCenter mbSm shopLink">shop</h2></Link>
-                      <h2 className="cPointer tCenter infoLink ctaLink" onClick={this.checkInfo.bind(this)}>info</h2>                  
+                      <Link to="/info"><h2 className="cPointer tCenter infoLink ctaLink">info</h2>  </Link>                
                     </div>
                   </div>
                 </React.Fragment>
             ):(
             <div className="nav ptSm pbSm  flex flexEnd col2 tUpper tWhite" >
-              <Link to="/"><div data-page="home" onClick={this.goHome.bind(this)} className=" tRight homeLink" >home</div></Link>     
+              <Link to="/"><div data-page="home" onClick={this.goHome.bind(this)} className=" tRight homeLink" >home</div></Link>    
+              <Link to="/rsvp"><div data-page="rsvp" onClick={this.checkSection.bind(this)} className="tRight plSm rsvpLink" >RSVP</div></Link>      
               <Link to="/spirits"><div data-page="spirits" onClick={this.checkSection.bind(this)} className=" tRight plSm spiritsLink" >spirits</div></Link>     
               <Link to="/shop"><div data-page="shop" onClick={this.checkSection.bind(this)} className="tRight plSm shopLink" >shop</div></Link>
-              <div className="plSm tRight cPointer infoLink ctaLink" onClick={this.checkInfo.bind(this)}>info</div>                  
+              <Link to="/info"><div className="plSm tRight cPointer infoLink ctaLink">info</div> </Link>                 
             </div>
 
             )}
-             {newsActive?(
-                              <div className="newsOff backBut" onClick={this.closeNews.bind(this)}>
+             {newsActive?(    <Link to="/">
+                              <div className="newsOff backBut">
                                 <img className="fullImg" src="/images/button-back.svg"></img>
                               </div>
+                              </Link>
                             ):('')}
 
             <div className={`relative fullWidth ${newsActive?('newsAct'):('')} ${((infoActive) ?"condenseStage":"")}`} style={{minHeight:'100vh'}}>
-            {(news.length && (this.state.page === "home"))?(
-              <div className={`newsHold bgWhite ptMed`} onClick={this.clickNews}>
+            {(news.length && (this.state.page === "home" || this.state.page === "news"))?(
+              <Link to="/news">
+              <div className={`newsHold bgWhite ptMed`}>
                 {!newsActive?(
                     <div className="newsAlert tUpper">
                         <div className=" centeredContent tWhite tCenter">
@@ -272,17 +289,25 @@ class Main extends Component {
                           <img src={news[0].media[0].url}></img>
                         ):('')}
                     </div>
-                    <div className="col13 tBlue" dangerouslySetInnerHTML={{ __html : news[0].about }}></div>
-                    </div>
+                    <div className="col13">
+                      <div className="fullWidth tBlue mbSm" dangerouslySetInnerHTML={{ __html : news[0].about }}></div>
+                     <Link to="/rsvp">
+                      <div className="rsvpNews relative pbHuge" ><div className="flex flexACenter fullWidth centeredContent plSm prSm" ><img className="forwardBut"src="/images/button-forward-blue.svg"></img><div className="tCTA tBlue prSm plSm tCenter">RSVP</div></div></div>
+                      </Link>
+                    </div></div>
 
                 </div>
                 </div>
+                <Route path='/news' render={()=><News checkSection={this.checkSection} clickNews={this.clickNews} closeNews={this.closeNews.bind(this)}/>} /> 
+
               </div>
+              </Link>
             ):('')}
-              <div className={`relative fullWidth ${((newsActive) ?"condenseStage":"")}`} style={{minHeight:win[1]}}>
+                <Route path='/rsvp' render={()=><RSVP openRSVP={this.openRSVP} closeRSVP={this.closeRSVP} getTime={this.getTime} resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info[0]} win={this.state.win}/>} /> 
+              <div className={`relative fullWidth ${((newsActive || rsvpActive) ?"condenseStage":"")}`} style={{minHeight:win[1]}}>
                 <Switch>
-                <Route path='/shop' render={()=><Shop resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
-                <Route path='/spirits' render={()=><Spirits resizeWin={this.resizeWin} fadeIn={this.fadeIn} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
+                  <Route path='/shop' render={()=><Shop resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
+                  <Route path='/spirits' render={()=><Spirits resizeWin={this.resizeWin} fadeIn={this.fadeIn} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
                   <Route path='/' render={()=><Home resizeWin={this.resizeWin} checkSection={this.checkSection} info={this.state.info} win={this.state.win}/>} />
 
                 </Switch>  
@@ -320,6 +345,10 @@ class Main extends Component {
                   <div className="info mbHuge col23 eCenter tWhite tCenter" dangerouslySetInnerHTML={{ __html : info[0].about}}></div>
                   </div>
                  </div>
+                 
+
+                 <Route path='/info' render={()=><About checkSection={this.checkSection} checkInfo={this.checkInfo} closeInfo={this.closeInfo}/>} /> 
+
             </div>
         </div>
 

@@ -1,0 +1,63 @@
+extend layoutEmail
+
+block content
+    span.preheader(style="display: none !important; visibility: hidden; opacity: 0; color: transparent; height: 0; width: 0;")=`Confirmed for "${data.title}"".`
+    #mainForm(style="text-transform: uppercase; padding: 20px; width: 100%; font-family: courier, monospace;text-transform:uppercase;box-sizing:border-box;")
+        table.eCenter(style="text-transform: uppercase;width: 380px; background-color: #eae5d3; margin: 0 auto; padding: 30px 30px 80px 30px;position:relative;box-sizing:border-box;color:#2f456b;text-align:center;")
+            for item in rsvp
+                tr
+                    td
+                        .fullWidth
+                            img(src="https://storage.googleapis.com/willestinshop/images/rsvp-logo.png", style="width:100%;height:auto;")
+                tr
+                    td(style="width:100%;padding-top:20px;padding-bottom:20px;border-bottom:1px solid #2f456b")
+                        p=data.subTitle
+                            br
+                            span(style="margin-bottom:40px")=prettyDate(data.date)
+                        for img in data.media
+                            img(style="width:100%;height:auto", src=img.url)
+                tr
+                    td
+                        .left(style="float:left;padding:1px 0 0 0;width:75%;border-bottom:1px solid #2f456b;border-top:1px solid #2f456b;border-right:1px solid #2f456b;box-sizing:border-box")
+                            .name(style="padding:10px;text-align:left")=item.firstName+" "+item.lastName
+                        .right(style="float:left;width:25%;padding:1px 0 0 0;border-bottom:1px solid #2f456b;border-top:1px solid #2f456b;box-sizing:border-box")
+                            .name(style="padding:10px;text-align:center")
+                                if item.guests-1 > 0
+                                    span="+"
+                                    span=parseInt(item.guests,10)-1
+                                else
+                                    span="1"
+                        .clear(style="clear:both;")
+                tr
+                    td(style="width:100%;height:0;border-top:1px solid #2f456b;margin-bottom:40px;")
+                tr 
+                    td
+                        p Thank you for your RSVP. We look forward to seeing you.
+                            br
+                        p Kindest regards,
+                            br
+                            spanp Wille’s Tin Shop
+                        
+        img(src="https://storage.googleapis.com/willestinshop/images/willes-icons.png", style="display:block;width:480px;height:auto; margin:0 auto; position:relative;box-sizing:border-box;box-sizing:border-box;")
+        p(style="color:#eae5d3;text-align:center;")=info.address+", "+info.city+" "+info.state
+        
+                    
+
+
+
+        -function prettyDate(dateString){
+            -var date = new Date(dateString+"T12:00"+":00-07:00");
+            -var d = date.getDate();
+            -var m = date.getMonth()+1;
+            -var y = date.getFullYear();
+            -return m+'.'+d+'.'+y;
+        -}
+
+        -function vFormatT(string){
+            -var text = string.split('')
+            -let post = "";
+            -for (var i in text) {
+            -post=(`${post}<p style="text-transform: uppercase;margin:2px 0;height:13.33px;">${text[i]}</p>`)
+            -}
+            -return post 
+        -}

@@ -37,6 +37,7 @@ block content
                         select#typeCheck.fullWidth(name="type")
                             option(value="general" ) general
                             option(value="spirit", selected=item.type === "spirit" ) spirit
+                        
                     #spirit.fullWidth.flex(style=((item.type === "spirit") ? "display: flex":"display:none"))
                         .col3.mbSm
                             label Proof
@@ -46,12 +47,13 @@ block content
                             label ALC/VOL %
                             p
                             input.prime-input(value=item.alcvol/100, name="alcvol", type="number", step="any")
-                        .col3.mbSm
+                        .col3.mbSm.relative.selectField
                             label Active
                             p
                             select#typeCheck.fullWidth.tUpper(name="active")
                                 option(value=false ) false
                                 option(value=true, selected=item.active === true  ) true
+                            
                     .fullWidth.mbSm
                         label Details
                         p

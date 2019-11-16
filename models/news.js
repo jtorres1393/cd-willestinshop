@@ -21,6 +21,14 @@ class News extends Model {
             from:'news.id',
             to: 'media.rootID'
           }
+        },
+        rsvp:{
+          relation: HasManyRelation,
+          modelClass: `${__dirname}/rsvp`,
+          join:{
+            from:'news.id',
+            to: 'rsvp.rootID'
+          }
         }
 
 

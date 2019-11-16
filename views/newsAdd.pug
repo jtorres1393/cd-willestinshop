@@ -28,6 +28,12 @@ block content
                     label Event Date
                     p
                     input.prime-input(name="date", type="date", required)
+                .col2.mbSm.relative.selectField
+                        label RSVP Option
+                        p
+                        select.fullWidth(name="rsvpOpt")
+                            option(value="false" ) false
+                            option(value="true"  ) true
                 .fullWidth.mbHuge
                     label Body
                     p

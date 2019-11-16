@@ -9,6 +9,10 @@ block content
                     input.menuOp.tCap(type="submit", value="Save Changes")
                 .menuTrash.menuItem.mbLrg
                     a.tCap.menuOp(href="/admin/news-delete?id="+item.id, onclick="return confirm('Are you sure?')")="Delete Article Item" 
+                if item.rsvpOpt
+                    a(href=`/admin/rsvp?id=${item.id}`)
+                        .menuImg.menuItem.mbMed
+                            .menuOp.tCap View RSVP
                 .menuFold.menuItem.mbMed
                     a.tCap.menuOp(href="/admin/news-add?")=`Add New Article`
             #content.col23.colSkip
@@ -33,6 +37,12 @@ block content
                         label Event Date
                         p
                         input.prime-input(name="date", type="date", value=item.date, required)
+                    .col2.mbSm.relative.selectField
+                        label RSVP Option
+                        p
+                        select.fullWidth(name="rsvpOpt")
+                            option(value="false" ) false
+                            option(value="true", selected=item.rsvpOpt === true  ) true
                     .fullWidth.mbHuge
                         label Body
                         p

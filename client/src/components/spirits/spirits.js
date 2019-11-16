@@ -101,9 +101,10 @@ class Spirits extends Component {
     
       <React.Fragment>
         {spiritMode?(
-                              <div className="spiritBut backBut" onClick={this.idleMode.bind(this)}>
+                              <Link to="/spirits"><div className="spiritBut backBut" onClick={this.idleMode.bind(this)}>
                                 <img className="fullImg" src="/images/button-back.svg"></img>
                               </div>
+                              </Link>
                             ):('')}
           <div className={"spiritsStage relative fullWidth "+(current?(`bg${current.subTitle}`):("bgrust"))} style={{minHeight:(mobile?(win[1]+200):(win[1]+150)), height:'auto'}}>
           

@@ -198,6 +198,10 @@ border: none;
     animation: point 2s infinite ease-in-out;
 }
 
+.rsvpNews{
+    width:200px;
+}
+
 @media all and (max-width:1000px){
     .infoHold .flex{display:block;position:relative;transform:none;top:0;left:0;}
     .goodSpiritsHold{width: 40vw; margin-bottom:var(--med);}

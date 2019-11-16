@@ -18,6 +18,7 @@ const { ShopCategory } = require('./models/shopCategory');
 const { ShopItems } = require('./models/shopItems');
 const { ShopOptions } = require('./models/shopOptions');
 const { News } = require('./models/news');
+const { RSVP } = require('./models/rsvp');
 
 
 //backend routes
@@ -32,10 +33,13 @@ const optEdit = require('./routes/optEdit')
 const newsAdd = require('./routes/newsAdd')
 const newsDash = require('./routes/newsDash')
 const newsEdit = require('./routes/newsEdit')
+const rsvpDash = require('./routes/rsvpDash')
+const emailRSVP = require('./routes/emailRSVP')
 
 //frontend
 const APIinfo= require('./routes/APIinfo')
 const APIshopCat= require('./routes/APIshopCat')
+const APIrsvp= require('./routes/APIrsvp')
 
 //login
 //login
@@ -535,6 +539,7 @@ app.post('/admin/news-add',m.fields([{name:"imgItems", maxCount: 10}]) ,async fu
   data.subTitle = req.body.subTitle;
   data.date = req.body.date;
   data.tags = req.body.tags;
+  data.rsvpOpt = req.body.rsvpOpt;
 
   const upData = await News.query()
                 .insert(data)
@@ -568,6 +573,7 @@ app.post('/admin/news-edit?:id',m.fields([{name:"imgItems", maxCount: 10}]) ,asy
   data.subTitle = req.body.subTitle;
   data.date = req.body.date;
   data.tags = req.body.tags;
+  data.rsvpOpt = req.body.rsvpOpt;
 
 
   const upData = await News.query()
@@ -612,8 +618,22 @@ app.use('/admin/news-delete?:id', isLogged, async function(req,res){
 
 
 })
+app.use('/admin/rsvp', isLogged, rsvpDash)
+app.use('/admin/rsvp-check?:id', isLogged, async function(req,res){
+  const curr = req.query.id;
+  const rsvp = req.query.rsvp;
+  let data ={};
+  data.check = true;
+  
+  
+  const upData = await RSVP.query()
+    .where('id', curr)
+    .patch(data);
 
+    res.redirect(`/admin/rsvp?id=${rsvp}`)
+})
 
+app.use('/admin/rsvp-email?:id', emailRSVP)
 
 
 
@@ -638,6 +658,38 @@ function isAdmin(req, res, next) {
 //API
 app.use('/api/info', APIinfo);
 app.use('/api/shopCat', APIshopCat);
+app.use('/api/rsvp', APIrsvp);
+
+app.use('/api/rsvp-submit', async function(req,res){
+  let data = {};
+  let fullBody= "";
+  data.firstName = req.body.rsvp.firstName;
+  data.lastName = req.body.rsvp.lastName;
+  data.phone = req.body.rsvp.phone;
+  data.email = req.body.rsvp.email;
+  data.guests = req.body.rsvp.guests;
+  data.rootID = req.query.id;
+  
+
+  try{
+  let upData = await RSVP.query()
+    .insert(data)
+  
+  let getNew = await RSVP.query()
+    .orderBy('id',"desc")
+    .limit(1);
+  let getInfo = await Info.query().orderBy("id", "desc").limit(1);
+  let getEvent = await News.query().where("id",data.rootID).limit(1);
+
+  mods.sendMail(data.email, getInfo[0].email, `Wille's Tin Shop: RSVP Confirmation`,`https://www.willestinshop.com/admin/rsvp-email?id=${getEvent[0].id}&rsvp=${getNew[0].id}`)
+  res.status(200).end();
+
+  } catch (err) {
+    console.log(err)
+    res.status(500).end();
+  }
+
+})
 
 app.listen(port,() => console.log(`server started on port ${port}`));
 

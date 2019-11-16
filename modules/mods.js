@@ -4,10 +4,8 @@ const path = require('path');
 const {Storage} = require('@google-cloud/storage');
 const { Media } = require('../models/media');
 const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-var pdf = require('html-pdf');
+sgMail.setApiKey("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");
 var requestify = require('requestify');
-const base = path.resolve('public')
 
 
 const gcs = new Storage({
@@ -112,39 +110,9 @@ sendMail: function(to, from, subject, html, url){
 
   requestify.get(html).then(function (response) {
     msg.html = response.body;
-
-    if(url){
-
-      requestify.get(url).then(function (response) {
-        // Get the raw HTML response body
-        var data = response.body; 
-        var config = {format: 'letter',
-        base: `https://www.thisandthat.coffee/`,
-        timeout: 40000,
-        renderDelay:3000,
-      }
-    
-  
-     pdf.create(data, config).toBuffer(function(err, buffer){
-      const newData = buffer.toString('base64');
-      msg.attachments= [
-        {
-        filename: "This and That - Receipt",
-        type : 'application/pdf',
-        content: newData,
-        disposition : "attachment",
-        }
-        ];
-        sgMail.send(msg);
-    });
-  
-  
-  
-     });   
-    }
-    else{
     sgMail.send(msg);
-    }
+
+    
     
     
   })

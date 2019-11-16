@@ -83,22 +83,21 @@ textarea{
 }
 
 input, select{
-	padding:10px;
 	background: transparent;
-	border-bottom: 1px solid var(--black);
 }
-input{
-	height: 40px;
-}
+
 
 select{
 	position: relative;
 	height: auto;
-	border: 1px solid #000;
+	box-sizing: border-box;
+
 }
 .selectAfter::after{
 	content:"▼";
 	z-index:999;
+	color:var(--rust);
+	font-size:80%;
 	display:block;
 	position: absolute;
 	right: var(--xs);
@@ -107,11 +106,6 @@ select{
 	pointer-events: none;
 }
 
-input::placeholder{
-	font-family: courier, monospace;
-	font-size: 1em;
-	text-transform: uppercase;
-}
 /* font embeds */
 @font-face {
 	font-family: 'futura';
@@ -158,6 +152,20 @@ input::placeholder{
 }
 
 
+
+input::placeholder, input, select, select::placeholder{
+	font-family: 'gt-mono', 'Courier New', Courier, monospace;
+		font-size: 1em;
+		line-height: 1em;
+
+	color: var(--blue)
+}
+
+input:hover::placeholder, select:hover::placeholder{
+	color:var(--rust)
+}
+
+
 /* fonts */
 
 
@@ -193,6 +201,14 @@ h1 {
 
 	}
 
+.rsvpTop{
+		font-family: 'hera', Georgia, 'Times New Roman', Times, serif;
+		font-size: 18vw;
+		line-height: 1em;
+		font-weight:500;
+		display:block;
+}
+
 .nav, .tCTA{
 		font-family: 'windsor', Georgia, 'Times New Roman', Times, serif;
 		font-size: 1em;
@@ -200,7 +216,11 @@ h1 {
 	  letter-spacing: 0;
 		font-weight:500;
 	  }
-  
+.tThanks{
+	font-family: 'windsor', Georgia, 'Times New Roman', Times, serif;
+	font-size: 2em;
+
+}
 
 .tTitle{
 	font-family: courier, monospace;
@@ -224,9 +244,11 @@ h1 {
 	font-weight:600;
 }
 
-.pSmall{
-	font-size: 1em;
+.tHeroSub{
+	font-size:1.5em;
+	font-weight:600;
 }
+
 
 p{
 	font-size:1em;
@@ -238,6 +260,16 @@ p{
 		  font-family: 'gt-mono', 'Courier New', Courier, monospace;
 		  font-size: .875em;
 		  line-height: 1.5em;
+}
+
+.tNews{
+	font-family: 'gt-mono', 'Courier New', Courier, monospace;
+	font-size: 1.25em;
+	line-height: 1.5em;
+}
+
+.pSmall{
+	font-size: 1em;
 }
 
 .tSub, .CTA{
@@ -269,9 +301,7 @@ p{
 	 
 	}
   
-	input{
-		font-size:1em;
-	}
+
 
 /* cta */
 a {text-decoration: none;color:inherit}
@@ -487,6 +517,12 @@ a:hover, .ctaLink:hover{color: var(--rust);}
 /* columns */
 .colHalf{
 	width:50%;
+}
+.colTwoThirds{
+	width:66.666%;
+}
+.colThird{
+	width:33.333%;
 }
 .col2{
 	width: calc(50% - (var(--gut)/2));
@@ -774,6 +810,15 @@ text-align-last:center;
 	top:10px;
 }
 
+.forwardBut{
+	width:60px;
+	height:auto;
+}
+
+.submit:hover .forwardBut{
+	animation:point 1s linear infinite;
+}
+
 .closeMenu:hover{
 	background-color:var(--white)
 }
@@ -790,6 +835,9 @@ text-align-last:center;
 .onStage{
 	opacity:0;animation: onStage 1s ease-out 1 both; }
 
+.scrollReveal{
+	animation: scrollReveal .2s ease-out 1 both}
+
 
 @keyframes onStage {
     0%{
@@ -801,6 +849,15 @@ text-align-last:center;
     }
   }
 
+  @keyframes scrollReveal {
+    0%{
+        height: 0;
+    }
+    
+    100% {
+      height: auto;
+    }
+  }
 
 
 
@@ -817,6 +874,9 @@ text-align-last:center;
       opacity: 0;
     }
   }
+
+
+
 
   @keyframes point {
     50% {
