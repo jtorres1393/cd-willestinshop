@@ -230,7 +230,7 @@ class Main extends Component {
       {info.length ?(
         <div id="appContain" style={{width: this.state.win[0]}} className={`relative ${newsActive?"inverse":""}`}>
             <Link to="/"><div className={`smallLogo ${((this.state.page !== "home" && this.state.page !=="news") || (this.state.infoActive  ) )?"activeLogo":""}`} data-page="home" onClick={this.goHome.bind(this)}>
-                <img className={`fullWidth fullImg `} src={`images/wordmark.svg`} data-page="home"></img>
+                <img alt="willes-name" className={`fullWidth fullImg `} src={`images/wordmark.svg`} data-page="home"></img>
             </div></Link>
             {mobile?(
                 <React.Fragment>
@@ -257,7 +257,7 @@ class Main extends Component {
             )}
              {newsActive?(    <Link to="/">
                               <div className="newsOff backBut">
-                                <img className="fullImg" src="/images/button-back.svg"></img>
+                                <img alt="back-button" className="fullImg" src="/images/button-back.svg"></img>
                               </div>
                               </Link>
                             ):('')}
@@ -272,7 +272,7 @@ class Main extends Component {
                             <p className="tCTA">{news[0].subTitle}</p>
                             <p className="tCTA">{this.getTime(news[0].date, true)}</p>
                           </div>
-                        <img className="newsBorder fullWidth fullHeight spin" src="/images/icon-sticker.svg"></img>
+                        <img alt="icon-sticker" className="newsBorder fullWidth fullHeight spin" src="/images/icon-sticker.svg"></img>
                     </div>
                 ):('')}
                 <div className="newsContent">
@@ -286,13 +286,13 @@ class Main extends Component {
                     <div className="newsBody fullWidth flex flexAStart ptMed bBotSm bRust ">
                     <div className="col23">
                         {news[0].media.length?(
-                          <img className="fullImg" src={news[0].media[0].url}></img>
+                          <img alt="article" className="fullImg" src={news[0].media[0].url}></img>
                         ):('')}
                     </div>
                     <div className="col13">
                       <div className="fullWidth tBlue mbSm" dangerouslySetInnerHTML={{ __html : news[0].about }}></div>
                      <Link to="/rsvp">
-                      <div className="rsvpNews relative pbHuge" ><div className="flex flexACenter fullWidth centeredContent plSm prSm" ><img className="forwardBut"src="/images/button-forward-blue.svg"></img><div className="tCTA tBlue prSm plSm tCenter">RSVP</div></div></div>
+                      <div className="rsvpNews relative pbHuge" ><div className="flex flexACenter fullWidth centeredContent plSm prSm" ><img alt="go-button" className="forwardBut"src="/images/button-forward-blue.svg"></img><div className="tCTA tBlue prSm plSm tCenter">RSVP</div></div></div>
                       </Link>
                     </div></div>
 
@@ -317,11 +317,11 @@ class Main extends Component {
                 <div className="footer fullWidth ">
                   <div className="fullStage eCenter flex flexACenter bWhite bTopSm pbSm ptSm footerFlex">
                     <div className="col3 iconHold flex flexACenter">
-                        <img className="col3" src={`images/logo-roxcrew${newsActive?"-rust":""}.svg`}></img>
+                        <img alt="icon-roxcrew" className="col3" src={`images/logo-roxcrew${newsActive?"-rust":""}.svg`}></img>
                       
-                          <img className="col3" src={`images/logo-service${newsActive?"-rust":""}.svg`}></img>
+                          <img alt="icon-services" className="col3" src={`images/logo-service${newsActive?"-rust":""}.svg`}></img>
                       
-                        <img className="col3" src={`images/logo-ca-spirits${newsActive?"-rust":""}.svg`}></img>
+                        <img alt="icon-ca-spirits" className="col3" src={`images/logo-ca-spirits${newsActive?"-rust":""}.svg`}></img>
                     </div>
                     <div className="address">
                         <p className="tDetails tWhite tCenter tUpper">{`${info[0].address}`}</p>
@@ -339,7 +339,7 @@ class Main extends Component {
             <div className={"infoHold fixedScreen fullWidth ptLrg fullHeight bgvodka "+(this.state.infoActive?('active'):(''))}>
                   <div className="centeredContent fullWidth flex flexACenter pbLrg">
                   <div className="goodSpiritsHold col2 eCenter mtLrg mbLrg">
-                      <img className="col23 eCenter" src="images/logo-goodspirits.svg"></img>
+                      <img alt="icon-good-spirits" className="col23 eCenter" src="images/logo-goodspirits.svg"></img>
                   </div>
                   <div className="textHold col2 eCenter ptLrg">
                   <div className="info mbHuge col23 eCenter tWhite tCenter" dangerouslySetInnerHTML={{ __html : info[0].about}}></div>

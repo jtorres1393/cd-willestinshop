@@ -6,7 +6,6 @@ const Multer = require('multer');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const fs = require('fs');
-const {Storage} = require('@google-cloud/storage');
 const mods = require('./modules/mods')
 
 
@@ -72,7 +71,7 @@ app.set('view engine', 'pug');
 
 
 //AUTHENTICATION CARD
-app.get(['/','/news','/spirits', '/info', '/rsvp'], async function(request, response) {
+app.get(['/','/news','/spirits', '/info', '/rsvp','/shop'], async function(request, response) {
   var page = "default"
     mods.metaChange(response,page);
 });

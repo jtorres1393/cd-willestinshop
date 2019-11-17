@@ -3,12 +3,20 @@ extend layout
 block content
         #mainForm.fullWidth.flex
             #menuPanel
-                p.mbMed.tTitle Settings
+                p.mbMed.tTitle Order By
+                    a.col3(href=`/admin/rsvp?id=${rootID}&sort=name`)
+                        p.mbSm.tBold By Name
+                    a.col3(href=`/admin/rsvp?id=${rootID}`)
+                        p.mbMed.tBold By ID 
                 .menuImg.menuItem.mbLrg
                     a.tCap.menuOp(href="/admin/news-edit?id="+rootID)="Back to Article" 
                 
             #content.col23.colSkip
-                p.mbMed.tTitle Guestlist 
+                .fullWidth.mbMed.tTitle.flex
+                    a.col3(href=`/admin/rsvp?id=${rootID}&sort=name`)
+                        p.tBold By Name
+                    a.col3(href=`/admin/rsvp?id=${rootID}`)
+                        p.tBold By ID 
                 for item in data
                     .singleRSVP.bBotSm.bGray.fullWidth.ptMed(class=item.check?"":"inactive")
                         .contact.fullWidth.flex
@@ -31,10 +39,10 @@ block content
                                     a(href="mailto:"+item.email)
                                         p=item.email
                                     p=item.phone
-                            .fullWidth
+                            .fullWidth.relative
                                 if item.check
                                 else
-                                    a.fullWidth(href="/admin/rsvp-checkin?id="+item.id+"&rsvp="+rootID onclick="return confirm('Are you sure?')")
+                                    a.fullWidth.checkInBut(href="/admin/rsvp-checkin?id="+item.id+"&rsvp="+rootID onclick="return confirm('Are you sure?')")
                                         .fullWidth.btn.btn-sec.mbSm
                                             p.tCap.tBold check in
                      

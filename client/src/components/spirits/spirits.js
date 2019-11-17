@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './spirits.css';
-import {Route, Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 
 class Spirits extends Component {
@@ -32,7 +32,7 @@ class Spirits extends Component {
           if(id){
             id.toLowerCase();
             this.setInit(id);
-            this.props.resizeWin;
+            this.props.resizeWin();
           }
          }));
       
@@ -102,7 +102,7 @@ class Spirits extends Component {
       <React.Fragment>
         {spiritMode?(
                               <Link to="/spirits"><div className="spiritBut backBut" onClick={this.idleMode.bind(this)}>
-                                <img className="fullImg" src="/images/button-back.svg"></img>
+                                <img alt="back-button" className="fullImg" src="/images/button-back.svg"></img>
                               </div>
                               </Link>
                             ):('')}
@@ -167,7 +167,7 @@ class Spirits extends Component {
                         <div className={`spiritImgHold fullWidth`} data-id={i} >
                         {item.media.length?(
                           <div className="imageHold fullWidth" data-id={i} >
-                          <img className="fullImg" onLoad={this.props.fadeIn.bind(this)} src={item.media[0].url} data-id={i} ></img>
+                          <img alt="spirit-long-beach-water" className="fullImg" onLoad={this.props.fadeIn.bind(this)} src={item.media[0].url} data-id={i} ></img>
                         </div>
                         ):("")}
                       </div>
@@ -182,7 +182,7 @@ class Spirits extends Component {
                       <div className={`singleSpirit inactive`} data-id={i} style={{transitionDelay:(i*.2)+"s"}} >
                       {item.media.length?(
                          <div className="imageHold fullWidth" data-id={i}>
-                         <img className="fullImg" onLoad={this.props.fadeIn.bind(this)} src={item.media[0].url} data-id={i}></img>
+                         <img alt="incoming-spirits" className="fullImg" onLoad={this.props.fadeIn.bind(this)} src={item.media[0].url} data-id={i}></img>
                        </div>
                       ):("")}
                     </div>

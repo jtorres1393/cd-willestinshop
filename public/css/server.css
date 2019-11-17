@@ -840,8 +840,10 @@ img,video{
 		#settings.active{background-image: url('/static/images/icon-gear-fill.svg');}
 		.sortHandle{opacity:1 !important;}
 		#menuPanel.active{display:block;}
-		.rsvpNum{width: 8%;}
-		.rsvpContact{width:85%;}
+		.rsvpNum{width: 50%;margin-bottom:var(--xs)}
+		.rsvpContact{width:100%;}
+		.checkInBut{
+			position: absolute;top:var(--xs);right:0;width:50%}
 
 }
 

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './home.css';
-import {Route} from 'react-router-dom';
 
 
 class Home extends Component {
@@ -52,7 +51,7 @@ class Home extends Component {
                   ):('')}
               </div>
               <div className="fullStage centeredContent logoHold">
-                  <img className="col23 pbHuge eCenter" src="images/logo.svg"></img>
+                  <img alt="willes-logo" className="col23 pbHuge eCenter" src="images/logo.svg"></img>
 
               </div>
             

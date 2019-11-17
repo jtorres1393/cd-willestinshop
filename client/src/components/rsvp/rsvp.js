@@ -91,7 +91,8 @@ class RSVP extends Component {
                   <p className="fullWidth tBlue tUpper rsvpTop tCenter mbMed">rsvp</p>
                   <p className="tCenter tUpper tBlue tHeroSub">{data[0].subTitle}</p>
                   <p className="tNews tCenter tBlue tUpper mbMed">{this.props.getTime(data[0].date)}</p>
-                  <p className="tNews tCenter tBlue tUpper">{`${info.address}, ${info.city} ${info.state}`}</p>
+                  <p className="tNews tCenter tBlue tUpper">{`${info.address}`}</p>
+                  <p className="tNews tCenter tBlue tUpper">{`${info.city} ${info.state}`}</p>
                   <p className="tNews tCenter tBlue tUpper">{`${info.phone}`}</p>
                 </div>
                 <div className="formHold bBlue bTopSm bBotSm relative">
@@ -124,7 +125,7 @@ class RSVP extends Component {
                         <div className="colTwoThirds bBlue bRight formCell bBotSm">
                             <input placeholder="EMAIL" type="email" required name="email"></input>
                             </div><div className="colThird formCell bBotSm"></div>
-                        <div className="colTwoThirds bBlue bRight formCell"><input placeholder="PHONE" type="phone" required name="phone"></input></div><button className="submit colThird relative" type="submit" ><div className="flex rsvpSubHold flexACenter fullWidth centeredContent plSm prSm" ><img className="forwardBut"src="/images/button-forward-blue.svg"></img><div className="tCTA tBlue prSm plSm tCenter">RSVP</div></div></button>
+                        <div className="colTwoThirds bBlue bRight formCell"><input placeholder="PHONE" type="phone" required name="phone"></input></div><button className="submit colThird relative" type="submit" ><div className="flex rsvpSubHold flexACenter fullWidth centeredContent plSm prSm" ><img alt="submit-button" className="forwardBut"src="/images/button-forward-blue.svg"></img><div className="tCTA tBlue prSm plSm tCenter">RSVP</div></div></button>
                       </form>
                   
                 </div>

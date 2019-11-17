@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './shop.css';
-import {Route} from 'react-router-dom';
 
 
 class Shop extends Component {
@@ -26,7 +25,6 @@ class Shop extends Component {
 
 
     render() {
-      const { info } = this.props;
       const { win } = this.props;
     return (
     
