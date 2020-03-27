@@ -31,6 +31,22 @@
 
     .tNews.pSmall{display:block; width:50px;}
 
+
+.invLogo{
+    width: 50%;
+    height:auto;
+}
+
+.sealHold{
+    width: 20%;
+    position:absolute;
+    top:var(--sm);
+    right: var(--sm);
+}
+.invBuff{
+    opacity:0;
+    pointer-events: none;
+}
 button{
     font-size:1em;
     background-color:transparent;
@@ -38,6 +54,7 @@ button{
 @media all and (max-width: 900px){
     .rsvpSheet{width:90%;}
     .rsvpTop{font-size:24vw;}
+    .cosInfo .colTwoThirds{width:100%;}
 }
 @media all and (max-width: 700px){
     .rsvpStage{padding-bottom: 360px;

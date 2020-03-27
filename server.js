@@ -18,6 +18,10 @@ const { ShopItems } = require('./models/shopItems');
 const { ShopOptions } = require('./models/shopOptions');
 const { News } = require('./models/news');
 const { RSVP } = require('./models/rsvp');
+const { Location } = require('./models/location');
+const { Vendor } = require('./models/vendor');
+const { Buyer } = require('./models/buyer');
+const { Invoices } = require('./models/invoices');
 
 
 //backend routes
@@ -34,11 +38,23 @@ const newsDash = require('./routes/newsDash')
 const newsEdit = require('./routes/newsEdit')
 const rsvpDash = require('./routes/rsvpDash')
 const emailRSVP = require('./routes/emailRSVP')
+const vendorDash = require('./routes/vendorDash')
+const vendorAdd = require('./routes/vendorAdd')
+const vendorEdit = require('./routes/vendorEdit')
+const locAdd = require('./routes/locAdd')
+const locEdit = require('./routes/locEdit')
+const buyerView = require('./routes/buyerView')
+const invoiceDash = require('./routes/invoiceDash')
+const invoiceAdd = require('./routes/invoiceAdd')
+const invoiceView = require('./routes/invoiceView')
+
 
 //frontend
 const APIinfo= require('./routes/APIinfo')
 const APIshopCat= require('./routes/APIshopCat')
 const APIrsvp= require('./routes/APIrsvp')
+const APIvendors= require('./routes/APIvendors')
+const APIinvoices= require('./routes/APIinvoices')
 
 //login
 //login
@@ -155,7 +171,7 @@ app.use('/admin/login', function(req, res){
   }
 
 });
-app.post('/admin/logins', passport.authenticate('local', { successRedirect: '/admin/users', failureRedirect: '/admin/login',failureFlash: true }))
+app.post('/admin/logins', passport.authenticate('local', { successRedirect: '/admin/invoices', failureRedirect: '/admin/login',failureFlash: true }))
 
 
 //passport Local
@@ -260,6 +276,9 @@ app.use('/admin/media-delete?:id', isLogged, async function(req,res){
   }
   else if(req.query.news){
     res.redirect('/admin/news-edit?id='+(req.query.news))
+  }
+  else if(req.query.sec){
+    res.redirect(`/admin/${req.query.sec}?id=${req.query.secID}`)
   }
   else{
   res.redirect('/admin/'+sec)}
@@ -611,12 +630,8 @@ app.use('/admin/news-delete?:id', isLogged, async function(req,res){
                 
                 res.redirect('/admin/news')
   }
-  
-
-
-
-
 })
+
 app.use('/admin/rsvp', isLogged, rsvpDash)
 app.use('/admin/rsvp-check?:id', isLogged, async function(req,res){
   const curr = req.query.id;
@@ -635,9 +650,270 @@ app.use('/admin/rsvp-check?:id', isLogged, async function(req,res){
 app.use('/admin/rsvp-email?:id', emailRSVP)
 
 
+//locations
+app.use('/admin/vendors', isLogged, vendorDash)
+app.post('/admin/vendors', isLogged, async function(req,res){
+  if(req.body.sort1){
+    mods.sort(req.body.sort1, Vendor)
+  }
+
+  if(req.body.sort2){
+    mods.sort(req.body.sort2, Vendor)
+  }
+
+  res.redirect('/admin/vendors')
+})
+
+app.use('/admin/vendor-add',isLogged, vendorAdd)
+app.post('/admin/vendor-add', m.fields([{name:'imgItems', maxCount:10}]), async function(req,res){
+  let data={}
+  data.name = req.body.name;
+  data.web = req.body.web;
+  data.type = req.body.type;
+
+  const upData = await Vendor.query()
+    .insert(data);
+  
+  if(req.files.imgStudio){
+    const newPost = await Vendor.query()
+      .orderBy('id','desc')
+      .limit(1)
+    (req.files.imgStudio).forEach((e)=>{
+      mods.uploadMedia(e,"images","thumb" ,"vendor",newPost[0].id);
+    })
+    res.redirect(`/admin/vendor-edit?id=${newPost[0].id}`)
+  }
+
+})
+
+app.use( `/admin/vendor-edit?:id`, isLogged, vendorEdit)
+app.post(`/admin/vendor-edit?:id`, m.fields([{name:"imgStudio", maxCount: 10}]), async function(req,res){
+      let data = {};
+      let loc = {}
+      var currID = req.query.id;
+      data.name=req.body.name;
+      data.web = req.body.web;
+      data.type=req.body.type;
+
+
+      const upData = await Vendor.query()
+        .where("id", currID)
+        .patch(data);
+
+      
+        if(req.body.sort1){
+          mods.sort(req.body.sort1, Media)
+        }
+        if(req.body.sort2){
+          mods.sort(req.body.sort2, Location)
+        }
+
+      
+        if(req.files.imgStudio){
+          (req.files.imgStudio).forEach((e)=>{
+            mods.uploadMedia(e,"images","thumb" ,"vendor",currID);
+          })
+          res.redirect(`/admin/vendor-edit?id=${currID}`)
+        }
+
+        if(req.body.address && req.body.city){
+          loc.address = req.body.address;
+          loc.city = req.body.city;
+          loc.state = req.body.state;
+          loc.zip = req.body.zip;
+          loc.lat = req.body.lat;
+          loc.long = req.body.long;
+          loc.map = req.body.map;
+          loc.phone = req.body.phone;
+          loc.rootID = currID;
+
+          const upLoc = await Location.query()
+            .insert(loc)
+        }
+      
+
+app.use(`/admin/vendor-delete?:id`, isLogged, async function(req,res){
+    const currID =req.query.id;
+    const dataDelete = await Vendor.query()
+          .where('id',currID)
+          .delete()
+
+    res.redirect(`/admin/vendors`)
+})
 
 
 
+})
+app.use('/admin/location-delete?:id', isLogged, async function(req,res){
+ 
+  if(req.query.id){
+     const currID = req.query.id;
+     const secID = req.query.secID;
+     const delData = await Location.query()
+                 .where('id', currID)
+                 .delete()
+ 
+                 const media = await Media.query()
+                 .where("rootID", currID)
+                 .where("rootPage", "location");
+           
+                 media.forEach((e)=>{
+                   mods.deleteFile(e.id)
+                 })
+                 
+                 res.redirect(`/admin/vendor-edit?id=${secID}`)
+   }
+ })
+
+
+app.use('/admin/location-edit?:id', isLogged, locEdit)
+app.post('/admin/location-edit?:id',m.fields([{name:"imgItems", maxCount: 10}]) ,async function(req,res){
+  const currID= req.query.id
+  let data = {}
+  data.address = req.body.address;
+  data.city = req.body.city;
+  data.state = req.body.state;
+  data.zip = req.body.zip;
+  data.lat = req.body.lat;
+  data.long = req.body.long;
+  data.map = req.body.map;
+  data.yelp = req.body.yelp;
+  data.phone = req.body.phone;
+
+  const upData = await Location.query()
+                .where("id", currID)
+                .patch(data)
+          
+  if(req.files.imgItems){
+    (req.files.imgItems).forEach((e)=>{
+      mods.uploadMedia(e,"images","header" ,"location",currID);
+    })
+  }
+
+  res.redirect(`/admin/location-edit?id=${currID}`)
+
+})
+
+
+///buyer
+app.use(`/admin/invoices`, isLogged, invoiceDash)
+app.post(`/admin/invoices`, isLogged, async function(req,res){
+  let data={};
+  data.firstName = req.body.firstName;
+  data.lastName = req.body.lastName;
+  data.company = req.body.company;
+  data.phone = req.body.phone;
+  data.email = req.body.email;
+  data.address = req.body.address;
+  data.city = req.body.city;
+  data.state = req.body.state;
+  data.zip = req.body.zip;
+
+  if(req.body.firstName && req.body.lastName){
+    const upData = await Buyer.query()
+      .insert(data)
+    const getLast = await Buyer.query()
+      .orderBy('id', 'desc')
+      .limit(1)
+    res.redirect(`/admin/buyer-view?id=${getLast[0].id}`)
+    
+  }
+  else{
+    res.redirect('/admin/invoices')
+  }
+})
+
+app.use(`/admin/buyer-view?:id`, isLogged, buyerView)
+app.post(`/admin/buyer-view?:id`, isLogged, async function(req,res){
+        let data = {}
+        const currID = req.query.id;
+        data.firstName = req.body.firstName;
+        data.lastName = req.body.lastName;
+        data.company = req.body.company;
+        data.phone = req.body.phone;
+        data.email = req.body.email;
+        data.address = req.body.address;
+        data.city = req.body.city;
+        data.state = req.body.state;
+        data.zip = req.body.zip;
+
+        const upData = await Buyer.query()
+                .where('id',currID)
+                .patch(data)
+        res.redirect(`/admin/buyer-view?id=${currID}`)
+})
+app.use(`/admin/buyer-delete?:id`, isLogged, async function(req,res){
+  const currID = req.query.id;
+    const deleteData = await Buyer.query()
+      .where('id', currID)
+      .delete();
+
+    res.redirect(`/admin/invoices`)
+})
+
+app.use(`/admin/invoice-add?:id`, isLogged, invoiceAdd)
+app.post(`/admin/invoice-add?:id`, isLogged, async function(req,res){
+    let data={}
+    data.cart = req.body.cart;
+    data.shipping = parseInt(req.body.shipping)*100
+    data.status = "draft";
+    data.rootID = req.query.id
+
+    const upData = await Invoices.query()
+      .insert(data)
+    
+    const currID = await Invoices.query()
+          .orderBy('id','desc')
+          .limit(1)
+    res.redirect(`/admin/invoice-view?id=${currID[0].id}`)
+    
+})
+
+app.use(`/admin/invoice-view?:id`, isLogged, invoiceView)
+app.post(`/admin/invoice-view?:id`, isLogged, async function(req,res){
+     let data = {};
+     const currID = req.query.id
+     data.cart = req.body.cart;
+     data.shipping = parseInt(req.body.shipping)*100
+
+     const upData = await Invoices.query()
+      .where('id', currID)
+      .patch(data)
+      res.redirect(`/admin/invoice-view?id=${currID}`)
+
+})
+
+app.use(`/admin/invoice-delete?:id`, isLogged, async function(req,res){
+      const currID = req.query.id;
+      const rootID = req.query.rootID;
+        const deleteData = await Invoices.query()
+          .where('id', currID)
+          .delete();
+
+        res.redirect(`/admin/buyer-view?id=${rootID}`)
+})
+app.use(`/admin/invoice-email?:id`, isLogged, async function(req,res){
+  const currID = req.query.id;
+    res.redirect(`/admin/invoice-view?id=${currID}`)
+})
+app.use(`/admin/invoice-ship?:id`, isLogged, async function(req,res){
+  const currID = req.query.id;
+    let data={};
+    data.shipped=true
+    const upData = await Invoices.query()
+      .where('id',currID)
+      .patch(data)
+    res.redirect(`/admin/invoice-view?id=${currID}`)
+})
+app.use(`/admin/invoice-paid?:id`, isLogged, async function(req,res){
+  const currID = req.query.id;
+    let data={};
+    data.status="paid"
+    const upData = await Invoices.query()
+      .where('id',currID)
+      .patch(data)
+    res.redirect(`/admin/invoice-view?id=${currID}`)
+})
 
 ///functions
 //mod
@@ -658,6 +934,8 @@ function isAdmin(req, res, next) {
 app.use('/api/info', APIinfo);
 app.use('/api/shopCat', APIshopCat);
 app.use('/api/rsvp', APIrsvp);
+app.use('/api/vendors', APIvendors);
+app.use('/api/invoices', APIinvoices);
 
 app.use('/api/rsvp-submit', async function(req,res){
   let data = {};

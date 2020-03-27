@@ -524,6 +524,9 @@ a:hover, .ctaLink:hover{color: var(--rust);}
 .colThird{
 	width:33.333%;
 }
+.colFourth{
+	width:25%;
+}
 .col2{
 	width: calc(50% - (var(--gut)/2));
 }

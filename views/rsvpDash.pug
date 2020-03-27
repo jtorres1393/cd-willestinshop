@@ -19,7 +19,7 @@ block content
                         p.tBold By ID 
                 for item in data
                     .singleRSVP.bBotSm.bGray.fullWidth.ptMed(class=item.check?"":"inactive")
-                        .contact.fullWidth.flex
+                        .contact.fullWidth.flex.relative
                             .fullWidth.flex.infoBlock.mbSm
                                 .col2.rsvpNum.tCap
                                     if item.id > 99
@@ -39,7 +39,7 @@ block content
                                     a(href="mailto:"+item.email)
                                         p=item.email
                                     p=item.phone
-                            .fullWidth.relative
+                            .fullWidth.checkInHold
                                 if item.check
                                 else
                                     a.fullWidth.checkInBut(href="/admin/rsvp-checkin?id="+item.id+"&rsvp="+rootID onclick="return confirm('Are you sure?')")
