@@ -1,0 +1,123 @@
+extend layout
+
+block content
+    for item in data
+        form#mainForm.fullWidth.flex(method='POST', action=`/admin/buyer-view?id=${item.id}`)
+            #menuPanel
+                p.mbMed.tTitle Settings
+                .menuSave.menuItem.mbLrg
+                    input.menuOp.tCap(type="submit", value="Save Changes")
+                .menuTrash.menuItem.mbLrg
+                    a.tCap.menuOp(href=`/admin/buyer-delete?id=${item.id}`, onclick="return confirm('Are you sure?')")="Delete Buyer"
+                .menuOp Open Invoices
+
+        
+            #sectionEditor.edit.mbLrg.colSkip.col23
+                p.tTitle.mbMed
+                    a(href="/admin/invoices")
+                            span Invoices /
+                    span=`${page}: `
+                    if item.firstName
+                        span=`${item.firstName}`
+                        if item.lastName
+                            span=` ${item.lastName}`
+                    else
+                        if item.company
+                        span=`${item.company}`                 
+                a.fullWidth(href=`/admin/invoice-add?id=${item.id}`)
+                    .btn.btn-prime.fullWidth.relative.mbLrg
+                                        p.tBold Add New Invoice
+                #invoiceHold.mbLrg
+                    p.tTitle.mbSm Open Invoices
+                    for inv in item.invoices
+                        if inv.status!=="paid"
+                            .singleInv.fullWidth.ptSm.pbSm.bBlk.bBotSm.flex.flexACenter
+                                a.col4(href=`/admin/invoice-view?id=${inv.id}`)
+                                    .fullWidth
+                                        p.tBold.tGreen=prettyDate(inv.created_at)
+                                        p.tBlack.tCap.tBold=` ${inv.status}`
+                                        if inv.shipped
+                                            span=` ${inv.shipped}`
+                                a.col4(href=`/admin/invoice-view?id=${inv.id}`)
+                                    .btn.btn-sec.relative
+                                        p.tBold Edit
+                                a.col4(href=`/admin/invoice-email?id=${inv.id}`)
+                                    .btn.btn-sec.relative
+                                        p.tBold Send
+                                if inv.status !=="paid"
+                                    a.col4(href=`/admin/invoice-paid?id=${inv.id}`)
+                                        .btn.btn-sec.relative
+                                            p.tBold Paid
+                #paidHold.mbLrg
+                    p.tTitle.mbSm Paid Invoices
+                    for inv in item.invoices
+                        if inv.status==="paid"
+                            .singleInv.fullWidth.ptXs.pbXs.bGray.bBotSm.flex.flexACenter
+                                a.fullWidth(href=`/admin/invoice-view?id=${inv.id}`)
+                                    .fullWidth
+                                        p.tBold.tGray=prettyDate(inv.created_at)
+                                        p.tRed.tCap.tBold=` ${inv.status}`
+                                            if inv.shipped
+                                                span.tRed=` / Shipped`
+                                            else
+                                                span.tGreen=` / Not Shipped`
+                .fullWidth.flex.mbSm.tBold.bBlk.bBotSm.pbSm
+                    .col23
+                        p.tBold Details
+                    .col3
+                        p.tBold Options
+                -   var sortCount1 = 1
+                #sort1.principalHold.mbLrg
+                    for item in data         
+                        .sort1.singleCat.mbSm.fullWidth.flex.flexACenter(data-id=item.id, data-order=sortCount1)
+                
+
+                #newBuyer.plLrg
+                    .newSecHold.fullWidth.mbLrg.ptSm.pbSm.plSm.prSm.flex
+                        .col2.mbXs
+                            label First Name
+                            p
+                            input.prime-input(name="firstName", type="text",value=item.firstName)
+                        .col2.mbXs
+                            label Last Name
+                            p
+                            input.prime-input(name="lastName", type="text",value=item.lastName)
+                        .col3.mbXs
+                            label Company
+                            p
+                            input.prime-input(name="company",value=item.company, type="text")
+                        .col3.mbXs
+                            label Phone
+                            p
+                            input.prime-input(name="phone", value=item.phone, type="text")
+                        .col3.mbXs
+                            label Email
+                            p
+                            input.prime-input(name="email", type="text", value=item.email)
+                        .fullWidth.mbXs
+                            label Address
+                            p
+                            input.prime-input(name="address", type="text",value=item.address)
+                        .col3.mbMed 
+                            label City
+                            p
+                            input.prime-input(name="city", type="text",value=item.city)
+                        .col3.mbMed
+                            label State
+                            p
+                            input.prime-input(name="state", type="text", value=item.state)
+                        .col3.mbMed
+                            label Zip
+                            p
+                            input.prime-input(name="zip", type="text",value=item.zip)
+
+
+            -function prettyDate(dateString){
+            //if it's already a date object and not a string you don't need this line:
+            -var date = new Date(dateString);
+            -var d = date.getDate();
+            //- -var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+            -var m = date.getMonth()+1;
+            -var y = date.getFullYear();
+            -return m+'/'+d+'/'+y;
+        -}

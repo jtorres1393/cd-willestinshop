@@ -1,0 +1,101 @@
+extend layout
+
+block content
+    form#mainForm.fullWidth.flex(method='POST', action='/admin/vendors')
+        #menuPanel
+            p.mbMed.tTitle Settings
+            .menuSave.menuItem.mbXs
+                    input.menuOp.tCap(type="submit", value="Save Changes")
+            a.menuImg.menuItem.mbLrg(href="/admin/vendor-add")
+                .menuOp New Vendor
+
+
+        #sectionEditor.edit.mbMed.colSkip.col23
+            p.mbMed.tTitle=page
+            p.mbSm.tBold Stores
+            input.form-control(name='sort1', type='hidden')
+            -   var sortCount1 = 1
+            #sort1.principalHold.mbLrg
+                for item in stores          
+                    .sort1.singleCat.mbSm.fullWidth.flex.flexACenter(data-id=item.id, data-order=sortCount1)
+                        .col2.relative.flex
+                            .col2
+                                .sortHandle
+                                p.plSm.tCap=sortCount1+". "+item.name
+                            .col2
+                                p.plSm.tCap
+                                    for loc in item.location
+                                        span.prSm=loc.city
+                        .col2.flex
+                            a.col2(href="/admin/vendor-edit?id="+item.id)
+                                .btn.btn-sec.fullWidth.relative
+                                    p.tBold Edit
+                            a.col2(href="/admin/vendor-delete?id="+item.id onclick="return confirm('Are you sure?')")
+                                    .btn.btn-sec.fullWidth.relative
+                                        p.tBold Delete
+                    -   sortCount1++
+            input.form-control(name='sort2', type='hidden')
+            -   var sortCount2 = 1
+            #sort2.principalHold.mbLrg
+                p.mbSm.tBold Bars
+                for item in bars          
+                    .sort2.singleCat.mbSm.fullWidth.flex.flexACenter(data-id=item.id, data-order=sortCount2)
+                        .col2.relative.flex
+                            .col2
+                                .sortHandle
+                                p.plSm.tCap=sortCount2+". "+item.name
+                            .col2
+                                p.plSm.tCap
+                                    for loc in item.location
+                                        span.prSm=loc.city
+                        .col2.flex
+                            a.col2(href="/admin/vendor-edit?id="+item.id)
+                                .btn.btn-sec.fullWidth.relative
+                                    p.tBold Edit
+                            a.col2(href="/admin/vendor-delete?id="+item.id onclick="return confirm('Are you sure?')")
+                                    .btn.btn-sec.fullWidth.relative
+                                        p.tBold Delete
+                    -   sortCount2++
+
+    script.
+            var el1 = document.getElementById('sort1');
+            var el2 = document.getElementById('sort2');
+            var sortable1 = Sortable.create(el1,{handle:".sortHandle", ghostClass: "sortable-ghost", onEnd: function(){
+                var el = document.getElementsByClassName('sort1');
+                var currentNumber = 1;
+                let sort1Obj = [];
+                
+                
+                Array.prototype.forEach.call(el , function(elem){
+                            elem.setAttribute("data-order", currentNumber);
+                            currentNumber++
+                            
+
+                            sort1Obj.push( { id:elem.getAttribute("data-id"), "order":elem.getAttribute("data-order")} )
+
+                        });
+                        sort1 = document.querySelector('input[name=sort1]');
+                        sort1.value = JSON.stringify(sort1Obj);
+                
+                }
+            });
+
+            var sortable2 = Sortable.create(el2,{handle:".sortHandle", ghostClass: "sortable-ghost", onEnd: function(){
+                var el = document.getElementsByClassName('sort2');
+                var currentNumber = 1;
+                let sort2Obj = [];
+                
+                
+                Array.prototype.forEach.call(el , function(elem){
+                            elem.setAttribute("data-order", currentNumber);
+                            currentNumber++
+                            
+
+                            sort1Obj.push( { id:elem.getAttribute("data-id"), "order":elem.getAttribute("data-order")} )
+
+                        });
+                        sort2 = document.querySelector('input[name=sort2]');
+                        sort2.value = JSON.stringify(sort2Obj);
+                
+                }
+            });

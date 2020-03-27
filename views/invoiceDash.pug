@@ -1,0 +1,92 @@
+extend layout
+
+block content
+    form#mainForm.fullWidth.flex(method='POST', action='/admin/invoices')
+        #menuPanel
+            p.mbMed.tTitle Settings
+            a.menuFolder.menuItem.mbLrg(href="/admin/invoices-open")
+                .menuOp Open Invoices
+
+       
+        #sectionEditor.edit.mbLrg.colSkip.col23
+            p.mbMed.tTitle=page
+            
+                            
+
+            .fullWidth.flex.mbSm.tBold.bBlk.bBotSm.pbSm
+                .col2
+                    p.tBold Buyers
+                .col2
+                    p.tBold Open Orders
+            -   var sortCount1 = 1
+            #sort1.principalHold.mbHuge
+                for item in data
+                    a.fullWidth(href="/admin/buyer-view?id="+item.id)         
+                        .sort1.singleCat.mbSm.fullWidth.flex.flexACenter.bBlk.bBotSm.pbXs.ptXs(data-id=item.id, data-order=sortCount1)
+                            .col2.relative.flex
+                                p.plSm.tCap.tBold=`${sortCount1}. `
+                                    if item.firstName
+                                        span=`${item.firstName}`
+                                        if item.lastName
+                                            span=` ${item.lastName}`
+                                    else
+                                        if item.company
+                                        span=`${item.company}`
+                            .col2.flex.flexACeter
+                                .col2plSm.tCap
+                                    for inv in item.invoices
+                                        p.prSm.tGreen=prettyDate(inv.created_at)
+                                .col2.flex
+                                    .btn.btn-sec.fullWidth.relative
+                                        p.tBold Edit
+                    -   sortCount1++
+                #newBuyer.plLrg
+                .newSecHold.fullWidth.mbLrg.ptSm.pbSm.plSm.prSm.flex
+                    .col2.mbXs
+                        label First Name
+                        p
+                        input.prime-input(name="firstName", type="text")
+                    .col2.mbXs
+                        label Last Name
+                        p
+                        input.prime-input(name="lastName", type="text")
+                    .col3.mbXs
+                        label Company
+                        p
+                        input.prime-input(name="company", type="text")
+                    .col3.mbXs
+                        label Phone
+                        p
+                        input.prime-input(name="phone", type="text")
+                    .col3.mbXs
+                        label Email
+                        p
+                        input.prime-input(name="email", type="text")
+                    .fullWidth.mbXs
+                        label Address
+                        p
+                        input.prime-input(name="address", type="text")
+                    .col3.mbMed 
+                        label City
+                        p
+                        input.prime-input(name="city", type="text")
+                    .col3.mbMed
+                        label State
+                        p
+                        input.prime-input(name="state", type="text")
+                    .col3.mbMed
+                        label Zip
+                        p
+                        input.prime-input(name="zip", type="text")
+                    input.btn.btn-prime.tCap(type="submit", value="Add Buyer")
+
+
+        -function prettyDate(dateString){
+        //if it's already a date object and not a string you don't need this line:
+        -var date = new Date(dateString);
+        -var d = date.getDate();
+        //- -var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+        -var m = date.getMonth()+1;
+        -var y = date.getFullYear();
+        -return m+'/'+d+'/'+y;
+    -}

@@ -1,0 +1,123 @@
+extend layout
+
+block content
+    form#mainForm.fullWidth.flex(method='POST', action='/admin/location-add', enctype='multipart/form-data')
+        #menuPanel
+            p.mbMed.tTitle Settings
+            .menuSave.menuItem
+                input.menuOp.tCap(type="submit", value="Add New Location")
+        #content.col23.colSkip
+            p.mbMed.tTitle
+                a(href="/admin/locations")
+                    span.tGray  Locations /    
+                span Add New Location
+            .content-form.fullWidth.flex.mbSm
+                .fullWidth.mbSm
+                    label Name
+                    p
+                    input.prime-input(name="name", type="text", required)
+                .col2.mbSm
+                    label Website
+                    p
+                    input.prime-input(name="web", type="text", required)
+                .col2.mbSm.relative.selectField
+                        label Location Type
+                        p
+                        select.fullWidth(name="type")
+                            option(value="store" ) store
+                            option(value="bar"  ) bar
+                .fullWidth.mbSm
+                    label Address
+                    p
+                    input.prime-input(name="address", type="text", required)
+                .col3.mbSm.relative
+                    label City
+                    p
+                    input.prime-input(name="city", type="text", required)
+                .col3.mbSm.relative
+                    label State Abbreviation
+                    p
+                    input.prime-input(name="state", type="text", required)
+                .col3.mbSm.relative
+                    label Zip Code
+                    p
+                    input.prime-input(name="zip", type="text", required)
+                .col3.mbSm.relative
+                    label phone
+                    p
+                    input.prime-input(name="phone", type="text", required)
+                .col3.mbSm.relative
+                    label lat
+                    p
+                    input.prime-input(name="lat", type="text", required)
+                .col3.mbSm.relative
+                    label long
+                    p
+                    input.prime-input(name="long", type="text", required)
+                .fullWidth.mbSm.relative
+                    label Map Link
+                    p
+                    input.prime-input(name="map", type="text", required)
+                
+                
+            .tTitle.mbMed Store Images
+            #sort1.galleryHold.flex.flexAStart
+                input.form-control(name='sort1', type='hidden')
+                label.tBold.tWhite.col3.addButton.bgGray.relative(for="imgProject")
+                    .r34
+                    .cCenter
+                        p.menuItem.menuImgInvert.tBold add new image
+                    input#imgProject.menuOp(name="imgItems", type="file", style="display: none", accept="images/*", multiple="multiple")
+
+    script.
+            var form = document.getElementById('mainForm');
+            
+
+            var checkType = document.getElementById('typeCheck')
+            var spirit = document.getElementById('spirit')
+
+                checkType.onchange = function() {
+                    if (this.value === "spirit") {
+                            spirit.style.display="flex";
+                    }
+                    else{
+                            spirit.style.display="none";
+                        }
+                   
+
+                }
+                
+
+            form.onsubmit = function() {
+            
+                var img =  document.querySelector('input[name=imgItems]');
+                var cat =  document.querySelector('input[name=cat]')
+                var contents = " ";
+                if(img.files.length){
+                    contents = contents+" "+img.files[0].name
+                }
+                var formData = new FormData(form);
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', form.getAttribute('action'), true);
+                xhr.upload.onprogress = function(e) {
+                        console.log(contents)
+                    if (e.lengthComputable) {
+                        var loader = document.querySelector('#vidLoader')
+                        var count = document.querySelector('#count')
+                        var percent = parseInt((e.loaded / e.total) * 100);
+                        loader.style.width = percent+"%";
+                        count.innerHTML = contents+": "+percent+"%";
+                    }
+                };
+
+                xhr.upload.onload = function() {
+                        window.location.href = "/admin/shop/category?cat="+cat.value;
+                };
+                xhr.onerror = function(e) {
+                    console.log('Error');
+                    console.log(e);
+                };
+                xhr.send(formData)
+                return false;
+
+            }

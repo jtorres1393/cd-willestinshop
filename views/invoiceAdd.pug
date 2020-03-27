@@ -1,0 +1,220 @@
+extend layout
+
+block content
+    for item in data
+        form#mainForm.fullWidth.flex(method='POST', action=`/admin/invoice-add?id=${item.id}`)
+            #menuPanel
+                input(type="hidden",value=info[0].tax, name="tax")
+                input(type="hidden", name="cost")
+                p.mbMed.tTitle Settings
+                .menuSave.menuItem
+                    input.menuOp(type="submit", value="Add New Invoice")
+            #content.col23.colSkip
+                p.mbMed.tTitle.tCap
+                    a(href="/admin/invoices")
+                        span.tGray=`Invoices / `  
+                    a(href=`/admin/buyer-view?id=${item.id}`)
+                        span.tGray=`${item.firstName} ${item.lastName} / `    
+                    span=`${page}`
+                #itemsHold
+                    .fullWidth.flex.bBlk.bBotSm.pbXs.mbSm
+                        .col3.tBold Item
+                        .col2.flex
+                            .col3.tBold Quantity
+                            .col3.tBold Cost
+                            .col3.tBold Total
+                    input(name="cart", type="hidden")
+                    .cartHold.fullWidth.flex.mbSm.bBlk.bBotSm.pbSm(data-item="", data-cost=0, data-quantity=0)
+                        .col2.mbXs
+                            input.prime-input.itemIn(name="item", type="text", placeholder="Item Name", required)
+                        .col2.mbXs.flex
+                            .col3
+                                input.prime-input.qIn(name="quantity", type="integer", placeholder="Quantity", required)
+                            .col3
+                               input.prime-input.costIn(name="price", type="number", step="any", placeholder="Cost", required)
+                            .col3
+                                .btn.btn-prime.fullWidth.relative.deleteNodeBut
+                                    p.tBold ×
+                .fullWidth.flex.mbLrg
+                    .btn.btn-prime.fullWidth.relative.mbSm(onclick=`addField()`).mbHuge
+                        p.tBold Add New Line
+                    .col2
+                        label Shipping
+                        p
+                        input.prime-input.costIn(name="shipping", type="number", step="any", placeholder="shipping", required)
+                    .col2
+                        label Total
+                        p
+                        .btn.btn-sec.relative 
+                            p#total
+                    .fullWidth
+                        .btn.btn-sec.relative 
+                            p#grand
+                                
+
+                .info.fullWidth.flex.mbMed
+                    p.tBold.fullWidth.mbSm Buyer Info
+                    p.fullWidth.tCap.mbXs=`${item.firstName} ${item.lastName}`
+                    if item.company
+                        p.fullWidth.mbXs=`${item.company}`
+                    if item.address
+                        p.fullWidth=`${item.address}`
+                    if item.city
+                        p.fullWidth=`${item.city}`
+                            if item.state
+                                span=`, ${item.state}`
+                            if item.zip
+                                span=` ${item.zip}`
+   
+                    
+                
+                    
+
+                .fullWidth.flex
+                    if item.phone
+                        .col2
+                            .btn.btn-sec.fullWidth.relative
+                                p.tBold=item.phone
+                    if item.email
+                        a.col2(href=`mailto:${item.email}`)
+                            .btn.btn-sec.fullWidth.relative
+                                p.tBold=item.email
+
+                    
+
+    script.
+        var setListen = function(){
+            document.querySelectorAll('.itemIn').forEach(item => {
+                item.addEventListener('input', e => {
+                    var curr = getClosest(e.target, '.cartHold') 
+                    curr.setAttribute('data-item',e.target.value)
+                })
+            })
+
+            document.querySelectorAll('.qIn').forEach(item => {
+                item.addEventListener('input', e => {
+                    var curr = getClosest(e.target, '.cartHold') 
+                    curr.setAttribute('data-quantity', e.target.value)
+                    calcTotal();
+                })
+            })
+
+            document.querySelectorAll('.costIn').forEach(item => {
+                item.addEventListener('input', e => {
+                    var curr = getClosest(e.target, '.cartHold') 
+                    curr.setAttribute('data-cost',(e.target.value)*100)
+                    calcTotal();
+                })
+            })
+
+            var shipHold = document.querySelector('input[name=shipping]');
+            shipHold.addEventListener('input',calcTotal);
+
+            document.querySelectorAll('.deleteNodeBut').forEach(item => {
+                item.addEventListener('click', e => {
+                    deleteNode(e);
+                })
+            })
+            
+        }
+
+        var calcTotal = function(){
+            var items = document.getElementsByClassName('cartHold');
+            var total = 0;
+            var shipHold = document.querySelector('input[name=shipping]');
+            var taxHold = document.querySelector('input[name=tax]');
+            var tax = parseInt(taxHold.value)
+            var ship = shipHold.value
+            if(ship === null){
+                ship = 0
+            }
+            else{
+                ship = ship*100
+            }
+
+            Array.prototype.forEach.call(items , function(elem){
+                if((parseInt(elem.getAttribute('data-cost'))> 0)&&(parseInt(elem.getAttribute('data-quantity'))> 0)){
+                    cost = parseInt(elem.getAttribute("data-quantity"))*parseInt(elem.getAttribute("data-cost"))
+                    total = total+cost
+                }
+
+            });
+                cartFinal = document.querySelector('#total');
+                cartFinal.innerHTML=`Item Total: $${(Math.ceil(total/100)).toFixed(2)}`
+                grandFinal = document.querySelector('#grand');
+                grandFinal.innerHTML=`Grand Total: $${Math.ceil((total/100)+((tax/10000)*(total/100))+(ship/100)).toFixed(2)}`
+            
+        
+        }
+
+        var getClosest = function (elem, selector) {
+
+            // Element.matches() polyfill
+            if (!Element.prototype.matches) {
+                Element.prototype.matches =
+                    Element.prototype.matchesSelector ||
+                    Element.prototype.mozMatchesSelector ||
+                    Element.prototype.msMatchesSelector ||
+                    Element.prototype.oMatchesSelector ||
+                    Element.prototype.webkitMatchesSelector ||
+                    function(s) {
+                        var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+                            i = matches.length;
+                        while (--i >= 0 && matches.item(i) !== this) {}
+                        return i > -1;
+                    };
+            }
+
+            // Get the closest matching element
+            for ( ; elem && elem !== document; elem = elem.parentNode ) {
+                if ( elem.matches( selector ) ) return elem;
+            }
+            return null;
+
+        }
+
+        var addField= function(){
+            let clone = document.querySelector('.cartHold').cloneNode(true);
+            clone.setAttribute('data-item','')
+            clone.setAttribute('data-quantity',0)
+            clone.setAttribute('data-cost', 0)
+            cleanFields(clone);
+            let cd = clone.querySelector('.deleteNodeBut')
+            cd.addEventListener("click",deleteNode)
+            document.querySelector('#itemsHold').appendChild( clone );
+            setListen()
+        }
+
+        var cleanFields = function (obj) {
+                    for (var i = 0; n = obj.childNodes[i]; ++i) {
+                        if (n.childNodes && n.tagName != 'INPUT') {
+                            cleanFields(n);
+                        } else if (n.tagName == 'INPUT' && n.type == 'text') {
+                            n.value = '';
+                        }
+                        else if (n.tagName == 'INPUT' && n.type == 'number') {
+                            n.value = 0;
+                        }
+                    }
+                }
+        
+            var deleteNode= function(e){
+                var el = getClosest(e.target, '.cartHold') 
+                
+            el.parentNode.removeChild(el)
+        }
+
+        var form = document.getElementById('mainForm');
+        form.onsubmit = function() {
+             var allCap = document.getElementsByClassName('cartHold');
+                let cartOBJ = [];
+                Array.prototype.forEach.call(allCap , function(elem){
+                    cartOBJ.push( { item:elem.getAttribute("data-item"), "quantity":elem.getAttribute("data-quantity"), "cost":elem.getAttribute("data-cost")} )
+
+                });
+                cartFinal = document.querySelector('input[name=cart]');
+                cartFinal.value = JSON.stringify(cartOBJ);
+
+        }
+
+        setListen()

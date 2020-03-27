@@ -1,0 +1,164 @@
+extend layout
+
+block content
+    for item in data
+        form#mainForm.fullWidth.flex(method='POST', action=`/admin/vendor-edit?id=${item.id}`, enctype='multipart/form-data')
+            input(name="currID", value=item.id, type="hidden")
+            #menuPanel
+                p.mbMed.tTitle Settings
+                .menuSave.menuItem
+                    input.menuOp.tCap(type="submit", value="Save Changes")
+            #content.col23.colSkip
+                p.mbMed.tTitle.tCap
+                    a(href="/admin/vendors")
+                        span.tGray  Vendors /    
+                    span=`${page} ${item.name}`
+                .content-form.fullWidth.flex.mbSm
+                    .fullWidth.mbSm
+                        label Name
+                        p
+                        input.prime-input(name="name", type="text", value=item.name)
+                    .col2.mbSm.selectField.relative
+                        label Type
+                        p
+                        select.fullWidth.prime-input(name="type")
+                            option(value="store" ) Store
+                            option(value="bar", selected=item.type==="bar") Bar
+                    .col2.mbMed
+                        label Website
+                        p
+                        input.prime-input(name="web", type="text", value=item.web)
+                #locationHold.fullWidth.mbMed
+                    #sort2.principalHold.mbLrg
+                        -   var sortCount2 = 1
+                        p.mbSm.tBold Locations
+                        for loc in item.location          
+                            .sort2.singleCat.mbSm.fullWidth.flex.flexACenter(data-id=loc.id, data-order=sortCount2)
+                                .col2.relative.flex
+                                    .sortHandle
+                                    p.plSm.tCap=`${sortCount2}. ${loc.city}`
+                
+                                .col2.flex
+                                    a.col2(href="/admin/location-edit?id="+loc.id)
+                                        .btn.btn-sec.fullWidth.relative
+                                            p.tBold Edit
+                                    a.col2(href=`/admin/location-delete?id=${loc.id}&secID=${item.id}` onclick="return confirm('Are you sure?')")
+                                            .btn.btn-sec.fullWidth.relative
+                                                p.tBold Delete
+                            -   sortCount2++
+                    .newSecHold.fullWidth.mbLrg.ptSm.pbSm.plSm.prSm.flex
+                        .col2.mbSm
+                            label Address
+                            p
+                            input.prime-input(name="address", type="text")
+                        .col2.mbSm.flex
+                            .col3
+                                label City
+                                p
+                                input.prime-input(name="city", type="text")
+                            .col3
+                                label State
+                                p
+                                input.prime-input(name="state", type="text")
+                            .col3
+                                label Zip
+                                p
+                                input.prime-input(name="zip", type="text")
+                        .col3.mbSm
+                            label Yelp
+                            p
+                            input.prime-input(name="yelp", type="text")
+                        .col3.mbSm
+                            label Map
+                            p
+                            input.prime-input(name="map", type="text")
+                        .col3.mbSm
+                            label Phone
+                            p
+                            input.prime-input(name="phone", type="text")
+                        .col2.mbSm
+                            label lat
+                            p
+                            input.prime-input(name="lat", type="text")
+                        .col2.mbSm
+                            label long
+                            p
+                            input.prime-input(name="long", type="text")
+                        
+                        
+                .tTitle.mbMed Vendor Images
+                #sort1.galleryHold.flex.flexAStart
+                    input.form-control(name='sort1', type='hidden')
+                    -   var sortCount1 = 1
+                    for img in item.media
+                        .sort1.singleImg.col3.tGray(data-id=img.id, data-order=sortCount1)
+                            img(src=img.url)
+                            .fullWidth.ptXs.pbXs.tBold.deleteBtn.flex.relative
+                                p.tBold=sortCount1+"."
+                                a(href=`/admin/media-delete?id=${img.id}&section=vendors&secID=${img.rootID}` onclick="return confirm('Are you sure?')")
+                                    p.fullWidth.tBold.tRight.removeText × Remove
+                                    .sortHandle
+                        -   sortCount1++
+                    label.tBold.tWhite.col3.addButton.bgGray.relative(for="img-studio")
+                        .r34
+                        .cCenter
+                            p.menuItem.menuImgInvert.tBold add new image
+                        input#img-studio.menuOp(name="imgStudio", type="file", style="display: none", accept="images/*",multiple="multiple")
+                
+
+    script.
+            var form = document.getElementById('mainForm');            
+                
+
+            form.onsubmit = function() {
+                var img =  document.querySelector('input[name=imgStudio]');
+                var currID =  document.querySelector('input[name=currID]')
+                var contents = " ";
+                if(img.files.length){
+                    contents = contents+" "+img.files[0].name
+                }
+                var formData = new FormData(form);
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', form.getAttribute('action'), true);
+                xhr.upload.onprogress = function(e) {
+                        console.log(contents)
+                    if (e.lengthComputable) {
+                        var loader = document.querySelector('#vidLoader')
+                        var count = document.querySelector('#count')
+                        var percent = parseInt((e.loaded / e.total) * 100);
+                        loader.style.width = percent+"%";
+                        count.innerHTML = contents+": "+percent+"%";
+                    }
+                };
+
+                xhr.upload.onload = function() {
+                        window.location.href = "/admin/vendor-edit?id="+currID.value;
+                };
+                xhr.onerror = function(e) {
+                    console.log('Error');
+                    console.log(e);
+                };
+                xhr.send(formData)
+                return false;
+            }
+
+            var el1 = document.getElementById('sort1');
+            var sortable1 = Sortable.create(el1,{handle:".sortHandle", ghostClass: "sortable-ghost", onEnd: function(){
+                var el = document.getElementsByClassName('sort1');
+                var currentNumber = 1;
+                let sort1Obj = [];
+                
+                
+                Array.prototype.forEach.call(el , function(elem){
+                            elem.setAttribute("data-order", currentNumber);
+                            currentNumber++
+                            
+
+                            sort1Obj.push( { id:elem.getAttribute("data-id"), "order":elem.getAttribute("data-order")} )
+
+                        });
+                        sort1 = document.querySelector('input[name=sort1]');
+                        sort1.value = JSON.stringify(sort1Obj);
+                
+                }
+            });

@@ -1,0 +1,73 @@
+extend layout
+
+block content
+    form#mainForm.fullWidth.flex(method='POST', action='/admin/vendor-add', enctype='multipart/form-data')
+        #menuPanel
+            p.mbMed.tTitle Settings
+            .menuSave.menuItem
+                input.menuOp.tCap(type="submit", value="Add New Vendor")
+        #content.col23.colSkip
+            p.mbMed.tTitle
+                a(href="/admin/vendors")
+                    span.tGray  Vendors /    
+                span Add New Vendor
+            .content-form.fullWidth.flex.mbSm
+                .fullWidth.mbSm
+                    label Name
+                    p
+                    input.prime-input(name="name", type="text", required)
+                .col2.mbSm.selectField.relative
+                    label Type
+                    p
+                    select.fullWidth.prime-input(name="type", required)
+                        option(value="store") Store
+                        option(value="bar") Bar
+                .col2.mbMed
+                    label Website
+                    p
+                    input.prime-input(name="web", type="text")
+            .tTitle.mbMed Vendor Images
+            #sort1.galleryHold.flex.flexAStart
+                input.form-control(name='sort1', type='hidden')
+                label.tBold.tWhite.col3.addButton.bgGray.relative(for="imgProject")
+                    .r34
+                    .cCenter
+                        p.menuItem.menuImgInvert.tBold add new image
+                    input#imgProject.menuOp(name="imgItems", type="file", style="display: none", accept="images/*", multiple="multiple")
+
+    script.
+            var form = document.getElementById('mainForm');            
+                
+
+            form.onsubmit = function() {
+                var img =  document.querySelector('input[name=imgItems]');
+                var cat =  document.querySelector('input[name=cat]')
+                var contents = " ";
+                if(img.files.length){
+                    contents = contents+" "+img.files[0].name
+                }
+                var formData = new FormData(form);
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', form.getAttribute('action'), true);
+                xhr.upload.onprogress = function(e) {
+                        console.log(contents)
+                    if (e.lengthComputable) {
+                        var loader = document.querySelector('#vidLoader')
+                        var count = document.querySelector('#count')
+                        var percent = parseInt((e.loaded / e.total) * 100);
+                        loader.style.width = percent+"%";
+                        count.innerHTML = contents+": "+percent+"%";
+                    }
+                };
+
+                xhr.upload.onload = function() {
+                        window.location.href = "/admin/vendors";
+                };
+                xhr.onerror = function(e) {
+                    console.log('Error');
+                    console.log(e);
+                };
+                xhr.send(formData)
+                return false;
+
+            }
