@@ -179,7 +179,7 @@ getGrand=()=>{
                           <p className="tNews tBlue pSmall tUpper tBold tCenter">Items</p>
                         </div>
                         <div className="colFourth formCell bRight bBotSm flex relative">
-                          <p className="tNews tBlue pSmall tUpper tBold tCenter">Quantity</p>          
+                          <p className="tNews tBlue pSmall tUpper tBold tCenter">#</p>          
                         </div>
                         <div className="colFourth formCell bBotSm flex relative">
                           <p className="tNews tBlue pSmall tUpper tBold tCenter">Cost</p>          
