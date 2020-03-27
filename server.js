@@ -47,6 +47,7 @@ const buyerView = require('./routes/buyerView')
 const invoiceDash = require('./routes/invoiceDash')
 const invoiceAdd = require('./routes/invoiceAdd')
 const invoiceView = require('./routes/invoiceView')
+const invoicesOpen = require('./routes/invoicesOpen')
 
 
 //frontend
@@ -809,7 +810,7 @@ app.post(`/admin/invoices`, isLogged, async function(req,res){
   data.state = req.body.state;
   data.zip = req.body.zip;
 
-  if(req.body.firstName && req.body.lastName){
+  if(req.body.firstName || req.body.company){
     const upData = await Buyer.query()
       .insert(data)
     const getLast = await Buyer.query()
@@ -914,6 +915,9 @@ app.use(`/admin/invoice-paid?:id`, isLogged, async function(req,res){
       .patch(data)
     res.redirect(`/admin/invoice-view?id=${currID}`)
 })
+
+app.use(`/admin/invoices-open`, isLogged, invoicesOpen)
+
 
 ///functions
 //mod

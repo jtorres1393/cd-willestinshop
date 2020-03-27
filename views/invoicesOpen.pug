@@ -1,0 +1,55 @@
+extend layout
+
+block content
+    #mainForm.fullWidth.flex(method='POST', action='/admin/invoices')
+        #menuPanel
+            p.mbMed.tTitle Settings
+    
+
+
+        #sectionEditor.edit.mbLrg.colSkip.col23
+            p.mbMed.tTitle
+                a(href="/admin/invoices")
+                    span.tGray=`Invoices / `
+                span=`All Open Orders`
+            
+                            
+
+            .fullWidth.flex.mbSm.tBold.bBlk.bBotSm.pbSm
+                .col2
+                    p.tBold Buyers
+                .col2
+                    p.tBold Open Orders
+            -   var sortCount1 = 1
+            #sort1.principalHold.mbHuge
+                for item in data
+                    a.fullWidth(href="/admin/invoice-view?id="+item.id)         
+                        .sort1.singleCat.mbSm.fullWidth.flex.flexACenter.bBlk.bBotSm.pbXs.ptXs(data-id=item.id, data-order=sortCount1)
+                            .col2.relative.flex
+                                p.plSm.tCap.tBold=`${sortCount1}. `
+                                    if item.buyer[0].firstName
+                                        span=`${item.buyer[0].firstName}`
+                                        if item.buyer[0].lastName
+                                            span=` ${item.buyer[0].lastName}`
+                                    else
+                                        if item.company
+                                        span=`${item.buyer[0].company}`
+                            .col2.flex.flexACeter
+                                .col2plSm.tCap
+                                        p.prSm.tGreen=prettyDate(item.created_at)
+                                .col2.flex
+                                    .btn.btn-sec.fullWidth.relative
+                                        p.tBold Edit
+                    -   sortCount1++
+                
+
+
+        -function prettyDate(dateString){
+        //if it's already a date object and not a string you don't need this line:
+        -var date = new Date(dateString);
+        -var d = date.getDate();
+        //- -var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+        -var m = date.getMonth()+1;
+        -var y = date.getFullYear();
+        -return m+'/'+d+'/'+y;
+    -}

@@ -139,22 +139,25 @@ getGrand=()=>{
                   <p className="tNews tCenter tBlue tUpper">{`${info.phone} • `} <a href={`mailto:${info.email}`}><span>{info.email}</span></a></p>
                 </div>
                 <div className="fullWidth cosInfo flex mbLrg">
-                    <div className="colThird"></div>
+                    <div className="colThird">
+                    <p className="tBold tNews tRight prSm tBlue">SOLD TO:</p>
+                    </div>
                     <div className="colTwoThirds">
                         <div>
-                        <p className="tNews tUpper tBlue "><span className="tBold">SOLD TO:</span> {data[0].buyer[0].firstName?(`${data[0].buyer[0].firstName} ${data[0].buyer[0].lastName} `):"" }
-                        {data[0].buyer[0].company?(
-                                <span className="tUpper tBlue tBold">/ {data[0].buyer[0].company}</span>
+                        <div className="fullWidth bBlue bBotSm">
+                          <p className="tNews tUpper tBlue ">{data[0].buyer[0].firstName?(`${data[0].buyer[0].firstName} ${data[0].buyer[0].lastName} `):"" }
+                          </p>
+                        </div>
+                          {data[0].buyer[0].company?(
+                                <div className=" fullWidth bBlue bBotSm"><p className="tNews tUpper tBlue tBold">{data[0].buyer[0].company}</p></div>
                               ):("")}
-                        </p>
-                          
                           
                               
                               {data[0].buyer[0].address?(
-                                <p className="tNews tUpper tBlue"><span className="tBold invBuff">SOLD TO: </span>{data[0].buyer[0].address}</p>
+                                <p className="tNews tUpper tBlue">{data[0].buyer[0].address}</p>
                               ):("")}
                               {(data[0].buyer[0].city || data[0].buyer[0].state || data[0].buyer[0].zip)?(
-                                <p className="tNews tUpper tBlue"><span className="tBold invBuff">SOLD TO: </span>
+                                <p className="tNews tUpper tBlue">
                                         {data[0].buyer[0].city?(
                                         <span>{data[0].buyer[0].city}</span>
                                         ):("")}
