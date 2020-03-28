@@ -70,7 +70,8 @@ block content
                             p(style="color:#2f456b;font-weight:normal;text-align:left;padding-left:10px")=`$${Math.ceil(item.cost/100).toFixed(2)}`
                 tr  
                     td(colspan="2" style="background-color:#2f456b")
-                        p(style="font-family:sans-serif;font-weight:bold;text-align:center;color:#ffffff;font-size:1.5em") Pay Online Coming Soon
+                        a(href=`http://localhost:3000/invoice?id=${data.id}` style="text-decoration:none;")
+                            p(style="font-family:sans-serif;font-weight:bold;text-align:center;color:#ffffff;font-size:1.5em") View Online
                     td(style="border-bottom:1px solid #2f456b;border-right:1px solid #2f456b;padding-right:10px")
                         p(style="font-weight:bold;text-align:right")
                             span total
