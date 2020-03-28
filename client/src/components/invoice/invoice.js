@@ -198,7 +198,7 @@ getGrand=()=>{
                                 <p className="tNews tBlue tUpper  tCenter">{item.quantity}</p>          
                               </div>
                               <div className="colFourth formCell bBotSm flex relative">
-                                <p className="tNews tBlue tUpper  tCenter">{Math.ceil(item.cost/100).toFixed()}</p>          
+                                <p className="tNews tBlue tUpper  tCenter">{(item.cost/100).toFixed()}</p>          
                               </div>
                               </React.Fragment>
                             )
@@ -212,10 +212,10 @@ getGrand=()=>{
                           <p className="tNews tBlue tUpper tBold tRight">Grand</p>       
                         </div>
                         <div className="colFourth formCell bBotSm relative">
-                             <p className="tNews tBlue tLeft tUpper tBold ">{Math.ceil(this.state.total/100).toFixed(2)}</p> 
-                             <p className="tNews tBlue  tLeft tUpper tBold ">{Math.ceil(this.state.tax/100).toFixed(2)}</p> 
-                             <p className="tNews tBlue tLeft tUpper tBold ">{Math.ceil(this.state.shipping/100).toFixed(2)}</p> 
-                             <p className="tNews tBlue   tLeft tUpper tBold ">{Math.ceil(this.state.grand/100).toFixed(2)}</p>      
+                             <p className="tNews tBlue tLeft tUpper tBold ">{(this.state.total/100).toFixed(2)}</p> 
+                             <p className="tNews tBlue  tLeft tUpper tBold ">{(this.state.tax/100).toFixed(2)}</p> 
+                             <p className="tNews tBlue tLeft tUpper tBold ">{(this.state.shipping/100).toFixed(2)}</p> 
+                             <p className="tNews tBlue   tLeft tUpper tBold ">{(this.state.grand/100).toFixed(2)}</p>      
                         </div>
 
               

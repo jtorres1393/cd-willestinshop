@@ -10,8 +10,8 @@ block content
                 
             #content.col23.colSkip
                 p.mbMed.tTitle
-                    a(href="/admin/locations")
-                        span.tGray  Locations /    
+                    a(href=`/admin/vendor-edit?id=${item.rootID}`)
+                        span.tGray  Vendors /    
                     span=`Location Edit: ID.${item.id}`
                 .content-form.fullWidth.flex.mbSm
                     .col2.mbSm

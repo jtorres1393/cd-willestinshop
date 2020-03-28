@@ -38,6 +38,7 @@ const newsDash = require('./routes/newsDash')
 const newsEdit = require('./routes/newsEdit')
 const rsvpDash = require('./routes/rsvpDash')
 const emailRSVP = require('./routes/emailRSVP')
+const emailInvoice = require('./routes/emailInvoice')
 const vendorDash = require('./routes/vendorDash')
 const vendorAdd = require('./routes/vendorAdd')
 const vendorEdit = require('./routes/vendorEdit')
@@ -54,7 +55,7 @@ const invoicesOpen = require('./routes/invoicesOpen')
 const APIinfo= require('./routes/APIinfo')
 const APIshopCat= require('./routes/APIshopCat')
 const APIrsvp= require('./routes/APIrsvp')
-const APIvendors= require('./routes/APIvendors')
+const APIvendors= require('./routes/APIvendor')
 const APIinvoices= require('./routes/APIinvoices')
 
 //login
@@ -65,6 +66,16 @@ const uuidv4 = require('uuid/v4');
 const session = require('express-session');
 const LocalStrategy = require('passport-local').Strategy;
 const flash = require('connect-flash');
+// const converge = require('node-converge');
+// var conf = {
+//     username: 'adminwed598',
+//     pin: 'J8UJE3E335KXSFVDF2JUBHLD66LSIJKQ5EYU18PUN2F5RJXLH61NTN4QFFCXMZU8',
+//     merchant:  8036040049,
+//     environment: 'sandbox'
+// };
+
+// var Converge = new converge(conf);
+
 
 //appstart
 const port = process.env.PORT || 5000
@@ -649,6 +660,7 @@ app.use('/admin/rsvp-check?:id', isLogged, async function(req,res){
 })
 
 app.use('/admin/rsvp-email?:id', emailRSVP)
+app.use('/admin/email-invoice?:id', emailInvoice)
 
 
 //locations
@@ -895,6 +907,24 @@ app.use(`/admin/invoice-delete?:id`, isLogged, async function(req,res){
 })
 app.use(`/admin/invoice-email?:id`, isLogged, async function(req,res){
   const currID = req.query.id;
+  let data = {}
+  data.status = "sent"
+  const getData = await Invoices.query()
+    .where('id',currID)
+    .eager(`buyer`)
+
+  const upData = await Invoices.query()
+    .where('id',currID)
+    .patch(data)
+  const getInfo = await Info.query()
+    .where('id', 1)
+    .limit(1)
+
+    const currEmail = getData[0].buyer[0].email;
+    const infoEmail = getInfo[0].email;
+  
+    mods.sendMail(currEmail, infoEmail, `Wille's Tin Shop: Invoice`,`http://localhost:5000/admin/email-invoice?id=${currID}`)
+    
     res.redirect(`/admin/invoice-view?id=${currID}`)
 })
 app.use(`/admin/invoice-ship?:id`, isLogged, async function(req,res){
@@ -917,7 +947,27 @@ app.use(`/admin/invoice-paid?:id`, isLogged, async function(req,res){
 })
 
 app.use(`/admin/invoices-open`, isLogged, invoicesOpen)
+// app.use(`/admin/testpay`, async function(req,res){
+//   var card = {
+//     cardNumber: '4000000000000002',
+//     exp: '06/25',
+//     cvv: '232',
+//     firstName: 'Geoffroy',
+//     lastName: 'Lesage',
+//     address: '1 Main Street',
+//     zipcode: '11201'
+// };
 
+
+//   Converge.Card.Create(card).then(function (cardData)
+//       {
+//          console.log(cardData.foreignId)
+//          console.log(Converge)
+//       })
+      
+
+//     res.redirect(`/admin/invoices`)
+// })
 
 ///functions
 //mod

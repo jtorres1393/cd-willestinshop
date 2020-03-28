@@ -1,0 +1,22 @@
+.mapMarker{
+    width:100px;
+    height:60px;
+    border-radius: 60px;
+}
+
+.venMenu{
+    height:100%;
+    width: 450px;
+    position:fixed;
+    top:0;
+    right:0;
+    padding: 90px 30px;
+    overflow: hidden;
+    z-index:900;
+    
+}
+
+.venHold{
+overflow-x: hidden;
+overflow-y: scroll;
+}

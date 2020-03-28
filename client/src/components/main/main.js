@@ -8,6 +8,7 @@ import RSVP from '../rsvp/rsvp.js';
 import News from '../news/news.js';
 import About from '../about/about.js';
 import Invoice from '../invoice/invoice.js';
+import Vendors from '../vendors/vendors.js';
 
 
 class Main extends Component {
@@ -308,6 +309,7 @@ class Main extends Component {
                 <Route path='/rsvp' render={()=><RSVP openRSVP={this.openRSVP} closeRSVP={this.closeRSVP} getTime={this.getTime} resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info[0]} win={this.state.win}/>} /> 
               <div className={`relative fullWidth ${((newsActive || rsvpActive) ?"condenseStage":"")}`} style={{minHeight:win[1]}}>
                 <Switch>
+                  <Route path='/finder' render={()=><Vendors resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
                   <Route path='/shop' render={()=><Shop resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
                   <Route path='/spirits' render={()=><Spirits resizeWin={this.resizeWin} fadeIn={this.fadeIn} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
                   <Route path='/' render={()=><Home resizeWin={this.resizeWin} checkSection={this.checkSection} info={this.state.info} win={this.state.win}/>} />

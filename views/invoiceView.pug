@@ -156,9 +156,9 @@ block content
 
             });
                 cartFinal = document.querySelector('#total');
-                cartFinal.innerHTML=`Item Total: $${(Math.ceil(total/100)).toFixed(2)}`
+                cartFinal.innerHTML=`Item Total: $${((total/100)).toFixed(2)}`
                 grandFinal = document.querySelector('#grand');
-                grandFinal.innerHTML=`Grand Total: $${Math.ceil((total/100)+((tax/10000)*(total/100))+(ship/100)).toFixed(2)}`
+                grandFinal.innerHTML=`Grand Total: $${((total/100)+((tax/10000)*(total/100))+(ship/100)).toFixed(2)}`
             
         
         }

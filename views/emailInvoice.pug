@@ -1,0 +1,119 @@
+extend layoutEmailWhite
+
+block content
+        span.preheader(style="display: none !important; visibility: hidden; opacity: 0; color: transparent; height: 0; width: 0;")=`Wille's Tin Shop Invoice "${data.id}"".`
+        #mainForm(style="text-transform: uppercase; padding: 0 30px 0 30px; width: 100%; font-family: courier, monospace;text-transform:uppercase;box-sizing:border-box;")
+            table.eCenter(style="border-collapse: collapse;text-transform: uppercase;width: 100%; background-color: #ffffff; margin: 0 auto;position:relative;box-sizing:border-box;color:#2f456b;text-align:center;")
+                
+                tr
+                    td(style="width:25%")
+                    td(style="width:25%")
+                    td(style="width:25%")
+                    td(style="width:25%")
+                tr
+                    td(colspan="4" style="position:relative")
+                        p(style="color:#2f456b;text-align:left;")=`INVOICE # ${data.id}`
+                        img(src="https://storage.googleapis.com/willestinshop/images/logo-blue.png", style="width:60%;height:auto;margin:0 auto;max-width:450px")
+                        img(src="https://storage.googleapis.com/willestinshop/images/willes-service-blue.png", style="width:20%;height:auto;margin:0 auto;max-width:200px;position:absolute;top:10px;right:-10px")
+
+                        
+                tr
+                    td(colspan="4")
+                        p(style="color:#2f456b;text-align:center;")=info.address+" • "+info.city+" "+info.state
+                            br
+                            span=info.phone                    
+                        a(href=`mailto:${info.email}`)
+                            p(style="color:#2f456b;text-align:center;")=info.email
+                tr
+                    td( style="text-align:rigth;vertical-align:top")
+                        p(style="font-weight:bold")=prettyDate(data.created_at)
+                            br
+                            span SOLD TO
+                    td(colspan="3" style="text-align:left;vertical-align:top;padding-bottom:20px")
+                        if data.buyer[0].firstName
+                            .fullWidth(style="border-bottom:1px solid #2f456b")
+                                p(style="line-height:.5em")=`${data.buyer[0].firstName} ${data.buyer[0].lastName}`
+                        if data.buyer[0].company
+                            .fullWidth(style="border-bottom:1px solid #2f456b")
+                                p(style="line-height:.5em")=`${data.buyer[0].company} `
+                        if data.buyer[0].address
+                            .fullWidth
+                                p(style="line-height:.5em")=`${data.buyer[0].address} `
+                        if data.buyer[0].city || data.buyer[0].state || data.buyer[0].zip
+                            p(style="line-height:.5em")
+                                if data.buyer[0].city
+                                    span=`${data.buyer[0].city}`
+                                if data.buyer[0].state
+                                    span=`, ${data.buyer[0].state}`
+                                if data.buyer[0].zip
+                                    span=` ${data.buyer[0].zip}`
+                        if data.buyer[0].phone
+                            p(style="line-height:.5em")=data.buyer[0].phone
+                tr
+                    td(colspan="4", style="border-bottom:1px solid #2f456b;height:0")
+                tr
+                    td(style="height:0;border-top:1px solid #2f456b;margin-bottom:40px;", colspan="4")
+                tr
+                    td(style="border-bottom:1px solid #2f456b;border-right:1px solid #2f456b" colspan="2")
+                        p(style="color:#2f456b;font-weight:bold;text-align:left") ITEM
+                    td(style="border-bottom:1px solid #2f456b;border-right:1px solid #2f456b" colspan="1")
+                        p(style="color:#2f456b;font-weight:bold;text-align:center") Quantity
+                    td(style="border-bottom:1px solid #2f456b" colspan="1")
+                        p(style="color:#2f456b;font-weight:bold;text-align:left;padding-left:10px") COST
+                for item in cart
+                    tr
+                        td(style="border-bottom:1px solid #2f456b;border-right:1px solid #2f456b" colspan="2")
+                            p(style="color:#2f456b;font-weight:normal;text-align:left")=item.item
+                        td(style="border-bottom:1px solid #2f456b;border-right:1px solid #2f456b" colspan="1")
+                            p(style="color:#2f456b;font-weight:normal;text-align:center")=item.quantity
+                        td(style="border-bottom:1px solid #2f456b" colspan="1")
+                            p(style="color:#2f456b;font-weight:normal;text-align:left;padding-left:10px")=`$${Math.ceil(item.cost/100).toFixed(2)}`
+                tr  
+                    td(colspan="2" style="background-color:#2f456b")
+                        p(style="font-family:sans-serif;font-weight:bold;text-align:center;color:#ffffff;font-size:1.5em") Pay Online Coming Soon
+                    td(style="border-bottom:1px solid #2f456b;border-right:1px solid #2f456b;padding-right:10px")
+                        p(style="font-weight:bold;text-align:right")
+                            span total
+                            br
+                            span tax
+                            br
+                            span shipping
+                            br
+                        p(style="font-weight:bold;text-align:right") total
+                    td(style="border-bottom:1px solid #2f456b;padding-left:10px")
+                        p(style="font-weight:normal;text-align:left")
+                            span#total=`$${(total/100).toFixed(2)}`
+                            br
+                            span#tax=`$${(tax/100).toFixed(2)}`
+                            br
+                            span=`$${(data.shipping/100).toFixed(2)}`
+                            br
+                        p#grand(style="font-weight:bold;text-align:left")=`$${(grand/100).toFixed(2)}`
+
+                tr
+                    td(style="height:0;border-top:1px solid #2f456b;margin-bottom:40px;", colspan="4")
+                tr 
+                    td(colspan="4")
+                        p Thank you for your business
+                            br
+                            span Kindest regards,
+                            
+                        p Wille’s Tin Shop
+                            
+        img(src="https://storage.googleapis.com/willestinshop/images/willes-icons-blue.png", style="display:block;width:100%;height:auto; margin:0 auto; position:relative;box-sizing:border-box;box-sizing:border-box;max-width:250px")
+        
+                    
+
+
+        
+        -function prettyDate(dateString){
+            //if it's already a date object and not a string you don't need this line:
+            -var date = new Date(dateString);
+            -var d = date.getDate();
+            //- -var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+            -var m = date.getMonth()+1;
+            -var y = date.getFullYear();
+            -return m+'/'+d+'/'+y;
+        -}
+
+
