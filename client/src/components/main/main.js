@@ -23,7 +23,8 @@ class Main extends Component {
             newsActive:false,
             mobile: false,
             mobileMenu: false,
-            rsvpActive: false
+            rsvpActive: false,
+            mapActive:false,
 
         }
 
@@ -232,7 +233,7 @@ class Main extends Component {
       {info.length ?(
         <div id="appContain" style={{width: this.state.win[0]}} className={`relative ${newsActive?"inverse":""}`}>
             <Link to="/"><div className={`smallLogo ${((this.state.page !== "home" && this.state.page !=="news") || (this.state.infoActive  ) )?"activeLogo":""}`} data-page="home" onClick={this.goHome.bind(this)}>
-                <img alt="willes-name" className={`fullWidth fullImg `} src={`images/wordmark.svg`} data-page="home"></img>
+                <img alt="willes-name" className={`fullWidth fullImg `} src={`/images/wordmark.svg`} data-page="home"></img>
             </div></Link>
             {mobile?(
                 <React.Fragment>
@@ -309,7 +310,7 @@ class Main extends Component {
                 <Route path='/rsvp' render={()=><RSVP openRSVP={this.openRSVP} closeRSVP={this.closeRSVP} getTime={this.getTime} resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info[0]} win={this.state.win}/>} /> 
               <div className={`relative fullWidth ${((newsActive || rsvpActive) ?"condenseStage":"")}`} style={{minHeight:win[1]}}>
                 <Switch>
-                  <Route path='/finder' render={()=><Vendors resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
+                  <Route path='/vendors' render={()=><Vendors resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
                   <Route path='/shop' render={()=><Shop resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
                   <Route path='/spirits' render={()=><Spirits resizeWin={this.resizeWin} fadeIn={this.fadeIn} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
                   <Route path='/' render={()=><Home resizeWin={this.resizeWin} checkSection={this.checkSection} info={this.state.info} win={this.state.win}/>} />
@@ -321,11 +322,11 @@ class Main extends Component {
                 <div className="footer fullWidth ">
                   <div className="fullStage eCenter flex flexACenter bWhite bTopSm pbSm ptSm footerFlex">
                     <div className="col3 iconHold flex flexACenter">
-                        <img alt="icon-roxcrew" className="col3" src={`images/logo-roxcrew${newsActive?"-rust":""}.svg`}></img>
+                        <img alt="icon-roxcrew" className="col3" src={`/images/logo-roxcrew${newsActive?"-rust":""}.svg`}></img>
                       
-                          <img alt="icon-services" className="col3" src={`images/logo-service${newsActive?"-rust":""}.svg`}></img>
+                          <img alt="icon-services" className="col3" src={`/images/logo-service${newsActive?"-rust":""}.svg`}></img>
                       
-                        <img alt="icon-ca-spirits" className="col3" src={`images/logo-ca-spirits${newsActive?"-rust":""}.svg`}></img>
+                        <img alt="icon-ca-spirits" className="col3" src={`/images/logo-ca-spirits${newsActive?"-rust":""}.svg`}></img>
                     </div>
                     <div className="address">
                         <p className="tDetails tWhite tCenter tUpper">{`${info[0].address}`}</p>
@@ -343,7 +344,7 @@ class Main extends Component {
             <div className={"infoHold fixedScreen fullWidth ptLrg fullHeight bgvodka "+(this.state.infoActive?('active'):(''))}>
                   <div className="centeredContent fullWidth flex flexACenter pbLrg">
                   <div className="goodSpiritsHold col2 eCenter mtLrg mbLrg">
-                      <img alt="icon-good-spirits" className="col23 eCenter" src="images/logo-goodspirits.svg"></img>
+                      <img alt="icon-good-spirits" className="col23 eCenter" src="/images/logo-goodspirits.svg"></img>
                   </div>
                   <div className="textHold col2 eCenter ptLrg">
                   <div className="info mbHuge col23 eCenter tWhite tCenter" dangerouslySetInnerHTML={{ __html : info[0].about}}></div>

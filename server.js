@@ -57,6 +57,7 @@ const APIshopCat= require('./routes/APIshopCat')
 const APIrsvp= require('./routes/APIrsvp')
 const APIvendors= require('./routes/APIvendor')
 const APIinvoices= require('./routes/APIinvoices')
+const APIloc= require('./routes/APIloc')
 
 //login
 //login
@@ -990,6 +991,7 @@ app.use('/api/shopCat', APIshopCat);
 app.use('/api/rsvp', APIrsvp);
 app.use('/api/vendors', APIvendors);
 app.use('/api/invoices', APIinvoices);
+app.use('/api/loc', APIloc);
 
 app.use('/api/rsvp-submit', async function(req,res){
   let data = {};

@@ -5,7 +5,7 @@ const router = express.Router()
 router.get('/', async (req, res) => {
     const currType = req.query.type
   const stores = await Vendor.query()
-          .where('type', currType)
+          .where('type', 'store')
           .orderBy('name','asc')
           .eager('[location(orderDown), media(orderDown, onlyPage) ]', {
             onlyPage: (builder) => {
@@ -19,8 +19,23 @@ router.get('/', async (req, res) => {
             }
           })
 
+  const bars = await Vendor.query()
+      .where('type', 'bar')
+      .orderBy('name','asc')
+      .eager('[location(orderDown), media(orderDown, onlyPage) ]', {
+        onlyPage: (builder) => {
+          builder.where('rootPage', 'vendor');
+          },
+        orderDown: (builder) => {
+        builder.orderBy('order','asc')
+        },
+        limit: (builder) => {
+        builder.limit(1)
+        }
+      })
+
   
-    res.json({data:stores});
+    res.json({data:stores, bars:bars});
 
   
 

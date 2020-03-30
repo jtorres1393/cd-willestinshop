@@ -21,6 +21,14 @@ class Location extends Model {
             from:'location.id',
             to: 'media.rootID'
           }
+        },
+        vendor:{
+          relation: HasManyRelation,
+          modelClass: `${__dirname}/vendor`,
+          join:{
+            from:'location.rootID',
+            to: 'vendor.id'
+          }
         }
 
 

@@ -1,22 +1,123 @@
 .mapMarker{
-    width:100px;
-    height:60px;
-    border-radius: 60px;
+    width: 100px;
+    height:100px;
+    background-size: cover;
+    background-image: url('/images/logo-service-rust.svg');
+}
+
+.mapBar{
+  width: 100px;
+  height:100px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-image: url('/images/logo-spirits-blue.svg');
+}
+
+.mapWilles{
+    width: 100px;
+    height:100px;
+    background-size: cover;
+    background-image: url('/images/logo-tiny-rust.svg');
 }
 
 .venMenu{
-    height:100%;
-    width: 450px;
+    height:70%;
+    width: 350px;
     position:fixed;
-    top:0;
-    right:0;
-    padding: 90px 30px;
+    top:50%;
+    transform: translateY(-50%);
+    right: var(--lrg);
+    padding: 60px 30px 30px 30px;
     overflow: hidden;
-    z-index:900;
+    z-index:500;
+    transition: transform .45s ease-out;
     
 }
+
+
 
 .venHold{
 overflow-x: hidden;
 overflow-y: scroll;
 }
+
+
+.tipHold{
+  height:70%;
+  width: 350px;
+  position:fixed;
+  top:50%;
+  transform: translate(0%,150%);
+  right: var(--med);
+  padding: 30px 30px;
+  overflow: hidden;
+  z-index:510;
+  transition: transform .5s ease-out;
+  
+}
+
+.tipOff{
+  position:fixed;
+  top:calc(var(--lrg) + 40px);
+  right: 340px;
+  z-index: 512;
+  width:40px;
+}
+
+.tipHold.active{
+  transform: translate(0,-50%);
+}
+
+
+
+.hover {
+animation: hover 2s ease-in-out infinite;
+}
+
+.sizer{
+    animation: size 2s ease-in-out infinite;
+    }
+    
+
+.singleVend:hover{
+    padding-left: 20px;
+    cursor: pointer;
+}
+
+.venMenu.active{
+  transform: translateY(-55%);
+}
+
+.typeHold{
+  position:fixed;
+  z-index: 570;
+  bottom:var(--lrg);
+  right:var(--lrg);
+  /* transform:translateX(-50%); */
+  width: 300px;
+}
+
+.typeBut{
+  border-radius: 100px;
+  padding: 8px 0;
+  cursor: pointer;
+}
+
+.typeBut:hover{
+  filter: drop-shadow(1px 1px 5px rgba(0,0,0,.3));
+}
+
+
+
+@keyframes hover {
+    50% {
+      transform: translateY(-50%);
+    }
+  }
+
+  @keyframes size {
+    50% {
+      transform:scale(1.1);
+    }
+  }
