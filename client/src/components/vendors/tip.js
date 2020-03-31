@@ -91,7 +91,7 @@ class Tip extends Component {
               <p className="tDetails tUpper fullWidth">{curr.address}</p>
               <p className="tDetails tUpper fullWidth">{`${curr.city}, ${curr.state} ${curr.zip}`}</p>
               <p className="tDetails tUpper mbSm fullWidth">{`${curr.phone}`}</p></a>
-                <a className="fullWidth mbMed" href={curr.yelp}><p className="tDetails tUpper fullWidth mbMed">Follow {curr.vendor[0].name}</p></a>
+                <a className="fullWidth mbMed" href={curr.yelp}><p className="tDetails tUpper fullWidth mbMed">Follow {curr.vendor?(curr.vendor[0].name):("Online")}</p></a>
               </div>
               {curr.media?(
                   curr.media.map((img, p)=>{
