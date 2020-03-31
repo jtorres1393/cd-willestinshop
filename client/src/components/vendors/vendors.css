@@ -60,12 +60,6 @@ overflow-x: hidden;
 overflow-y: hidden;
 }
 
-.venListHold{
-  overflow-x: hidden;
-  overflow-y: scroll;
-  position:relative;
-  }
-
   .venMenu .venListHold{
     transform:translateY(0);
     transition: transform .45s ease-out;
@@ -75,7 +69,10 @@ overflow-y: hidden;
   transform:translateY(-120%)
 }
   
-
+.venListWindow{
+  overflow-y:scroll;
+  overflow-x:hidden;
+}
 
 .tipHold{
   height:auto;
@@ -84,11 +81,11 @@ overflow-y: hidden;
   
 }
 .tipOff{
-  position:fixed;
+  position:absolute;
   opacity: 0;
   pointer-events: none;
-  bottom:calc(var(--sm) + 10px );
-  right: 380px;
+  bottom:var(--xs);
+  left: var(--sm);
   z-index: 900;
   width:60px;
 }
@@ -197,11 +194,6 @@ animation: hover 2s ease-in-out infinite;
     .typeHold{
       /* transform:translateX(-50%); */
       width: calc(100% - var(--sm) * 2);
-    }
-
-    .tipOff{
-      bottom:calc(var(--lrg) + 10px );
-      right: 400px;
     }
     
   }

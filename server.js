@@ -685,6 +685,7 @@ app.post('/admin/vendor-add', m.fields([{name:'imgItems', maxCount:10}]), async 
   data.web = req.body.web;
   data.type = req.body.type;
   data.slug = (req.body.name).replace(/[^A-Z0-9]+/ig, "_");
+  data.slug = (data.slug).toLowerCase();
 
   const upData = await Vendor.query()
     .insert(data);
@@ -710,6 +711,7 @@ app.post(`/admin/vendor-edit?:id`, m.fields([{name:"imgStudio", maxCount: 10}]),
       data.web = req.body.web;
       data.type=req.body.type;
       data.slug = (req.body.name).replace(/[^A-Z0-9]+/ig, "_");
+      data.slug = (data.slug).toLowerCase();
 
 
       const upData = await Vendor.query()

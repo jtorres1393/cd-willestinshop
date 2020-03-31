@@ -238,11 +238,7 @@ class Vendors extends Component {
     
     return (
       <React.Fragment>
-        <Link to="/vendors">
-            <div className={`tipOff backBut ${tipActive?"active":''}`}>
-               <img alt="back-button" className="fullImg" src="/images/button-back.svg"></img>
-             </div>
-             </Link>
+   
         <div className="fullWidth relative" style={{height: win[1]}}>
             <div className="typeHold flex">
               <Link className="col2" to="/vendors">
@@ -256,9 +252,14 @@ class Vendors extends Component {
             
 
         <div className={`venMenu ${tipActive?"active":''} ${barActive?"bgBlue":'bgRust'} ${hideVen?"hideInfo":''}`}>
+        <Link to="/vendors" className={`tipOff backBut ${tipActive?"active":''}`}>
+            <div className={`fullWidth`}>
+               <img alt="back-button" className="fullImg" src="/images/button-back.svg"></img>
+             </div>
+             </Link>
           <div className="hideVen" onClick={this.props.venToggle.bind(this)}><p className="tHeroSub tWhite tUpper">{this.props.hideVen?"Show Info":"Hide Info"}</p></div>
             <div className="venHold fullWidth fullHeight relative">
-            
+                <div className="venListWindow fullWidth fullHeight">
                 <div className="venListHold fullWidth plMed prMed">
                 <h1 className="mbMed tWhite mtSm">{barActive?("Proudly Served At:"):("Proudly Carried By:")}</h1>
               {barActive?(
@@ -278,6 +279,7 @@ class Vendors extends Component {
                                   )
                                 })}
                           </div>
+                        
                         </div>
                       
 
@@ -306,6 +308,7 @@ class Vendors extends Component {
                         )
                       })
               )}
+                </div>
                 </div>
                 <div className={`fullWidth fullHeight tipListHold ${tipActive?"active":''}`}>
                   <Route path='/vendors/*' render={()=><Tip  moveMap={this.moveMap} hideTip={this.hideTip} showTip={this.showTip} tipActive={this.state.tipActive} barOn={this.barOn} win={this.state.win}/>} />
