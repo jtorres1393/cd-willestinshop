@@ -78,8 +78,10 @@ class Tip extends Component {
                  
                  {curr.vendor[0].media.length?(
                     <img className="fullImg mbSm" src={curr.vendor[0].media[0].url}></img>
-                 ):('')}
-                <h1 className="mbSm tCap">{curr.vendor[0].name}</h1>
+                 ):(
+                  <h1 className="mbSm tCap">{curr.vendor[0].name}</h1>
+                 )}
+                
                 {curr.vendor[0].web?(
                   <a href={curr.vendor[0].web} target="blank" className="fullWidth"><p className="tDetails tUpper mbSm">{curr.vendor[0].web}</p></a>
                ):('')}
@@ -91,7 +93,9 @@ class Tip extends Component {
               <p className="tDetails tUpper fullWidth">{curr.address}</p>
               <p className="tDetails tUpper fullWidth">{`${curr.city}, ${curr.state} ${curr.zip}`}</p>
               <p className="tDetails tUpper mbSm fullWidth">{`${curr.phone}`}</p></a>
-                <a className="fullWidth mbMed" href={curr.yelp}><p className="tDetails tUpper fullWidth mbMed">Follow {curr.vendor?(curr.vendor[0].name):("Online")}</p></a>
+              {curr.yelp?(
+                  <a className="fullWidth mbMed" href={curr.yelp}><p className="tDetails tUpper fullWidth mbMed">Follow {curr.vendor?(curr.vendor[0].name):("Online")}</p></a>
+                ):('')}
               </div>
               {curr.media?(
                   curr.media.map((img, p)=>{
