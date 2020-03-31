@@ -65,6 +65,10 @@ overflow-y: hidden;
     transition: transform .45s ease-out;
   }
 
+  .venMenu a:hover{
+    color: var(--white);
+    font-weight: bold;
+  }
 .venMenu.active .venListHold{
   transform:translateY(-120%)
 }
