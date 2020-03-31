@@ -897,13 +897,14 @@ text-align-last:center;
 	  .singleName .tTitle{font-size:.875em;}
   }
 
-  @media all and (max-width:700px){
+  @media all and (max-width:750px){
 	.tStroke{-webkit-text-stroke-width: 3px;}
   }
   @media all and (max-width: 600px){
 	
 	p{font-size: 1em;}
 	h1{font-size:1.5em;}
+	h2{font-size: 2em}
 	h3, .newsSub{font-size:.875em}
 	.tDetails{font-size:1em;}
 	.tName{font-size: 2.5em;}
@@ -913,7 +914,6 @@ text-align-last:center;
 }
 
 @media all and (max-width:500px){
-	h2{font-size: 2em}
 	p{font-size: 1em}
 }
 

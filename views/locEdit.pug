@@ -58,12 +58,12 @@ block content
                     input.form-control(name='sort1', type='hidden')
                     input.form-control(name='currID', type='hidden', value=item.id)
                     -   var sortCount1 = 1
-                    for img in item.media
+                    for img in data[0].media
                         .sort1.singleImg.col3.tGray(data-id=img.id, data-order=sortCount1)
                             img(src=img.url)
                             .fullWidth.ptXs.pbXs.tBold.deleteBtn.flex.relative
                                 p.tBold=sortCount1+"."
-                                a(href=`/admin/media-delete?id=${img.id}&secID=${item.id}&sec=location-edit` onclick="return confirm('Are you sure?')")
+                                a(href=`/admin/media-delete?id=${img.id}&section=location-edit&sec=${item.id}` onclick="return confirm('Are you sure?')")
                                     p.fullWidth.tBold.tRight.removeText × Remove
                                     .sortHandle
                         -   sortCount1++
@@ -75,21 +75,29 @@ block content
 
     script.
             var form = document.getElementById('mainForm');
-            
 
-            var checkType = document.getElementById('typeCheck')
-            var spirit = document.getElementById('spirit')
+                
 
-                checkType.onchange = function() {
-                    if (this.value === "spirit") {
-                            spirit.style.display="flex";
-                    }
-                    else{
-                            spirit.style.display="none";
-                        }
-                   
+            var el1 = document.getElementById('sort1');
+            var sortable1 = Sortable.create(el1,{handle:".sortHandle", ghostClass: "sortable-ghost", onEnd: function(){
+                var el = document.getElementsByClassName('sort1');
+                var currentNumber = 1;
+                let sort1Obj = [];
+                
+                
+                Array.prototype.forEach.call(el , function(elem){
+                    elem.setAttribute("data-order", currentNumber);
+                    currentNumber++
+                    
 
+                    sort1Obj.push( { id:elem.getAttribute("data-id"), "order":elem.getAttribute("data-order")} )
+
+                });
+                sort1 = document.querySelector('input[name=sort1]');
+                sort1.value = JSON.stringify(sort1Obj);
+                
                 }
+            });
                 
 
             form.onsubmit = function() {
@@ -125,3 +133,5 @@ block content
                 return false;
 
             }
+
+            

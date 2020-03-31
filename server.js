@@ -100,7 +100,7 @@ app.set('view engine', 'pug');
 
 
 //AUTHENTICATION CARD
-app.get(['/','/news','/spirits', '/info', '/rsvp','/shop'], async function(request, response) {
+app.get(['/','/news','/spirits', '/info', '/rsvp','/shop', '/vendors', '/vendors/*'], async function(request, response) {
   var page = "default"
     mods.metaChange(response,page);
 });
@@ -684,6 +684,7 @@ app.post('/admin/vendor-add', m.fields([{name:'imgItems', maxCount:10}]), async 
   data.name = req.body.name;
   data.web = req.body.web;
   data.type = req.body.type;
+  data.slug = (req.body.name).replace(/[^A-Z0-9]+/ig, "_");
 
   const upData = await Vendor.query()
     .insert(data);
@@ -708,6 +709,7 @@ app.post(`/admin/vendor-edit?:id`, m.fields([{name:"imgStudio", maxCount: 10}]),
       data.name=req.body.name;
       data.web = req.body.web;
       data.type=req.body.type;
+      data.slug = (req.body.name).replace(/[^A-Z0-9]+/ig, "_");
 
 
       const upData = await Vendor.query()
@@ -802,6 +804,10 @@ app.post('/admin/location-edit?:id',m.fields([{name:"imgItems", maxCount: 10}]) 
     (req.files.imgItems).forEach((e)=>{
       mods.uploadMedia(e,"images","header" ,"location",currID);
     })
+  }
+
+  if(req.body.sort1){
+    mods.sort(req.body.sort1, Media)
   }
 
   res.redirect(`/admin/location-edit?id=${currID}`)
@@ -924,7 +930,7 @@ app.use(`/admin/invoice-email?:id`, isLogged, async function(req,res){
     const currEmail = getData[0].buyer[0].email;
     const infoEmail = getInfo[0].email;
   
-    mods.sendMail(currEmail, infoEmail, `Wille's Tin Shop: Invoice`,`http://localhost:5000/admin/email-invoice?id=${currID}`)
+    mods.sendMail(currEmail, infoEmail, `Wille's Tin Shop: Invoice`,`https://www.willestinshop.com/admin/email-invoice?id=${currID}`)
     
     res.redirect(`/admin/invoice-view?id=${currID}`)
 })

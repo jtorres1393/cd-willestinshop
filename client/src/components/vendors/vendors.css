@@ -1,3 +1,8 @@
+.mapHold{
+  position: fixed;
+  top:0;
+  left:0;
+}
 .mapMarker{
     width: 100px;
     height:100px;
@@ -22,52 +27,91 @@
 }
 
 .venMenu{
-    height:70%;
-    width: 350px;
+    height:calc(100% - var(--sm) * 2);
+    width: 450px;
     position:fixed;
-    top:50%;
-    transform: translateY(-50%);
-    right: var(--lrg);
-    padding: 60px 30px 30px 30px;
+    bottom:var(--sm);
+    transform: translate(0,0);
+    right: var(--sm);
+    padding: 50px 0 50px 0;
     overflow: hidden;
     z-index:500;
-    transition: transform .45s ease-out;
+    border-radius: 10px;
+    filter:drop-shadow(1px 1px 5px rgba(0,0,0,0.3));
+    transition: height .3s ease-in;
     
 }
+
+.hideInfo{
+  height: 50px;
+  padding:0;
+}
+
+.hideInfo .venHold{
+  opacity:0;
+  pointer-events:none;
+}
+
 
 
 
 .venHold{
 overflow-x: hidden;
-overflow-y: scroll;
+overflow-y: hidden;
 }
+
+.venListHold{
+  overflow-x: hidden;
+  overflow-y: scroll;
+  position:relative;
+  }
+
+  .venMenu .venListHold{
+    transform:translateY(0);
+    transition: transform .45s ease-out;
+  }
+
+.venMenu.active .venListHold{
+  transform:translateY(-120%)
+}
+  
 
 
 .tipHold{
-  height:70%;
-  width: 350px;
-  position:fixed;
-  top:50%;
-  transform: translate(0%,150%);
-  right: var(--med);
-  padding: 30px 30px;
-  overflow: hidden;
-  z-index:510;
-  transition: transform .5s ease-out;
+  height:auto;
+  width: 100%;
+  position:relative;
   
 }
-
 .tipOff{
   position:fixed;
-  top:calc(var(--lrg) + 40px);
-  right: 340px;
-  z-index: 512;
-  width:40px;
+  opacity: 0;
+  pointer-events: none;
+  bottom:calc(var(--sm) + 10px );
+  right: 380px;
+  z-index: 900;
+  width:60px;
+}
+.tipOff.active{
+  opacity: 1;
+  pointer-events: fill;
 }
 
-.tipHold.active{
-  transform: translate(0,-50%);
+.tipListHold{
+  transform: translateY(0);
+  position: absolute;
+  top:100%;
+  transition: transform .5s ease-out;
+  z-index: 600;
+  overflow-y: scroll;
 }
+
+.tipListHold.active{
+  transform: translateY(-100%);
+}
+
+
+
 
 
 
@@ -85,15 +129,12 @@ animation: hover 2s ease-in-out infinite;
     cursor: pointer;
 }
 
-.venMenu.active{
-  transform: translateY(-55%);
-}
 
 .typeHold{
   position:fixed;
   z-index: 570;
-  bottom:var(--lrg);
-  right:var(--lrg);
+  bottom:var(--sm);
+  left:var(--sm);
   /* transform:translateX(-50%); */
   width: 300px;
 }
@@ -108,6 +149,19 @@ animation: hover 2s ease-in-out infinite;
   filter: drop-shadow(1px 1px 5px rgba(0,0,0,.3));
 }
 
+.footerHold.mapActive, .mapActive .footerFlex, .mapActive .footer{
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hideVen{
+  position: absolute;
+  z-index:700;
+  bottom:10px;
+  font-size: .7em;
+  right: var(--sm);
+  cursor: pointer;
+}
 
 
 @keyframes hover {
@@ -120,4 +174,34 @@ animation: hover 2s ease-in-out infinite;
     50% {
       transform:scale(1.1);
     }
+  }
+
+  @media all and (max-width:750px){
+    .venMenu{
+      height:calc(100% - var(--lrg) * 2);
+      width: calc(100% - var(--sm) * 2);
+      bottom:var(--lrg);
+      padding: 50px 0 50px 0;
+      overflow: hidden;
+      z-index:500;
+      border-radius: 10px;
+      filter:drop-shadow(1px 1px 5px rgba(0,0,0,0.3));
+      transition: height .3s ease-in;
+    }
+
+    .hideInfo{
+      height: 50px;
+      padding:0;
+    }
+
+    .typeHold{
+      /* transform:translateX(-50%); */
+      width: calc(100% - var(--sm) * 2);
+    }
+
+    .tipOff{
+      bottom:calc(var(--lrg) + 10px );
+      right: 400px;
+    }
+    
   }

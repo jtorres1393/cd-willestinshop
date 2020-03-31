@@ -20,7 +20,8 @@ class Vendors extends Component {
             center:{lat:33.8191142,lng:-118.1780234},
             tipActive:false,
             curr:[],
-            barActive:false
+            barActive:false,
+            hideVen: false
 
         }
 
@@ -32,12 +33,19 @@ class Vendors extends Component {
       
     }
 
+    componentWillUnmount(){
+      this.props.mapOff();
+      this.props.venOff();
+    }
+
     getData=()=>{
       
       fetch(('/api/vendors?type=store'))
       .then(res => res.json())
       .then(data => this.setState({
-         data: data.data, bars:data.bars}));
+         data: data.data, bars:data.bars},()=>{
+          this.props.mapOn();
+         }));
       
     }
     
@@ -47,12 +55,17 @@ class Vendors extends Component {
       var data = this.state.data;
       data.forEach((el)=>{
           if (el.location.length){
-            el.location.forEach((loc)=>{
+            el.location.forEach((loc, i)=>{
               markers.push(
+                
                 <VenMark
                 lat={loc.lat}
+                slug={el.slug}
+                loc={i+1}
                 lng={loc.long}
+                
                 />
+              
                 )
             })
           }
@@ -68,11 +81,13 @@ class Vendors extends Component {
       var data = this.state.bars;
       data.forEach((el)=>{
           if (el.location.length){
-            el.location.forEach((loc)=>{
+            el.location.forEach((loc,i)=>{
               markers.push(
                 <BarMark
                 lat={loc.lat}
                 lng={loc.long}
+                slug={el.slug}
+                loc={i+1}
                 />
                 )
             })
@@ -92,12 +107,15 @@ class Vendors extends Component {
     // }
 
     moveMap=(lat,lng)=>{
-      this.setState({center:{lat:lat,lng:lng}})
+      this.setState({center:{lat:lat*.9999,lng:lng*.99985}})
     }
 
 
     showTip=()=>{
       this.setState({tipActive:true})
+    }
+    hideTip=()=>{
+      this.setState({tipActive:false})
     }
 
     barOn = ()=>{
@@ -107,6 +125,8 @@ class Vendors extends Component {
     barOff = ()=>{
       this.setState({barActive:false})
     }
+
+ 
   
 
 
@@ -192,12 +212,20 @@ class Vendors extends Component {
                       }
                   ]
               }
-          ]
+          ],
+          zoomControl: false,
+              mapTypeControl: false,
+              scaleControl: false,
+              streetViewControl: false,
+              rotateControl: false,
+              fullscreenControl: false
+          
         };
       const { win } = this.props;
       const { data } = this.state;
       const {bars} = this.state;
       const {tipActive} = this.state;
+      const {hideVen} = this.props;
     
 
       const defaultProps = {
@@ -205,11 +233,17 @@ class Vendors extends Component {
           lat: 33.8191142,
           lng:  -118.1780234
         },
-        zoom: 15
+        zoom: 14
       }
     
     return (
       <React.Fragment>
+        <Link to="/vendors">
+            <div className={`tipOff backBut ${tipActive?"active":''}`}>
+               <img alt="back-button" className="fullImg" src="/images/button-back.svg"></img>
+             </div>
+             </Link>
+        <div className="fullWidth relative" style={{height: win[1]}}>
             <div className="typeHold flex">
               <Link className="col2" to="/vendors">
                 <div className={`typeBut fullWidth ${barActive?"bgWhite tRust":'active bgRust tWhite'}`} onClick={this.barOff}><p className="tCenter tCTA">Stores</p> </div>
@@ -218,24 +252,28 @@ class Vendors extends Component {
                 <div className={`typeBut fullWidth ${barActive?"active bgBlue tWhite":'bgWhite tBlue'}`} onClick={this.barOn}><p className="tCenter tCTA">Bars</p> </div>
               </Link>
             </div>
-            <Route path='/vendors/*' render={()=><Tip  moveMap={this.moveMap} showTip={this.showTip} tipActive={this.state.tipActive} win={this.state.win}/>} />
+        
             
 
-        <div className={`venMenu ${tipActive?"active":''} ${barActive?"bgBlue":'bgRust'}`}>
-            <div className="venHold fullWidth fullHeight">
+        <div className={`venMenu ${tipActive?"active":''} ${barActive?"bgBlue":'bgRust'} ${hideVen?"hideInfo":''}`}>
+          <div className="hideVen" onClick={this.props.venToggle.bind(this)}><p className="tHeroSub tWhite tUpper">{this.props.hideVen?"Show Info":"Hide Info"}</p></div>
+            <div className="venHold fullWidth fullHeight relative">
+            
+                <div className="venListHold fullWidth plMed prMed">
+                <h1 className="mbMed tWhite mtSm">{barActive?("Proudly Served At:"):("Proudly Carried By:")}</h1>
               {barActive?(
                     bars.map((co,i)=>{
                       return(
                         
                         <div className="singleVend tWhite pbSm bBot bWhite bBotSm ptSm" data-lat={co.location[0].lat} data-lng={co.location[0].long} data-id={co.location[0].id} >
                           <Link className="fullWidth" to={`/vendors/${co.slug}?loc=1`}>
-                          <p className="tCTA fullWidth mbXs" data-lat={co.location[0].lat} data-lng={co.location[0].long} data-id={co.location[0].id} >{co.name}</p>
+                          <p className="tCTA fullWidth mbXs tCap" data-lat={co.location[0].lat} data-lng={co.location[0].long} data-id={co.location[0].id} >{co.name}</p>
                           </Link>
                           <div className="fullWidth flex" data-lat={co.location[0].lat} data-lng={co.location[0].long} data-id={co.location[0].id} >
                                 {co.location.map((loc, l)=>{
                                   return(
                                     <Link className="fullWidth" to={`/vendors/${co.slug}?loc=${l+1}`}>
-                                  <div className="col2 tDetails tLeft tUpper fullWidth" data-lat={loc.lat} data-lng={loc.long} data-id={loc.id} >{loc.city} {loc.state}</div>
+                                  <div className="col2 tDetails tLeft tUpper fullWidth" data-lat={loc.lat} data-lng={loc.long} data-id={loc.id} >{loc.city}, {loc.state}</div>
                                   </Link>
                                   )
                                 })}
@@ -251,7 +289,7 @@ class Vendors extends Component {
                           
                           <div className="singleVend tWhite pbSm bBot bWhite bBotSm ptSm" data-lat={co.location[0].lat} data-lng={co.location[0].long} data-id={co.location[0].id} >
                             <Link className="fullWidth" to={`/vendors/${co.slug}?loc=1`}>
-                            <p className="tCTA fullWidth mbXs" data-lat={co.location[0].lat} data-lng={co.location[0].long} data-id={co.location[0].id} >{co.name}</p>
+                            <p className="tCTA fullWidth mbXs tCap" data-lat={co.location[0].lat} data-lng={co.location[0].long} data-id={co.location[0].id} >{co.name}</p>
                             </Link>
                             <div className="fullWidth flex" data-lat={co.location[0].lat} data-lng={co.location[0].long} data-id={co.location[0].id} >
                                   {co.location.map((loc, l)=>{
@@ -268,14 +306,20 @@ class Vendors extends Component {
                         )
                       })
               )}
-              
+                </div>
+                <div className={`fullWidth fullHeight tipListHold ${tipActive?"active":''}`}>
+                  <Route path='/vendors/*' render={()=><Tip  moveMap={this.moveMap} hideTip={this.hideTip} showTip={this.showTip} tipActive={this.state.tipActive} barOn={this.barOn} win={this.state.win}/>} />
+
               </div>
+              </div>
+          </div>
+
           </div>
         
          {data.length ?(
-        <div className="fullScreen bgBlue" style={{height: win[1]*1.2}}>
+      <div className="mapHold bgBlue fullWidth" style={{height:win[1]}}>
             
-      <div className="eCenter" style={{ height: '100%', width: '100vw', borderRadius:'30px' }}>
+      <div className="eCenter" style={{ height: '100vh', width: '100vw', borderRadius:'30px' }}>
           <GoogleMapReact
             ref={element => this.map = element}
             options={mapOptions}

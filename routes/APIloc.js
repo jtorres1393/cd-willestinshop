@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
 
   const data = await Vendor.query()
           .where('slug', currID)
-          .eager('[location(orderDown).[media(onlyLoc), vendor.media(onlyPage)], media(orderDown, onlyPage) ]', {
+          .eager('[location(orderDown).[media(onlyLoc), vendor.media(onlyPage, orderDown)], media(orderDown, onlyPage) ]', {
             onlyPage: (builder) => {
               builder.where('rootPage', 'vendor');
               },

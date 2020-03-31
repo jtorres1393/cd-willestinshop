@@ -29,6 +29,7 @@ block content
                         p
                         input.prime-input(name="web", type="text", value=item.web)
                 #locationHold.fullWidth.mbMed
+                    input.form-control(name='sort2', type='hidden')
                     #sort2.principalHold.mbLrg
                         -   var sortCount2 = 1
                         p.mbSm.tBold Locations
@@ -159,6 +160,26 @@ block content
                         });
                         sort1 = document.querySelector('input[name=sort1]');
                         sort1.value = JSON.stringify(sort1Obj);
+                
+                }
+            });
+            var el2 = document.getElementById('sort2');
+            var sortable2 = Sortable.create(el2,{handle:".sortHandle", ghostClass: "sortable-ghost", onEnd: function(){
+                var el = document.getElementsByClassName('sort2');
+                var currentNumber = 1;
+                let sort2Obj = [];
+                
+                
+                Array.prototype.forEach.call(el , function(elem){
+                            elem.setAttribute("data-order", currentNumber);
+                            currentNumber++
+                            
+
+                            sort2Obj.push( { id:elem.getAttribute("data-id"), "order":elem.getAttribute("data-order")} )
+
+                        });
+                        sort2 = document.querySelector('input[name=sort2]');
+                        sort2.value = JSON.stringify(sort2Obj);
                 
                 }
             });

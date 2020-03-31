@@ -25,6 +25,7 @@ class Main extends Component {
             mobileMenu: false,
             rsvpActive: false,
             mapActive:false,
+            hideVen:false,
 
         }
 
@@ -77,11 +78,11 @@ class Main extends Component {
 
     resizeWin= () => {
       this.setState({win:[window.innerWidth,window.innerHeight]},()=>{
-        if((window.innerWidth <= 700) && !this.state.mobile){
+        if((window.innerWidth <= 750) && !this.state.mobile){
           this.setState({mobile:true})
   
         }
-        else if((window.innerWidth > 700) && this.state.mobile){
+        else if((window.innerWidth > 750) && this.state.mobile){
           this.setState({mobile:false})
         }
       })
@@ -213,6 +214,20 @@ class Main extends Component {
     this.setState({rsvpActive:false})
   }
 
+  mapOn=()=>{
+    this.setState({mapActive:true})
+  }
+
+  mapOff=()=>{
+    this.setState({mapActive:false})
+  }
+  venToggle=()=>{
+    this.setState({hideVen:!this.state.hideVen})
+  }
+
+  venOff=()=>{
+    this.setState({hideVen:false})
+  }
   
 
 
@@ -226,6 +241,8 @@ class Main extends Component {
       const { mobile } = this.state;
       const {mobileMenu} = this.state;
       const {rsvpActive} = this.state;
+      const {mapActive} = this.state;
+      const {hideVen } = this.state;
     return (
     
       <React.Fragment>
@@ -233,26 +250,26 @@ class Main extends Component {
       {info.length ?(
         <div id="appContain" style={{width: this.state.win[0]}} className={`relative ${newsActive?"inverse":""}`}>
             <Link to="/"><div className={`smallLogo ${((this.state.page !== "home" && this.state.page !=="news") || (this.state.infoActive  ) )?"activeLogo":""}`} data-page="home" onClick={this.goHome.bind(this)}>
-                <img alt="willes-name" className={`fullWidth fullImg `} src={`/images/wordmark.svg`} data-page="home"></img>
+                <img alt="willes-name" className={`fullWidth fullImg `} src={`/images/wordmark${mapActive?"-rust":''}.svg`} data-page="home"></img>
             </div></Link>
             {mobile?(
                 <React.Fragment>
-                    <div className="tCTA ptSm pbSm tRight cPointer tUpper mobileButton tWhite ctaLink" onClick={this.checkMobileMenu.bind(this)}>{mobileMenu?"close":"menu"}</div>                  
+                    <div className={`tCTA ptSm pbSm tRight cPointer tUpper mobileButton tWhite ctaLink ${mapActive?"tRust":"tWhite"}`} onClick={this.checkMobileMenu.bind(this)}>{mobileMenu?"close":"menu"}</div>                  
                   <div className={`fullScreen mobileMenu bgBlue ${mobileMenu?"active":""}`}>
                     <div className="fullStage centeredContent tWhite tUpper pbHuge">
                       <Link to="/"><h2 data-page="home" onClick={this.goHome.bind(this)} className="tCenter mbSm homeLink" >home</h2></Link>
-                      <Link to="/rsvp"><h2 data-page="rsvp" onClick={this.checkSection.bind(this)} className="tCenter mbSm rsvpLink" >RSVP</h2></Link>     
-                      <Link to="/spirits"><h2 data-page="spirits" onClick={this.checkSection.bind(this)} className="tCenter mbSm spiritsLink" >spirits</h2></Link>     
+                      <Link to="/spirits"><h2 data-page="spirits" onClick={this.checkSection.bind(this)} className="tCenter mbSm spiritsLink" >spirits</h2></Link>    
+                      <Link to="/vendors"><h2 data-page="vendors" onClick={this.checkSection.bind(this)} className="tCenter mbSm vendorsLink" >vendors</h2></Link>  
                       <Link to="/shop"><h2 data-page="shop" onClick={this.checkSection.bind(this)} className="tCenter mbSm shopLink">shop</h2></Link>
                       <Link to="/info"><h2 className="cPointer tCenter infoLink ctaLink">info</h2>  </Link>                
                     </div>
                   </div>
                 </React.Fragment>
             ):(
-            <div className="nav ptSm pbSm  flex flexEnd col2 tUpper tWhite" >
+            <div className={`nav ptSm pbSm  flex flexEnd col2 tUpper ${hideVen?"tRust":"tWhite"}`}>
               <Link to="/"><div data-page="home" onClick={this.goHome.bind(this)} className=" tRight homeLink" >home</div></Link>    
-              <Link to="/rsvp"><div data-page="rsvp" onClick={this.checkSection.bind(this)} className="tRight plSm rsvpLink" >RSVP</div></Link>      
               <Link to="/spirits"><div data-page="spirits" onClick={this.checkSection.bind(this)} className=" tRight plSm spiritsLink" >spirits</div></Link>     
+              <Link to="/vendors"><div data-page="vendors" onClick={this.checkSection.bind(this)} className="tRight plSm vendorsLink" >vendors</div></Link>      
               <Link to="/shop"><div data-page="shop" onClick={this.checkSection.bind(this)} className="tRight plSm shopLink" >shop</div></Link>
               <Link to="/info"><div className="plSm tRight cPointer infoLink ctaLink">info</div> </Link>                 
             </div>
@@ -310,7 +327,7 @@ class Main extends Component {
                 <Route path='/rsvp' render={()=><RSVP openRSVP={this.openRSVP} closeRSVP={this.closeRSVP} getTime={this.getTime} resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info[0]} win={this.state.win}/>} /> 
               <div className={`relative fullWidth ${((newsActive || rsvpActive) ?"condenseStage":"")}`} style={{minHeight:win[1]}}>
                 <Switch>
-                  <Route path='/vendors' render={()=><Vendors resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
+                  <Route path='/vendors' render={()=><Vendors hideVen={this.state.hideVen} venToggle={this.venToggle} venOff={this.venOff} mapOff={this.mapOff} mapOn={this.mapOn} resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
                   <Route path='/shop' render={()=><Shop resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
                   <Route path='/spirits' render={()=><Spirits resizeWin={this.resizeWin} fadeIn={this.fadeIn} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
                   <Route path='/' render={()=><Home resizeWin={this.resizeWin} checkSection={this.checkSection} info={this.state.info} win={this.state.win}/>} />
@@ -318,7 +335,7 @@ class Main extends Component {
                 </Switch>  
               </div>
               </div>
-              <div className="footerHold fullWidth relative" style={{height:"100%"}}>
+              <div className={`footerHold fullWidth relative ${mapActive && !mobileMenu?('mapActive'):("")}`} style={{height:"100%"}}>
                 <div className="footer fullWidth ">
                   <div className="fullStage eCenter flex flexACenter bWhite bTopSm pbSm ptSm footerFlex">
                     <div className="col3 iconHold flex flexACenter">

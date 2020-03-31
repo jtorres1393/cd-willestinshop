@@ -218,7 +218,7 @@ border: none;
   }
 
 
-@media all and (max-width:700px){
+@media all and (max-width:750px){
     .smallLogo{width:85px;}
     .logoHold{pointer-events: none;padding-bottom:var(--huge)}
     .goodSpiritsHold{width:60vw;margin-bottom:var(--sm);margin-top:var(--sm)}
