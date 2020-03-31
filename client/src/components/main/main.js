@@ -225,6 +225,10 @@ class Main extends Component {
     this.setState({hideVen:!this.state.hideVen})
   }
 
+  showVen=()=>{
+    this.setState({hideVen:false})
+  }
+
   venOff=()=>{
     this.setState({hideVen:false})
   }
@@ -327,7 +331,7 @@ class Main extends Component {
                 <Route path='/rsvp' render={()=><RSVP openRSVP={this.openRSVP} closeRSVP={this.closeRSVP} getTime={this.getTime} resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info[0]} win={this.state.win}/>} /> 
               <div className={`relative fullWidth ${((newsActive || rsvpActive) ?"condenseStage":"")}`} style={{minHeight:win[1]}}>
                 <Switch>
-                  <Route path='/vendors' render={()=><Vendors hideVen={this.state.hideVen} venToggle={this.venToggle} venOff={this.venOff} mapOff={this.mapOff} mapOn={this.mapOn} resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
+                  <Route path='/vendors' render={()=><Vendors showVen={this.showVen} hideVen={this.state.hideVen} venToggle={this.venToggle} venOff={this.venOff} mapOff={this.mapOff} mapOn={this.mapOn} resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
                   <Route path='/shop' render={()=><Shop resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
                   <Route path='/spirits' render={()=><Spirits resizeWin={this.resizeWin} fadeIn={this.fadeIn} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
                   <Route path='/' render={()=><Home resizeWin={this.resizeWin} checkSection={this.checkSection} info={this.state.info} win={this.state.win}/>} />

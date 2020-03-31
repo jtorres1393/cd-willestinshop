@@ -46,6 +46,7 @@ class Tip extends Component {
       .then(data => this.setState({
          curr: data.data},()=>{
            this.props.showTip()
+           this.props.showVen()
            this.props.moveMap(parseFloat(this.state.curr.lat), parseFloat(this.state.curr.long))
            if(this.state.curr.vendor[0].type==="bar"){
              this.props.barOn();

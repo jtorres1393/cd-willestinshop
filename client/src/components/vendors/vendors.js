@@ -311,7 +311,7 @@ class Vendors extends Component {
                 </div>
                 </div>
                 <div className={`fullWidth fullHeight tipListHold ${tipActive?"active":''}`}>
-                  <Route path='/vendors/*' render={()=><Tip  moveMap={this.moveMap} hideTip={this.hideTip} showTip={this.showTip} tipActive={this.state.tipActive} barOn={this.barOn} win={this.state.win}/>} />
+                  <Route path='/vendors/*' render={()=><Tip  showVen={this.props.showVen} moveMap={this.moveMap} hideTip={this.hideTip} showTip={this.showTip} tipActive={this.state.tipActive} barOn={this.barOn} win={this.state.win}/>} />
 
               </div>
               </div>
