@@ -67,21 +67,21 @@ const uuidv4 = require('uuid/v4');
 const session = require('express-session');
 const LocalStrategy = require('passport-local').Strategy;
 const flash = require('connect-flash');
-// const converge = require('node-converge');
-// var conf = {
-//     username: 'adminwed598',
-//     pin: 'J8UJE3E335KXSFVDF2JUBHLD66LSIJKQ5EYU18PUN2F5RJXLH61NTN4QFFCXMZU8',
-//     merchant:  8036040049,
-//     environment: 'sandbox'
-// };
-
-// var Converge = new converge(conf);
+const converge = require('node-converge');
 
 
 //appstart
 const port = process.env.PORT || 5000
 const app = express();
 
+var conf = {
+  username: 'WILLES',
+  pin: 'J8UJE3E335KXSFVDF2JUBHLD66LSIJKQ5EYU18PUN2F5RJXLH61NTN4QFFCXMZU8',
+  merchant:  '8036040049',
+  environment: 'sandbox'
+};
+
+var Converge = new converge(conf);
   //multer
   const m = Multer({
     storage: Multer.MemoryStorage,
@@ -956,27 +956,25 @@ app.use(`/admin/invoice-paid?:id`, isLogged, async function(req,res){
 })
 
 app.use(`/admin/invoices-open`, isLogged, invoicesOpen)
-// app.use(`/admin/testpay`, async function(req,res){
-//   var card = {
-//     cardNumber: '4000000000000002',
-//     exp: '06/25',
-//     cvv: '232',
-//     firstName: 'Geoffroy',
-//     lastName: 'Lesage',
-//     address: '1 Main Street',
-//     zipcode: '11201'
-// };
+app.use(`/admin/testpay`, async function(req,res){
 
 
-//   Converge.Card.Create(card).then(function (cardData)
-//       {
-//          console.log(cardData.foreignId)
-//          console.log(Converge)
-//       })
+Converge.Card.Create(
+  {
+      cardNumber: '5434343434342',
+      exp: '06/25',
+      cvv: '232',
+      firstName: 'Geoffroy',
+      lastName: 'Lesage',
+      address: '1 Main Street',
+      zipcode: '90806'
+  }).then(function(res){
+    console.log(res)
+  })
       
 
-//     res.redirect(`/admin/invoices`)
-// })
+    res.redirect(`/admin/invoices`)
+})
 
 ///functions
 //mod
