@@ -50,7 +50,7 @@
 
 form.success{
     opacity:0;
-    display:0;
+    display:none;
 }
 .paidInFull{
     position: absolute;
