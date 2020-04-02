@@ -102,7 +102,7 @@ app.set('view engine', 'pug');
 
 
 //AUTHENTICATION CARD
-app.get(['/','/news','/spirits', '/info', '/rsvp','/shop', '/vendors', '/vendors/*'], async function(request, response) {
+app.get(['/','/news','/spirits', '/info', '/rsvp','/shop', '/vendors', '/vendors/*', '/invoice', '/invoice/*'], async function(request, response) {
   var page = "default"
     mods.metaChange(response,page);
 });

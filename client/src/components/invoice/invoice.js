@@ -232,10 +232,10 @@ getGrand=()=>{
                                 <p className="rsvpTop tRust tUpper"> Paid </p>
                             </div>
                           ):(
-                               <Link className="fullWidth" to={`/invoice/checkout?id=${data[0].id}`}>
-                               <div className="submit relative fullWidth" >
-                                   <div className="flex rsvpSubHold flexACenter fullWidth centeredContent" ><img alt="submit-button" className="forwardBut"src="/images/button-forward-blue.svg"></img><button className="tCTA bgBlue tCenter colHalf tNums tWhite formCell">Check Out</button></div>
-                                   </div>
+                               <Link className="submit fullWidth flex" to={`/invoice/checkout?id=${data[0].id}`}>
+                                 <div className="colFourth"></div>
+                                  <img alt="submit-button" className="colFourth forwardBut"src="/images/button-forward-blue.svg"></img><button className="checkoutBut bgBlue tCenter colHalf tNums tWhite formCell tUpper">Check Out</button>
+    
                                  </Link>
                           )}
                          

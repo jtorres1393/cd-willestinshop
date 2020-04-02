@@ -68,6 +68,10 @@ form.success{
     mix-blend-mode: multiply;
 }
 
+.checkoutBut:hover{
+    background-color: var(--rust);
+}
+
 button{
     font-size:1em;
     background-color:transparent;
