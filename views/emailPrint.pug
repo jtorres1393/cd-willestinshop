@@ -92,7 +92,7 @@ block content
                             br
                             span=`$${(data.shipping/100).toFixed(2)}`
                             br
-                        p#grand(style="font-weight:bold;text-align:left")=`$${(grand/100).toFixed(2)}`
+                        p#grand(style="font-weight:bold;text-align:left")=`$${(data.cost/100).toFixed(2)}`
 
                 tr
                     td(style="height:0;border-top:1px solid #2f456b;margin-bottom:40px;", colspan="4")
