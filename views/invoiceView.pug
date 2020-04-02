@@ -27,16 +27,16 @@ block content
                     .fullWidth.flex.bBlk.bBotSm.pbXs.mbSm
                         .col3.tBold Item
                         .col2.flex
-                            .col3.tBold Quantity
-                            .col3.tBold Cost
-                            .col3.tBold Total
+                            .col3.tBold.quantTitle Quantity
+                            .col3.tBold.quantTitle Cost
+                            .col3.tBold
                     input(name="cart", type="hidden")
                     -   var cart = JSON.parse(item.cart)
                     for line in cart
                         .cartHold.fullWidth.flex.mbSm.bBlk.bBotSm.pbSm(data-item=line.item, data-cost=line.cost, data-quantity=line.quantity)
                             .col2.mbXs
                                 input.prime-input.itemIn(name="item", type="text", placeholder="Item Name", value=line.item)
-                            .col2.mbXs.flex
+                            .col2.mbXs.flex.invOpHold
                                 .col3
                                     input.prime-input.qIn(name="quantity", type="integer", placeholder="Quantity", value=line.quantity)
                                 .col3
@@ -44,24 +44,26 @@ block content
                                 .col3
                                     .btn.btn-prime.fullWidth.relative.deleteNodeBut
                                         p.tBold ×
-                .fullWidth.flex.mbLrg
+                .fullWidth.flex.mbLrg.totalCharges
                     if item.status !=="paid"
                         .btn.btn-prime.fullWidth.relative.mbSm.mbHuge(onclick=`addField()`)
                             p.tBold Add New Line
-                    .col4
+                    .col4.mbSm
                         label Shipping
                         p
                         input.prime-input.costIn(name="shipping", type="number", step="any", placeholder="shipping", value=item.shipping/100, required)
-                    .col4
+                    .col4.mbSm
                         label Tax
                         p
                         input.prime-input.costIn(name="tax", type="number", step="any", placeholder=item.tax/100, value=item.tax/100, required)
                     .col2
-                        label Total
+                        label Item Total
                         p
                         .btn.btn-sec.relative 
                             p#total
-                    .fullWidth.mbMed
+                    .fullWidth.mbMed.grandWidth
+                        label Grand Total
+                        p
                         .btn.btn-sec.relative 
                             p#grand
                     a.col2(href=`/admin/invoice-email?id=${item.id}` onclick="return confirm('Are you sure?')")       
@@ -172,7 +174,7 @@ block content
                 cartFinal = document.querySelector('#total');
                 cartFinal.innerHTML=`$${((total/100)).toFixed(2)}`
                 grandFinal = document.querySelector('#grand');
-                grandFinal.innerHTML=`Grand Total: $${(((total)+((tax/100)*(total))+(ship))/100).toFixed(2)}`            
+                grandFinal.innerHTML=`$${(((total)+((tax/100)*(total))+(ship))/100).toFixed(2)}`            
                 costHold.value = ((total)+((tax/100)*(total))+(ship))
         }
 
@@ -222,7 +224,7 @@ block content
                             n.value = '';
                         }
                         else if (n.tagName == 'INPUT' && n.type == 'number') {
-                            n.value = 0;
+                            n.value = '';
                         }
                     }
                 }

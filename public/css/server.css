@@ -821,6 +821,11 @@ img,video{
 }
 
 
+/* invoices */
+
+
+
+
 #settings{
 	display:none;
 	position:fixed;
@@ -873,6 +878,9 @@ img,video{
 	.singleArtist{padding-bottom:20px; border-bottom:1px solid #000000; margin-bottom:var(--lrg)}
 	.singleArtist .names{width: 100%; margin-bottom:20px}
 	.singleArtist a {width: 30%;}
+	.invOpHold, .cartHold .col2 {width: 100%;}
+	.totalCharges .col4, .grandWidth {width:50%}
+	.quantTitle{display:none}
 }
 
 @media all and (max-width: 500px){

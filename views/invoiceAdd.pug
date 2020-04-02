@@ -19,14 +19,14 @@ block content
                     .fullWidth.flex.bBlk.bBotSm.pbXs.mbSm
                         .col3.tBold Item
                         .col2.flex
-                            .col3.tBold Quantity
-                            .col3.tBold Cost
-                            .col3.tBold Total
+                            .col3.tBold.quantTitle Quantity
+                            .col3.tBold.quantTitle Cost
+                            .col3.tBold
                     input(name="cart", type="hidden")
                     .cartHold.fullWidth.flex.mbSm.bBlk.bBotSm.pbSm(data-item="", data-cost=0, data-quantity=0)
                         .col2.mbXs
                             input.prime-input.itemIn(name="item", type="text", placeholder="Item Name", required)
-                        .col2.mbXs.flex
+                        .col2.invOpHold.mbXs.flex
                             .col3
                                 input.prime-input.qIn(name="quantity", type="integer", placeholder="Quantity", required)
                             .col3
@@ -34,24 +34,25 @@ block content
                             .col3
                                 .btn.btn-prime.fullWidth.relative.deleteNodeBut
                                     p.tBold ×
-                .fullWidth.flex.mbLrg
+                .fullWidth.flex.mbLrg.totalCharges
                     .btn.btn-prime.fullWidth.relative.mbSm(onclick=`addField()`).mbHuge
                         p.tBold Add New Line
-                    .col4
+                    .col4.mbSm
                         label Shipping
                         p
                         input.prime-input.costIn(name="shipping", type="number", step="any", placeholder="shipping", required)
-                    .col4
+                    .col4.mbSm
                         label Tax
                         p
                         input.prime-input.costIn(name="tax", type="number", step="any", placeholder=info[0].tax/100, value=info[0].tax/100, required)
    
                     .col2
-                        label Total
+                        label Item Total
                         p
                         .btn.btn-sec.relative 
                             p#total
-                    .fullWidth
+                    .fullWidth.grandWidth
+                        label Grand Total
                         .btn.btn-sec.relative 
                             p#grand
                                 
@@ -150,7 +151,7 @@ block content
                 cartFinal = document.querySelector('#total');
                 cartFinal.innerHTML=`$${((total/100)).toFixed(2)}`
                 grandFinal = document.querySelector('#grand');
-                grandFinal.innerHTML=`Grand Total: $${(((total)+((tax/100)*(total))+(ship))/100).toFixed(2)}`
+                grandFinal.innerHTML=`$${(((total)+((tax/100)*(total))+(ship))/100).toFixed(2)}`
                 costHold.value = ((total)+((tax/100)*(total))+(ship))
             
         
@@ -202,7 +203,7 @@ block content
                             n.value = '';
                         }
                         else if (n.tagName == 'INPUT' && n.type == 'number') {
-                            n.value = 0;
+                            n.value = '';
                         }
                     }
                 }

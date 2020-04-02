@@ -24,6 +24,11 @@ block content
                             span=info.phone                    
                         a(href=`mailto:${info.email}`)
                             p(style="color:#2f456b;text-align:center;")=info.email
+                if data.status!=="paid"
+                    tr
+                        td(colspan="4" style="background-color:#2f456b")
+                            a(href=`https://www.willestinshop.com/invoice?id=${data.id}` style="text-decoration:none;")
+                                p(style="font-family:sans-serif;font-weight:bold;text-align:center;color:#ffffff;font-size:1.5em") Pay Online Now
                 tr
                     td( style="text-align:rigth;vertical-align:top")
                         p(style="font-weight:bold")=prettyDate(data.created_at)
