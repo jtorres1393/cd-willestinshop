@@ -170,7 +170,7 @@ block content
 
             });
                 cartFinal = document.querySelector('#total');
-                cartFinal.innerHTML=`Item Total: $${((total/100)).toFixed(2)}`
+                cartFinal.innerHTML=`$${((total/100)).toFixed(2)}`
                 grandFinal = document.querySelector('#grand');
                 grandFinal.innerHTML=`Grand Total: $${(((total)+((tax/100)*(total))+(ship))/100).toFixed(2)}`            
                 costHold.value = ((total)+((tax/100)*(total))+(ship))
