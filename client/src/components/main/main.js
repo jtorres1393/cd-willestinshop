@@ -344,7 +344,7 @@ class Main extends Component {
                 <div className="footer fullWidth ">
                   <div className="fullStage eCenter flex flexACenter bWhite bTopSm pbSm ptSm footerFlex">
                     <div className="col3 iconHold flex flexACenter">
-                        <img alt="icon-roxcrew" className="col3" src={`/images/logo-roxcrew${newsActive?"-rust":""}.svg`}></img>
+                        <a className='col3' href="/admin/login"><img alt="icon-roxcrew" className="fullWidth" src={`/images/logo-roxcrew${newsActive?"-rust":""}.svg`}></img></a>
                       
                           <img alt="icon-services" className="col3" src={`/images/logo-service${newsActive?"-rust":""}.svg`}></img>
                       
