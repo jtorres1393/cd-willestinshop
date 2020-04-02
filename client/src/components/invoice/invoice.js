@@ -234,7 +234,7 @@ getGrand=()=>{
                           ):(
                                <Link to={`/invoice/checkout?id=${data[0].id}`}>
                                <button className="submit relative fullWidth" >
-                                   <div className="flex rsvpSubHold flexACenter fullWidth centeredContent plSm prSm" ><img alt="submit-button" className="forwardBut"src="/images/button-forward-blue.svg"></img><p className="tCTA bgBlue prSm plSm tCenter colHalf tNums tWhite">Check Out</p></div>
+                                   <div className="flex rsvpSubHold flexACenter fullWidth centeredContent plSm prSm" ><img alt="submit-button" className="forwardBut"src="/images/button-forward-blue.svg"></img><p className="tCTA bgBlue prSm plSm tCenter colHalf tNums tWhite formCell">Check Out</p></div>
                                    </button>
                                  </Link>
                           )}
