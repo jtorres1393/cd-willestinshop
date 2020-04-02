@@ -1050,7 +1050,7 @@ async function sendPaid(id, email){
 
   var sendEmail = getInfo[0].email;
   mods.sendMail(email, sendEmail, `Wille's Tin Shop: Payment Complete`,`${config.url}/admin/email-paid?id=${id}`)
-  mods.sendMail(sendEmail, sendEmail, `Wille's Tin Shop: New Payment`,`${config.url}/admin/email-paid?id=${id}`)
+  mods.sendMail([sendEmail,'mmolina@roxanneslounge.com'], sendEmail, `Wille's Tin Shop: New Payment`,`${config.url}/admin/email-paid?id=${id}`)
 
 }
 
