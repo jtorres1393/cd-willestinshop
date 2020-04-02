@@ -8,6 +8,8 @@ block content
                 p.mbMed.tTitle Settings
                 .menuSave.menuItem.mbSm
                     input.menuOp(type="submit", value="Save Changes")
+                .menuImg.menuItem.mbLrg
+                    a.tCap.menuOp(target="blank" href=`/admin/email-print?id=${item.id}`) View Print Version 
                 .menuTrash.menuItem.mbLrg
                     a.tCap.menuOp(href=`/admin/invoice-delete?id=${item.id}&rootID=${item.rootID}`, onclick="return confirm('Are you sure?')")="Delete Invoice" 
 
@@ -17,7 +19,10 @@ block content
                         span.tGray=`Invoices / `  
                     a(href=`/admin/buyer-view?id=${item.buyer[0].id}`)
                         span.tGray=`${item.buyer[0].firstName} ${item.buyer[0].lastName} / `    
-                    span=`${page}`
+                    span=`Invoice #${item.id}`
+                a.fullWidth(target="blank" href=`/admin/email-print?id=${item.id}`)       
+                        .btn.btn-prime.fullWidth.relative.mbSm(style={"background-color":((item.status==="paid"))?"#00ff00":""})
+                                p.tBold View Print Version
                 #itemsHold
                     .fullWidth.flex.bBlk.bBotSm.pbXs.mbSm
                         .col3.tBold Item
@@ -41,7 +46,7 @@ block content
                                         p.tBold ×
                 .fullWidth.flex.mbLrg
                     if item.status !=="paid"
-                        .btn.btn-prime.fullWidth.relative.mbSm(onclick=`addField()`).mbHuge
+                        .btn.btn-prime.fullWidth.relative.mbSm.mbHuge(onclick=`addField()`)
                             p.tBold Add New Line
                     .col4
                         label Shipping
@@ -60,14 +65,14 @@ block content
                         .btn.btn-sec.relative 
                             p#grand
                     a.col2(href=`/admin/invoice-email?id=${item.id}` onclick="return confirm('Are you sure?')")       
-                        .btn.btn-prime.fullWidth.relative.mbSm
+                        .btn.btn-prime.fullWidth.relative.mbSm(style={"background-color":((item.status==="sent")|| (item.status==="paid"))?"#00ff00":""})
                                 p.tBold Send Invoice
                     a.col2(href=`/admin/invoice-ship?id=${item.id}` onclick="return confirm('Are you sure?')")       
-                        .btn.btn-prime.fullWidth.relative.mbSm
+                        .btn.btn-prime.fullWidth.relative.mbSm(style={"background-color":(item.shipped)?"#00ff00":""})
                                 p.tBold Shipped
                     if item.status!=="paid"
                     a.fullWidth(href=`/admin/invoice-paid?id=${item.id}` onclick="return confirm('Are you sure?')")       
-                        .btn.btn-prime.fullWidth.relative.mbSm
+                        .btn.btn-prime.fullWidth.relative.mbSm(style={"background-color":((item.status==="paid"))?"#00ff00":""})
                                 p.tBold Mark Paid
                                 
 
@@ -147,6 +152,7 @@ block content
             var total = 0;
             var shipHold = document.querySelector('input[name=shipping]');
             var taxHold = document.querySelector('input[name=tax]');
+            var costHold = document.querySelector('input[name=cost]');
             var tax = parseFloat(taxHold.value)
             var ship = shipHold.value
             if(ship === null){
@@ -167,7 +173,7 @@ block content
                 cartFinal.innerHTML=`Item Total: $${((total/100)).toFixed(2)}`
                 grandFinal = document.querySelector('#grand');
                 grandFinal.innerHTML=`Grand Total: $${(((total)+((tax/100)*(total))+(ship))/100).toFixed(2)}`            
-        
+                costHold.value = ((total)+((tax/100)*(total))+(ship))
         }
 
         var getClosest = function (elem, selector) {

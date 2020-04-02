@@ -15,14 +15,13 @@ block content
                 p.tTitle.mbMed
                     a(href="/admin/invoices")
                             span Invoices /
-                    span=`${page}: `
                     if item.firstName
-                        span=`${item.firstName}`
+                        span=` ${item.firstName}`
                         if item.lastName
                             span=` ${item.lastName}`
                     else
                         if item.company
-                        span=`${item.company}`                 
+                        span=` ${item.company}`                 
                 a.fullWidth(href=`/admin/invoice-add?id=${item.id}`)
                     .btn.btn-prime.fullWidth.relative.mbLrg
                                         p.tBold Add New Invoice
@@ -33,15 +32,15 @@ block content
                             .singleInv.fullWidth.ptSm.pbSm.bBlk.bBotSm.flex.flexACenter
                                 a.col4(href=`/admin/invoice-view?id=${inv.id}`)
                                     .fullWidth
-                                        p.tBold.tGreen=prettyDate(inv.created_at)
-                                        p.tBlack.tCap.tBold=` ${inv.status}`
+                                        p.tBold.tGreen=`${prettyDate(inv.created_at)}  —  $${(inv.cost/100).toFixed(2)}`
+                                        p.tGray.tCap.tBold=` ${inv.status}`
                                         if inv.shipped
                                             span=` ${inv.shipped}`
                                 a.col4(href=`/admin/invoice-view?id=${inv.id}`)
                                     .btn.btn-sec.relative
                                         p.tBold Edit
                                 a.col4(href=`/admin/invoice-email?id=${inv.id}`)
-                                    .btn.btn-sec.relative
+                                    .btn.btn-sec.relative(style={"background-color":((inv.status==="sent")|| (inv.status==="paid"))?"#00ff00":""})
                                         p.tBold Send
                                 if inv.status !=="paid"
                                     a.col4(href=`/admin/invoice-paid?id=${inv.id}`)
@@ -52,26 +51,20 @@ block content
                     for inv in item.invoices
                         if inv.status==="paid"
                             .singleInv.fullWidth.ptXs.pbXs.bGray.bBotSm.flex.flexACenter
-                                a.fullWidth(href=`/admin/invoice-view?id=${inv.id}`)
-                                    .fullWidth
+                                a.fullWidth.flex.flexACenter(href=`/admin/invoice-view?id=${inv.id}`)
+                                    .col2
                                         p.tBold.tGray=prettyDate(inv.created_at)
                                         p.tRed.tCap.tBold=` ${inv.status}`
                                             if inv.shipped
                                                 span.tRed=` / Shipped`
                                             else
                                                 span.tGreen=` / Not Shipped`
-                .fullWidth.flex.mbSm.tBold.bBlk.bBotSm.pbSm
-                    .col23
-                        p.tBold Details
-                    .col3
-                        p.tBold Options
-                -   var sortCount1 = 1
-                #sort1.principalHold.mbLrg
-                    for item in data         
-                        .sort1.singleCat.mbSm.fullWidth.flex.flexACenter(data-id=item.id, data-order=sortCount1)
-                
+                                    .col2.tRight
+                                        p.tBold=`$${(inv.cost/100).toFixed(2)}`
+            
 
                 #newBuyer.plLrg
+                    p.tTitle.tBold Edit Buyer Info
                     .newSecHold.fullWidth.mbLrg.ptSm.pbSm.plSm.prSm.flex
                         .col2.mbXs
                             label First Name

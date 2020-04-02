@@ -40,7 +40,9 @@ block content
                                     .btn.btn-sec.fullWidth.relative
                                         p.tBold Edit
                     -   sortCount1++
-                #newBuyer.plLrg
+            #newBuyBut.btn.btn-sec.fullWidth.relative.mbSm(onclick=`addField()`)
+                            p.tBold New Buyer +
+            #newBuyer.plLrg(style={display:"none"})
                 .newSecHold.fullWidth.mbLrg.ptSm.pbSm.plSm.prSm.flex
                     .col2.mbXs
                         label First Name
@@ -90,3 +92,13 @@ block content
         -var y = date.getFullYear();
         -return m+'/'+d+'/'+y;
     -}
+
+
+
+    script.
+        var addField= function(){
+            el = document.getElementById('newBuyer')
+            if(el){
+                el.style.display="block"
+            }
+        }

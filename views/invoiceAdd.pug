@@ -130,6 +130,7 @@ block content
             var total = 0;
             var shipHold = document.querySelector('input[name=shipping]');
             var taxHold = document.querySelector('input[name=tax]');
+            var costHold = document.querySelector('input[name=cost]');
             var tax = parseFloat(taxHold.value)
             var ship = shipHold.value
             if(ship === null){
@@ -150,7 +151,7 @@ block content
                 cartFinal.innerHTML=`Item Total: $${((total/100)).toFixed(2)}`
                 grandFinal = document.querySelector('#grand');
                 grandFinal.innerHTML=`Grand Total: $${(((total)+((tax/100)*(total))+(ship))/100).toFixed(2)}`
-
+                costHold.value = ((total)+((tax/100)*(total))+(ship))
             
         
         }

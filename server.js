@@ -40,6 +40,7 @@ const newsEdit = require('./routes/newsEdit')
 const rsvpDash = require('./routes/rsvpDash')
 const emailRSVP = require('./routes/emailRSVP')
 const emailInvoice = require('./routes/emailInvoice')
+const emailPrint = require('./routes/emailPrint')
 const emailPaid = require('./routes/emailPaid')
 const vendorDash = require('./routes/vendorDash')
 const vendorAdd = require('./routes/vendorAdd')
@@ -664,6 +665,7 @@ app.use('/admin/rsvp-check?:id', isLogged, async function(req,res){
 
 app.use('/admin/rsvp-email?:id', emailRSVP)
 app.use('/admin/email-invoice?:id', emailInvoice)
+app.use('/admin/email-print?:id', emailPrint)
 app.use('/admin/email-paid?:id', emailPaid)
 
 
@@ -880,6 +882,7 @@ app.use(`/admin/invoice-add?:id`, isLogged, invoiceAdd)
 app.post(`/admin/invoice-add?:id`, isLogged, async function(req,res){
     let data={}
     data.cart = req.body.cart;
+    data.cost = req.body.cost
     data.shipping = parseInt(req.body.shipping)*100
     data.status = "draft";
     data.rootID = req.query.id
@@ -900,6 +903,7 @@ app.post(`/admin/invoice-view?:id`, isLogged, async function(req,res){
      let data = {};
      const currID = req.query.id
      data.cart = req.body.cart;
+     data.cost = req.body.cost
      data.shipping = parseInt(req.body.shipping)*100
      data.tax = req.body.tax*100;
 
