@@ -80,7 +80,7 @@ class Tip extends Component {
                  {curr.vendor[0].media.length?(
                     <img className="fullImg mbSm" src={curr.vendor[0].media[0].url}></img>
                  ):(
-                  <h1 className="mbSm tCap">{curr.vendor[0].name}</h1>
+                  <h1 className="mbSm tCap ptLrg">{curr.vendor[0].name}</h1>
                  )}
                 
                 {curr.vendor[0].web?(
