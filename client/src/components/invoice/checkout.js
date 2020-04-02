@@ -86,7 +86,7 @@ class Checkout extends Component {
           {success?(
             <React.Fragment>
             <div className="fullWidth ptLrg pbLrg">
-                <h1 className="tCenter tRust"> Thanks for your business! </h1>
+                <h1 className="tCenter tRust"> Thank you for your business! </h1>
               </div>
               <div className="fullWidth tCenter paidInFull success">
                   <p className="rsvpTop tRust tUpper"> Paid </p>
