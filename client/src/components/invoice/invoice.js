@@ -226,16 +226,16 @@ getGrand=()=>{
                         
                         
                             
-                        <div className="fullWidth bBlue formCell">
+                        <div className="fullWidth bBlue">
                           {data[0].status==="paid"?(
                             <div className="fullWidth tCenter paidInFull">
                                 <p className="rsvpTop tRust tUpper"> Paid </p>
                             </div>
                           ):(
-                               <Link to={`/invoice/checkout?id=${data[0].id}`}>
-                               <button className="submit relative fullWidth" >
-                                   <div className="flex rsvpSubHold flexACenter fullWidth centeredContent plSm prSm" ><img alt="submit-button" className="forwardBut"src="/images/button-forward-blue.svg"></img><p className="tCTA bgBlue prSm plSm tCenter colHalf tNums tWhite formCell">Check Out</p></div>
-                                   </button>
+                               <Link className="fullWidth" to={`/invoice/checkout?id=${data[0].id}`}>
+                               <div className="submit relative fullWidth" >
+                                   <div className="flex rsvpSubHold flexACenter fullWidth centeredContent" ><img alt="submit-button" className="forwardBut"src="/images/button-forward-blue.svg"></img><button className="tCTA bgBlue tCenter colHalf tNums tWhite formCell">Check Out</button></div>
+                                   </div>
                                  </Link>
                           )}
                          
