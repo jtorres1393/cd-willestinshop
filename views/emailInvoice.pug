@@ -67,11 +67,11 @@ block content
                         td(style="border-bottom:1px solid #2f456b;border-right:1px solid #2f456b" colspan="1")
                             p(style="color:#2f456b;font-weight:normal;text-align:center")=item.quantity
                         td(style="border-bottom:1px solid #2f456b" colspan="1")
-                            p(style="color:#2f456b;font-weight:normal;text-align:left;padding-left:10px")=`$${Math.ceil(item.cost/100).toFixed(2)}`
+                            p(style="color:#2f456b;font-weight:normal;text-align:left;padding-left:10px")=`$${(item.cost/100).toFixed(2)}`
                 tr  
                     td(colspan="2" style="background-color:#2f456b")
                         a(href=`https://willestinshop.com/invoice?id=${data.id}` style="text-decoration:none;")
-                            p(style="font-family:sans-serif;font-weight:bold;text-align:center;color:#ffffff;font-size:1.5em") View Online
+                            p(style="font-family:sans-serif;font-weight:bold;text-align:center;color:#ffffff;font-size:1.5em") Pay Online Now
                     td(style="border-bottom:1px solid #2f456b;border-right:1px solid #2f456b;padding-right:10px")
                         p(style="font-weight:bold;text-align:right")
                             span total
@@ -85,7 +85,7 @@ block content
                         p(style="font-weight:normal;text-align:left")
                             span#total=`$${(total/100).toFixed(2)}`
                             br
-                            span#tax=`$${(tax/100).toFixed(2)}`
+                            span#tax=`$${(data.tax/10000*total/100).toFixed(2)}`
                             br
                             span=`$${(data.shipping/100).toFixed(2)}`
                             br

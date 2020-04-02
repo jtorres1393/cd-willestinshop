@@ -47,6 +47,26 @@
     opacity:0;
     pointer-events: none;
 }
+
+form.success{
+    opacity:0;
+}
+.paidInFull{
+    position: absolute;
+    top:0;
+    left:50%;
+    transform: translate(-50%, -25%) rotate(-15deg);
+    mix-blend-mode: multiply;
+}
+
+.paidInFull.success{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -25%) rotate(-15deg);
+    mix-blend-mode: multiply;
+}
+
 button{
     font-size:1em;
     background-color:transparent;

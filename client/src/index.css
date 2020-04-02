@@ -165,6 +165,10 @@ input:hover::placeholder, select:hover::placeholder{
 	color:var(--rust)
 }
 
+button{
+	cursor: pointer;
+}
+
 
 /* fonts */
 
@@ -792,6 +796,10 @@ text-align-last:center;
 } 
 .bRight{
 	border-right: 1px solid;
+}
+
+.bLeft{
+	border-left: 1px solid;
 }
 
 

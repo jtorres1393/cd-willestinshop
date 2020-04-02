@@ -4,7 +4,6 @@ block content
     for item in data
         form#mainForm.fullWidth.flex(method='POST', action=`/admin/invoice-add?id=${item.id}`)
             #menuPanel
-                input(type="hidden",value=info[0].tax, name="tax")
                 input(type="hidden", name="cost")
                 p.mbMed.tTitle Settings
                 .menuSave.menuItem
@@ -38,10 +37,15 @@ block content
                 .fullWidth.flex.mbLrg
                     .btn.btn-prime.fullWidth.relative.mbSm(onclick=`addField()`).mbHuge
                         p.tBold Add New Line
-                    .col2
+                    .col4
                         label Shipping
                         p
                         input.prime-input.costIn(name="shipping", type="number", step="any", placeholder="shipping", required)
+                    .col4
+                        label Tax
+                        p
+                        input.prime-input.costIn(name="tax", type="number", step="any", placeholder=info[0].tax/100, value=info[0].tax/100, required)
+   
                     .col2
                         label Total
                         p
@@ -110,6 +114,9 @@ block content
             var shipHold = document.querySelector('input[name=shipping]');
             shipHold.addEventListener('input',calcTotal);
 
+            var taxHold = document.querySelector('input[name=tax]');
+            taxHold.addEventListener('input',calcTotal);
+
             document.querySelectorAll('.deleteNodeBut').forEach(item => {
                 item.addEventListener('click', e => {
                     deleteNode(e);
@@ -123,7 +130,7 @@ block content
             var total = 0;
             var shipHold = document.querySelector('input[name=shipping]');
             var taxHold = document.querySelector('input[name=tax]');
-            var tax = parseInt(taxHold.value)
+            var tax = parseFloat(taxHold.value)
             var ship = shipHold.value
             if(ship === null){
                 ship = 0
@@ -142,7 +149,8 @@ block content
                 cartFinal = document.querySelector('#total');
                 cartFinal.innerHTML=`Item Total: $${((total/100)).toFixed(2)}`
                 grandFinal = document.querySelector('#grand');
-                grandFinal.innerHTML=`Grand Total: $${((total/100)+((tax/10000)*(total/100))+(ship/100)).toFixed(2)}`
+                grandFinal.innerHTML=`Grand Total: $${(((total)+((tax/100)*(total))+(ship))/100).toFixed(2)}`
+
             
         
         }

@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const compression = require('compression');
 const fs = require('fs');
 const mods = require('./modules/mods')
+var config = require('./env.json')[process.env.NODE_ENV || 'development']
 
 
 //models
@@ -39,6 +40,7 @@ const newsEdit = require('./routes/newsEdit')
 const rsvpDash = require('./routes/rsvpDash')
 const emailRSVP = require('./routes/emailRSVP')
 const emailInvoice = require('./routes/emailInvoice')
+const emailPaid = require('./routes/emailPaid')
 const vendorDash = require('./routes/vendorDash')
 const vendorAdd = require('./routes/vendorAdd')
 const vendorEdit = require('./routes/vendorEdit')
@@ -75,10 +77,10 @@ const port = process.env.PORT || 5000
 const app = express();
 
 var conf = {
-  username: 'WILLES',
+  username: 'adminwed598',
   pin: 'J8UJE3E335KXSFVDF2JUBHLD66LSIJKQ5EYU18PUN2F5RJXLH61NTN4QFFCXMZU8',
-  merchant:  '8036040049',
-  environment: 'sandbox'
+  merchant:  '2136638',
+  environment: 'Production'
 };
 
 var Converge = new converge(conf);
@@ -662,6 +664,7 @@ app.use('/admin/rsvp-check?:id', isLogged, async function(req,res){
 
 app.use('/admin/rsvp-email?:id', emailRSVP)
 app.use('/admin/email-invoice?:id', emailInvoice)
+app.use('/admin/email-paid?:id', emailPaid)
 
 
 //locations
@@ -880,6 +883,7 @@ app.post(`/admin/invoice-add?:id`, isLogged, async function(req,res){
     data.shipping = parseInt(req.body.shipping)*100
     data.status = "draft";
     data.rootID = req.query.id
+    data.tax = req.body.tax*100;
 
     const upData = await Invoices.query()
       .insert(data)
@@ -897,6 +901,7 @@ app.post(`/admin/invoice-view?:id`, isLogged, async function(req,res){
      const currID = req.query.id
      data.cart = req.body.cart;
      data.shipping = parseInt(req.body.shipping)*100
+     data.tax = req.body.tax*100;
 
      const upData = await Invoices.query()
       .where('id', currID)
@@ -932,7 +937,7 @@ app.use(`/admin/invoice-email?:id`, isLogged, async function(req,res){
     const currEmail = getData[0].buyer[0].email;
     const infoEmail = getInfo[0].email;
   
-    mods.sendMail(currEmail, infoEmail, `Wille's Tin Shop: Invoice`,`https://www.willestinshop.com/admin/email-invoice?id=${currID}`)
+    mods.sendMail(currEmail, infoEmail, `Wille's Tin Shop: Invoice Ready`,`${config.url}/admin/email-invoice?id=${currID}`)
     
     res.redirect(`/admin/invoice-view?id=${currID}`)
 })
@@ -956,24 +961,63 @@ app.use(`/admin/invoice-paid?:id`, isLogged, async function(req,res){
 })
 
 app.use(`/admin/invoices-open`, isLogged, invoicesOpen)
-app.use(`/admin/testpay`, async function(req,res){
+app.post(`/api/pay-invoice`, async (req,res)=>{
+  var currID = parseInt(req.body.bill.id)
+  let billing = {}
+  billing.firstName = req.body.bill.firstName
+  billing.lastName = req.body.bill.lastName
+  billing.address = req.body.bill.address
+  billing.city = req.body.bill.city
+  billing.state = req.body.bill.state
+  billing.zip = req.body.bill.zip
+  billing.cart = req.body.bill.cart
+  billing.email = req.body.bill.email
+  billing.grand = parseInt(req.body.bill.grand)
 
 
-Converge.Card.Create(
-  {
-      cardNumber: '5434343434342',
-      exp: '06/25',
-      cvv: '232',
-      firstName: 'Geoffroy',
-      lastName: 'Lesage',
-      address: '1 Main Street',
-      zipcode: '90806'
-  }).then(function(res){
-    console.log(res)
+  var grand = (billing.grand/100).toFixed(2)
+  var reEmail = billing.email
+
+  console.log(grand, reEmail)
+
+  var cardForeignId, transactionForeignId;
+  var data = {
+    cardNumber: (req.body.card.num).replace(/\s/g,''),
+    exp: `${req.body.card.month}/${req.body.card.year}`,
+    cvv: (req.body.card.cvv).replace(/\s/g,''),
+    firstName: req.body.bill.firstName,
+    lastName: req.body.bill.lastName,
+    address: req.body.bill.address,
+    zipcode: (req.body.bill.zip).replace(/\s/g,'')
+  }
+ 
+Converge.Card.Create(data).then(function(cardData){
+      cardForeignId = cardData.foreignId
+
+      if(!cardForeignId){
+        console.log(`token failed`)
+        res.sendStatus(412).end()
+      }
+      else{
+      Converge.Card.Sale(
+        {
+            foreignKey: cardForeignId,
+            amount: grand
+        }).then(function(saleData){
+          console.log(saleData.foreignId)
+          let inData = {}
+          inData.billing = JSON.stringify(billing);
+          inData.status = "paid";
+          inData.cost = parseInt(req.body.bill.grand);
+          console.log(currID)
+          updateInvoice(currID, inData);
+          sendPaid(currID, reEmail);
+          // console.log(inData, currID)
+          res.sendStatus(200).end()
+        })
+      }
   })
-      
 
-    res.redirect(`/admin/invoices`)
 })
 
 ///functions
@@ -989,6 +1033,24 @@ function isAdmin(req, res, next) {
       return next();
   res.redirect('/admin/login');
 }
+
+async function updateInvoice (id, data){
+  const upData = await Invoices.query()
+  .where('id', id)
+  .patch(data);
+}
+
+async function sendPaid(id, email){
+  const getInfo = await Info.query()
+  .where('id',1);
+
+  var sendEmail = getInfo[0].email;
+  mods.sendMail(email, sendEmail, `Wille's Tin Shop: Payment Complete`,`${config.url}/admin/email-paid?id=${id}`)
+  mods.sendMail(sendEmail, sendEmail, `Wille's Tin Shop: New Payment`,`${config.url}/admin/email-paid?id=${id}`)
+
+}
+
+
 
 //////////////////////////////////
 //API
@@ -1020,7 +1082,7 @@ app.use('/api/rsvp-submit', async function(req,res){
   let getInfo = await Info.query().orderBy("id", "desc").limit(1);
   let getEvent = await News.query().where("id",data.rootID).limit(1);
 
-  mods.sendMail(data.email, getInfo[0].email, `Wille's Tin Shop: RSVP Confirmation`,`https://www.willestinshop.com/admin/rsvp-email?id=${getEvent[0].id}&rsvp=${getNew[0].id}`)
+  mods.sendMail(data.email, getInfo[0].email, `Wille's Tin Shop: RSVP Confirmation`,`${config.url}/admin/rsvp-email?id=${getEvent[0].id}&rsvp=${getNew[0].id}`)
   res.status(200).end();
 
   } catch (err) {

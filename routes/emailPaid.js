@@ -4,7 +4,7 @@ const { Info } = require('../models/info')
 const router = express.Router()
 
 router.get('/', async (req, res) => {
-  var curr = req.query.id;
+  var curr = parseInt(req.query.id);
   var total = 0;
   var tax = 0;
   var grand = 0;

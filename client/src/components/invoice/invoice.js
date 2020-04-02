@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import {Route, Switch, Link} from 'react-router-dom';
 import './invoice.css';
+import Checkout from './checkout.js';
 
 
 
@@ -12,6 +14,7 @@ class Invoice extends Component {
             success: false,
             total:0,
             grand:0,
+            tax:0,
             shipping:0,
             cart:[]
 
@@ -40,7 +43,7 @@ class Invoice extends Component {
       .then(data => this.setState({
           data: data.data
           },()=>{
-            this.setState({shipping:parseInt(this.state.data[0].shipping), cart: JSON.parse(this.state.data[0].cart)},()=>{
+            this.setState({shipping:parseInt(this.state.data[0].shipping), cart: JSON.parse(this.state.data[0].cart), tax:this.state.data[0].tax},()=>{
               this.getTotal()
             })
           }))
@@ -50,7 +53,7 @@ class Invoice extends Component {
     getTotal=()=>{
       var total= 0;
       (this.state.cart).forEach((e)=>{
-          var cost = parseInt(e.cost*e.quantity)
+          var cost = e.cost*e.quantity
           total = total+cost
       })
       this.setState({total: total},()=>{
@@ -59,7 +62,7 @@ class Invoice extends Component {
   }
 
   getTax=()=>{
-    var tax = (parseInt(this.props.info.tax)/10000)*this.state.total
+    var tax = (parseFloat(this.state.tax)/10000)*(this.state.total)
     this.setState({tax: tax},()=>{
         this.getGrand();
     })
@@ -127,11 +130,11 @@ getGrand=()=>{
                   <p className="tDetails tBold tBlue tUpper">invoice# {data[0].id}</p>
                 </div>
                 <div className="sealHold">
-                <img className="eCenter fullImg" src="images/logo-service-blue.svg"></img>
+                <img className="eCenter fullImg" src="/images/logo-service-blue.svg"></img>
                   </div>
                 <div className="invLogoHold fullWidth mtMed mbMed">
                     <div className="invLogo eCenter">
-                      <img className="eCenter fullImg" src="images/logo-blue.svg"></img>
+                      <img className="eCenter fullImg" src="/images/logo-blue.svg"></img>
                     </div>
                 </div>
                 <div className="fullWidth mbLrg">
@@ -198,7 +201,7 @@ getGrand=()=>{
                                 <p className="tNews tBlue tUpper  tCenter">{item.quantity}</p>          
                               </div>
                               <div className="colFourth formCell bBotSm flex relative">
-                                <p className="tNews tBlue tUpper  tCenter">{(item.cost/100).toFixed()}</p>          
+                                <p className="tNews tBlue tUpper  tCenter">{(item.cost/100).toFixed(2)}</p>          
                               </div>
                               </React.Fragment>
                             )
@@ -224,11 +227,26 @@ getGrand=()=>{
                         
                             
                         <div className="fullWidth bBlue formCell">
-                        <button className="submit relative fullWidth" type="submit" >
-                            <div className="flex rsvpSubHold flexACenter fullWidth centeredContent plSm prSm" ><img alt="submit-button" className="forwardBut"src="/images/button-forward-blue.svg"></img><div className="tCTA tBlue prSm plSm tCenter">PAY ONLINE SOON</div></div></button>
+                          {data[0].status==="paid"?(
+                            <div className="fullWidth tCenter paidInFull">
+                                <p className="rsvpTop tRust tUpper"> Paid </p>
+                            </div>
+                          ):(
+                               <Link to={`/invoice/checkout?id=${data[0].id}`}>
+                               <button className="submit relative fullWidth" >
+                                   <div className="flex rsvpSubHold flexACenter fullWidth centeredContent plSm prSm" ><img alt="submit-button" className="forwardBut"src="/images/button-forward-blue.svg"></img><div className="tCTA tBlue prSm plSm tCenter">Check Out</div></div>
+                                   </button>
+                                 </Link>
+                          )}
+                         
+
                           </div>
                       </div>
                   
+                </div>
+                <div className="tNews">
+                  <Route path='/invoice/checkout' render={()=><Checkout grand={this.state.grand} data={this.state.data}/>} /> 
+
                 </div>
 
               </div>
