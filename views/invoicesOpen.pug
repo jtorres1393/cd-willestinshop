@@ -23,23 +23,24 @@ block content
             -   var sortCount1 = 1
             #sort1.principalHold.mbHuge
                 for item in data
-                    a.fullWidth(href="/admin/invoice-view?id="+item.id)         
-                        .sort1.singleCat.mbSm.fullWidth.flex.flexACenter.bBlk.bBotSm.pbXs.ptXs(data-id=item.id, data-order=sortCount1)
-                            .col2.relative.flex
-                                p.plSm.tCap.tBold=`${sortCount1}. `
-                                    if item.buyer[0].firstName
-                                        span=`${item.buyer[0].firstName}`
-                                        if item.buyer[0].lastName
-                                            span=` ${item.buyer[0].lastName}`
-                                    else
-                                        if item.company
-                                        span=`${item.buyer[0].company}`
-                            .col2.flex.flexACeter
-                                .col2plSm.tCap
-                                        p.prSm.tGreen=prettyDate(item.created_at)
-                                .col2.flex
-                                    .btn.btn-sec.fullWidth.relative
-                                        p.tBold Edit
+                    for buy in item.buyer
+                        a.fullWidth(href="/admin/invoice-view?id="+item.id)         
+                            .sort1.singleCat.mbSm.fullWidth.flex.flexACenter.bBlk.bBotSm.pbXs.ptXs(data-id=item.id, data-order=sortCount1)
+                                .col2.relative.flex
+                                    p.plSm.tCap.tBold=`${sortCount1}. `
+                                        if buy.firstName
+                                            span=`${buy.firstName}`
+                                            if buy.lastName
+                                                span=` ${buy.lastName}`
+                                        else
+                                            if item.company
+                                            span=`${buy.company}`
+                                .col2.flex.flexACeter
+                                    .col2plSm.tCap
+                                            p.prSm.tGreen=prettyDate(item.created_at)
+                                    .col2.flex
+                                        .btn.btn-sec.fullWidth.relative
+                                            p.tBold Edit
                     -   sortCount1++
                 
 
