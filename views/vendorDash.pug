@@ -23,9 +23,8 @@ block content
                                 .sortHandle
                                 p.plSm.tCap=sortCount1+". "+item.name
                             .col2
-                                p.plSm.tCap
-                                    for loc in item.location
-                                        span.prSm=loc.city
+                                for loc in item.location
+                                    p.prXs=loc.city
                         .col2.flex
                             a.col2(href="/admin/vendor-edit?id="+item.id)
                                 .btn.btn-sec.fullWidth.relative
