@@ -175,7 +175,7 @@ block content
                 cartFinal.innerHTML=`$${((total/100)).toFixed(2)}`
                 grandFinal = document.querySelector('#grand');
                 grandFinal.innerHTML=`$${(((total)+((tax/100)*(total))+(ship))/100).toFixed(2)}`            
-                costHold.value = ((total)+((tax/100)*(total))+(ship))
+                costHold.value = parseInt(((((total)+((tax/100)*(total))+(ship))/100).toFixed(2))*100)
         }
 
         var getClosest = function (elem, selector) {
