@@ -60,7 +60,7 @@ block content
                 for item in cart
                     tr
                         td(style="border-bottom:1px solid #2f456b;border-right:1px solid #2f456b" colspan="2")
-                            p(style="color:#2f456b;font-weight:normal;text-align:left")=item.item.title
+                            p(style="color:#2f456b;font-weight:normal;text-align:left")=`${item.item.title}: ${item.item.shopOptions[item.option].title}`
                         td(style="border-bottom:1px solid #2f456b;border-right:1px solid #2f456b" colspan="1")
                             p(style="color:#2f456b;font-weight:normal;text-align:center")=item.quantity
                         td(style="border-bottom:1px solid #2f456b" colspan="1")
