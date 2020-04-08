@@ -112,6 +112,7 @@ class Checkout extends Component {
           </div>
                       
                       <div className={`bBlue bTopSm flex mbSm`} >
+                        <h1 className="fullWidth tCenter tBlue"> ORDERS FOR PICK-UPS ONLY </h1>
                         <div className="colHalf bBlue bRight formCell bBotSm flex">
                           <p className="tNews tBlue pSmall tUpper tBold tCenter">Items</p>
                         </div>
