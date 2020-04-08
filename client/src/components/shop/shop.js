@@ -96,7 +96,7 @@ class Shop extends Component {
               })}
           </div>
           <div className={`col34 productStage ptMed ${single?('singleActive'):('')}`}> 
-                  <h1 className="fullWidth tCenter tBlue pbLrg tCap"> Orders for Pick-up Only </h1>
+                  <h1 className="fullWidth tCenter tWhite pbLrg tCap"> Orders for Pick-up Only </h1>
                   <Switch>
                     <Route path='/shop/*/*' render={()=><SingleProduct  changeBG={this.changeBG} getImg={this.props.getImg} addCart={this.props.addCart} singleMode={this.singleMode} singleOff={this.singleOff} urlText={this.props.urlText} checkSection={this.props.checkSection} info={this.props.info} win={this.props.win}/>} />
                     <Route path='/shop' render={()=><Products  getImg={this.props.getImg} urlText={this.props.urlText} checkSection={this.props.checkSection} info={this.props.info} win={this.props.win}/>} />
