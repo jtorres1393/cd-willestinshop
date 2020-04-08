@@ -55,6 +55,9 @@ const invoiceDash = require('./routes/invoiceDash')
 const invoiceAdd = require('./routes/invoiceAdd')
 const invoiceView = require('./routes/invoiceView')
 const invoicesOpen = require('./routes/invoicesOpen')
+const orderDash = require('./routes/orderDash')
+const orderView = require('./routes/orderView')
+const archiveDash = require('./routes/archiveDash')
 
 
 //frontend
@@ -499,6 +502,24 @@ app.post('/admin/shop-edit?:id',m.fields([{name:"imgItems", maxCount: 10}]) ,asy
   res.redirect('/admin/shop-edit?id='+rootID+"&cat="+cat)
 
 })
+
+app.use('/admin/shop/orders', isLogged, orderDash)
+app.use('/admin/shop/archive', isLogged, archiveDash)
+app.use('/admin/shop/order-view?:id', isLogged, orderView)
+app.use('/admin/shop/order-ship?:id', isLogged, async function(req,res){
+    var currID = req.query.id;
+    let data={}
+    data.shipped = true;
+
+    const updata = await Orders.query()
+      .where('id', currID)
+      .patch(data)
+    
+      res.redirect("/admin/shop/orders")
+
+})
+
+
 
 //optionDelete
 app.use('/admin/shopOption-delete?:id', isLogged, async function(req,res){

@@ -1,0 +1,42 @@
+extend layout
+
+block content
+    #mainForm.fullWidth.flex
+        #menuPanel
+            p.mbMed.tTitle Settings
+    
+
+
+        #sectionEditor.edit.mbLrg.colSkip.col23
+            p.mbMed.tTitle
+                a(href="/admin/shop")
+                    span.tGray=`Shop / `
+                span=`Open Orders`
+            
+                            
+
+            .fullWidth.flex.mbSm.tBold.bBlk.bBotSm.pbSm
+            #sort1.principalHold.mbHuge
+                for item in data 
+                    .fullWidth.flex.flexACenter.bBlk.bBotSm.pbXs.ptXs
+                        for buy in item.customers
+                            a.col2.pbSm(href="/admin/shop/order-view?id="+item.id)        
+                                .fullWidth.relative
+                                    p.plSm.tCap.tBold=`${item.id}. `
+                                        if buy.firstName
+                                            span=`${buy.firstName}`
+                                            if buy.lastName
+                                                span=` ${buy.lastName}`
+                                    p.plSm.prSm.tGreen=prettyDate(item.created_at)
+                
+
+
+        -function prettyDate(dateString){
+        //if it's already a date object and not a string you don't need this line:
+        -var date = new Date(dateString);
+        -var d = date.getDate();
+        //- -var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+        -var m = date.getMonth()+1;
+        -var y = date.getFullYear();
+        -return m+'/'+d+'/'+y;
+    -}
