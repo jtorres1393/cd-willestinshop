@@ -20,10 +20,13 @@ block content
                     span Stock Info Edit
             
                 .stockHold.fullWidth.flex.tTitle.mbXs
-                    .col2
+                    .col3
                         p.tBold Option
-                    .col2
+                    .col3
+                        p.tBold Cost
+                    .col3
                         p.tBold Stock
                 .newOption.fullWidth.flex
-                    input.col2(type="text", name="title", value=item.title)
-                    input.col2(type="number", name="stock", value=item.stock)
+                    input.col3(type="text", name="title", value=item.title)
+                    input.col3(type="number", name="cost", value=(item.cost/100).toFixed(2) step="any")
+                    input.col3(type="number", name="stock", value=item.stock)

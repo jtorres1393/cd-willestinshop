@@ -29,6 +29,14 @@ class ShopItems extends Model {
             from:'shopItems.id',
             to: 'media.rootID'
           }
+        },
+        category:{
+          relation: HasManyRelation,
+          modelClass: `${__dirname}/shopCategory`,
+          join:{
+            from:'shopItems.rootID',
+            to: 'shopCategory.id'
+          }
         }
 
 

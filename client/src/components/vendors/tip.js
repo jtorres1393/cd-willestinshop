@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {Route, Switch, Link} from 'react-router-dom';
 
 
 
@@ -62,9 +61,7 @@ class Tip extends Component {
 
     render() {
 
-      const { win } = this.props;
       const {curr} = this.state;
-      const { tipActive } = this.props;
 
       
     
@@ -78,7 +75,7 @@ class Tip extends Component {
                <React.Fragment>
                  
                  {curr.vendor[0].media.length?(
-                    <img className="fullImg mbSm" src={curr.vendor[0].media[0].url}></img>
+                    <img alt="vendorLogo" className="fullImg mbSm" src={curr.vendor[0].media[0].url}></img>
                  ):(
                   <h1 className="mbSm tCap ptLrg">{curr.vendor[0].name}</h1>
                  )}
@@ -101,7 +98,7 @@ class Tip extends Component {
               {curr.media?(
                   curr.media.map((img, p)=>{
                     return(
-                      <img className="fullImg" src={img.url}></img>
+                      <img key={`vendorImg-${p}`}alt="vendor-images" className="fullImg" src={this.props.getImg(img.name)}></img>
                     )
                   })
                  ):('')}

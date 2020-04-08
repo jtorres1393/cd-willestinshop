@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './invoice.css';
+import Cleave from 'cleave.js/react';
 
 
 
@@ -43,9 +44,8 @@ class Checkout extends Component {
         bill.email = this.props.data[0].buyer[0].email;
 
 
-        card.num= ev.target.card.value;
-        card.month = ev.target.month.value;
-        card.year = ev.target.year.value;
+        card.num= ev.target.card.rawValue;
+        card.date = ev.target.date.value;
         card.cvv = ev.target.cvv.value;
         
         
@@ -97,8 +97,8 @@ class Checkout extends Component {
           <input className="checkoutInput colHalf bBlue formCell bRight bBotSm tUpper bLeft" name="firstName" type="text" placeholder="First name"required></input>
           <input className="checkoutInput colHalf bBot bBlack bBlue formCell bBotSm tUpper bRight" name="lastName" type="text" placeholder="Last name"required></input>
           <input className="checkoutInput fullWidth bBot formCell  bBotSm tUpper bLeft bRight" name="address" type="text" placeholder="Billing address"required></input>
-          <input className="checkoutInput colThird bBot formCell bRight bBotSm tUpper bLeft" name="city" type="text" placeholder="city"required></input>
-          <select className="checkoutInput colThird bBot formCell bRight bBotSm tUpper" name="state" defaultValue="ca" required>
+          <input className="checkoutInput colThird bBot formCell bRight bBotSm tUpper bLeft cityInput" name="city" type="text" placeholder="city"required></input>
+          <select className="checkoutInput colThird bBot formCell bRight bBotSm tUpper stateInput" name="state" defaultValue="ca" required>
                 <option value="al">al</option>
                 <option value="ak">ak</option>
                 <option value="ar">ar</option>
@@ -151,13 +151,11 @@ class Checkout extends Component {
                 <option value="wv">wv</option>
                 <option value="wy">wy</option>
           </select>
-           <input className="checkoutInput colThird bBot formCell bBotSm bRight" name="zip" type="text" placeholder="zip code"required></input>
-           <input className="checkoutInput fullWidth bBot formCell  bBotSm bRight ccCard bLeft" name="card" type="text" placeholder="Credit Card Number"required></input>
-        
-              <input className="checkoutInput colThird bBot formCell bBotSm bRight exDate bLeft" name="month" type="text" placeholder="MM"required size="2"  maxLength="2"></input>
-              <input className="checkoutInput colThird bBot formCell bBotSm exDate bRight" name="year" type="text" placeholder="YY" size="2"  maxLength="2" required ></input>
-          
-            <input className="checkoutInput colThird bBot formCell  bBotSm bRight " name="cvv" type="text" placeholder="CVV"required></input>
+           <input className="checkoutInput colThird bBot formCell bBotSm bRight zipInput" name="zip" type="text" placeholder="zip code"required></input>
+           <Cleave className="checkoutInput fullWidth bBot formCell  bBotSm bRight ccCard bLeft" name="card" type="text" placeholder="Credit Card Number" options={{creditCard: true}} required/>
+
+              <Cleave className="checkoutInput colHalf bBot formCell bBotSm bRight exDate bLeft" placeHolder="MMYY" name="date" type="text" options={{date: true, datePattern: ['m', 'y']}}></Cleave>          
+            <input className="checkoutInput colHalf bBot formCell  bBotSm bRight " name="cvv" type="text" placeholder="CVV"required></input>
             {processing?(''):(
                           <button className="bgBlue tWhite fullWidth formCell tUpper tNums" >pay total: {"$"+((this.props.grand)/100).toFixed(2)}</button>
 

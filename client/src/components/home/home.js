@@ -37,7 +37,7 @@ class Home extends Component {
                   {info[0].media.length?(
                     info[0].media.map((item,i)=>{
                       return(
-                        <React.Fragment>
+                        <React.Fragment key={`video-${i}`}>
                       {item.type==="videos"?(
                         <video autoPlay playsInline muted loop className="centeredContent" key={item.url}>
                         <source key="currSource" src={item.url} type="video/mp4" />

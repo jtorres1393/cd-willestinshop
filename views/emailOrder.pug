@@ -12,7 +12,7 @@ block content
                     td(style="width:25%")
                 tr
                     td(colspan="4" style="position:relative")
-                        p(style="color:#2f456b;text-align:left;")=`INVOICE # ${data.id}`
+                        p(style="color:#2f456b;text-align:left;")=`ORDER # ${data.id}`
                         img(src="https://storage.googleapis.com/willestinshop/images/logo-blue.png", style="width:60%;height:auto;margin:0 auto;max-width:450px")
                         img(src="https://storage.googleapis.com/willestinshop/images/willes-service-blue.png", style="width:20%;height:auto;margin:0 auto;max-width:200px;position:absolute;top:10px;right:-10px")
 
@@ -24,36 +24,28 @@ block content
                             span=info.phone                    
                         a(href=`mailto:${info.email}`)
                             p(style="color:#2f456b;text-align:center;")=info.email
-                if data.status!=="paid"
-                    tr
-                        td(colspan="4" style="background-color:#2f456b")
-                            a(href=`https://www.willestinshop.com/invoice?id=${data.id}` style="text-decoration:none;")
-                                p(style="font-family:sans-serif;font-weight:bold;text-align:center;color:#ffffff;font-size:1.5em") Pay Online Now
                 tr
                     td( style="text-align:rigth;vertical-align:top")
                         p(style="font-weight:bold")=prettyDate(data.created_at)
                             br
                             span SOLD TO
                     td(colspan="3" style="text-align:left;vertical-align:top;padding-bottom:20px")
-                        if data.buyer[0].firstName
+                        if data.customers[0].firstName
                             .fullWidth(style="border-bottom:1px solid #2f456b")
-                                p(style="line-height:.5em")=`${data.buyer[0].firstName} ${data.buyer[0].lastName}`
-                        if data.buyer[0].company
-                            .fullWidth(style="border-bottom:1px solid #2f456b")
-                                p(style="line-height:.5em")=`${data.buyer[0].company} `
-                        if data.buyer[0].address
+                                p(style="line-height:.5em")=`${data.customers[0].firstName} ${data.customers[0].lastName}`
+                        if data.customers[0].address
                             .fullWidth
-                                p(style="line-height:.5em")=`${data.buyer[0].address} `
-                        if data.buyer[0].city || data.buyer[0].state || data.buyer[0].zip
+                                p(style="line-height:.5em")=`${data.customers[0].address} `
+                        if data.customers[0].city || data.customers[0].state || data.customers[0].zip
                             p(style="line-height:.5em")
-                                if data.buyer[0].city
-                                    span=`${data.buyer[0].city}`
-                                if data.buyer[0].state
-                                    span=`, ${data.buyer[0].state}`
-                                if data.buyer[0].zip
-                                    span=` ${data.buyer[0].zip}`
-                        if data.buyer[0].phone
-                            p(style="line-height:.5em")=data.buyer[0].phone
+                                if data.customers[0].city
+                                    span=`${data.customers[0].city}`
+                                if data.customers[0].state
+                                    span=`, ${data.customers[0].state}`
+                                if data.customers[0].zip
+                                    span=` ${data.customers[0].zip}`
+                        if data.customers[0].email
+                            p(style="line-height:.5em")=data.customers[0].email
                 tr
                     td(colspan="4", style="border-bottom:1px solid #2f456b;height:0")
                 tr
@@ -68,37 +60,32 @@ block content
                 for item in cart
                     tr
                         td(style="border-bottom:1px solid #2f456b;border-right:1px solid #2f456b" colspan="2")
-                            p(style="color:#2f456b;font-weight:normal;text-align:left")=item.item
+                            p(style="color:#2f456b;font-weight:normal;text-align:left")=item.item.title
                         td(style="border-bottom:1px solid #2f456b;border-right:1px solid #2f456b" colspan="1")
                             p(style="color:#2f456b;font-weight:normal;text-align:center")=item.quantity
                         td(style="border-bottom:1px solid #2f456b" colspan="1")
-                            p(style="color:#2f456b;font-weight:normal;text-align:left;padding-left:10px")=`$${(item.cost/100).toFixed(2)}`
+                            p(style="color:#2f456b;font-weight:normal;text-align:left;padding-left:10px")=`$${((item.quantity*item.item.shopOptions[item.option].cost)/100).toFixed(2)}`
                 tr  
-                    if data.status==="paid"
-                        td(colspan="2" style="background-color:#ae4d33")  
-                            p(style="font-family:sans-serif;font-weight:bold;text-align:center;color:#ffffff;font-size:1.5em") PAID
-                    else
-                        td(colspan="2" style="background-color:#2f456b")
-                            a(href=`https://www.willestinshop.com/invoice?id=${data.id}` style="text-decoration:none;")
-                                p(style="font-family:sans-serif;font-weight:bold;text-align:center;color:#ffffff;font-size:1.5em") Pay Online Now
+                    td(colspan="2" style="background-color:#ae4d33")  
+                        p(style="font-family:sans-serif;font-weight:bold;text-align:center;color:#ffffff;font-size:1.5em") PAID
                     td(style="border-bottom:1px solid #2f456b;border-right:1px solid #2f456b;padding-right:10px")
                         p(style="font-weight:bold;text-align:right")
-                            span Subtotal
+                            span subtotal
                             br
-                            span Tax
+                            span tax
                             br
-                            span Shipping
+                            span shipping
                             br
-                        p(style="font-weight:bold;text-align:right") Total
+                        p(style="font-weight:bold;text-align:right") total
                     td(style="border-bottom:1px solid #2f456b;padding-left:10px")
                         p(style="font-weight:normal;text-align:left")
-                            span#total=`$${(total/100).toFixed(2)}`
+                            span#total=`$${(data.cost/100).toFixed(2)}`
                             br
-                            span#tax=`$${(data.tax/10000*total/100).toFixed(2)}`
+                            span#tax=`$${(data.tax/100).toFixed(2)}`
                             br
                             span=`$${(data.shipping/100).toFixed(2)}`
                             br
-                        p#grand(style="font-weight:bold;text-align:left")=`$${(data.cost/100).toFixed(2)}`
+                        p#grand(style="font-weight:bold;text-align:left")=`$${((data.cost+data.tax+data.shipping)/100).toFixed(2)}`
 
                 tr
                     td(style="height:0;border-top:1px solid #2f456b;margin-bottom:40px;", colspan="4")

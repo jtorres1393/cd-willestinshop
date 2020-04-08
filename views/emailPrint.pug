@@ -77,13 +77,13 @@ block content
                             a(href=`https://www.willestinshop.com/invoice?id=${data.id}` style="text-decoration:none;")
                     td(style="border-bottom:1px solid #2f456b;border-right:1px solid #2f456b;padding-right:10px")
                         p(style="font-weight:bold;text-align:right")
-                            span total
+                            span subtotal
                             br
                             span tax
                             br
                             span shipping
                             br
-                        p(style="font-weight:bold;text-align:right") Grand
+                        p(style="font-weight:bold;text-align:right") Total
                     td(style="border-bottom:1px solid #2f456b;padding-left:10px")
                         p(style="font-weight:normal;text-align:left")
                             span#total=`$${(total/100).toFixed(2)}`

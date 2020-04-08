@@ -8,6 +8,14 @@ router.get('/', async (req, res) => {
 
   const data = await ShopCategory.query()
   .orderBy('order',"asc")
+  .eager('[shopItems(orderDown, onlyActive)]', {
+    onlyActive: (builder) => {
+      builder.where('active', true);
+      },
+    orderDown: (builder) => {
+    builder.orderBy('order','asc')
+    }
+  })
 
   res.json({data:data});
 

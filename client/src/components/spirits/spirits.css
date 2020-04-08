@@ -32,16 +32,18 @@
 
 .spiritMode .singleSpirit{
     opacity: 0;
+    pointer-events: none;
 }
 
 .activeSpirit.singleSpirit{
     opacity:1;
     margin-top:-50px;
-    position:relative;
     z-index: 510;
     width: 50vw;
     display:block;
+    position: absolute;
 }
+
 
 .activeSpirit.singleSpirit .spiritImgHold{
     position:relative;

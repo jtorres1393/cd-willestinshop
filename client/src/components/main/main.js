@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './main.css';
+import ls from 'local-storage'
 import {Route, Switch, Link} from 'react-router-dom';
 import Home from '../home/home.js';
 import Spirits from '../spirits/spirits.js';
@@ -9,13 +10,15 @@ import News from '../news/news.js';
 import About from '../about/about.js';
 import Invoice from '../invoice/invoice.js';
 import Vendors from '../vendors/vendors.js';
+import Cart from '../checkout/cart.js';
+import Checkout from '../checkout/checkout.js';
 
 
 
 class Main extends Component {
     constructor(){
         super();
-        
+        this.mapKeys = {}
         this.state = {
             win:[window.innerWidth,window.innerHeight],
             info: [],
@@ -27,6 +30,13 @@ class Main extends Component {
             rsvpActive: false,
             mapActive:false,
             hideVen:false,
+            viewCart:false,
+            cart:[],
+            subTotal:0,
+            tax:0,
+            shipping:0,
+            total:0,
+            imgSize: 1300,
 
         }
 
@@ -35,6 +45,7 @@ class Main extends Component {
     componentDidMount(){
         this.getInfo();
         window.addEventListener('resize', this.resizeWin)
+        window.addEventListener('keydown', this.cartCheck, false); 
       
     }
 
@@ -44,11 +55,17 @@ class Main extends Component {
       .then(res => res.json())
       .then(data => this.setState({
           info: data.data,
-          news: data.news},()=>{
+          news: data.news,
+          cart: ls.get('cart') || []},()=>{
             this.checkSection()
             this.resizeWin()
+            this.getSub();
           }));
 
+    }
+
+    urlText=(str)=>{
+      return(str.replace(/\s+/g, '-').toLowerCase())
     }
     
 
@@ -80,19 +97,18 @@ class Main extends Component {
     resizeWin= () => {
       this.setState({win:[window.innerWidth,window.innerHeight]},()=>{
         if((window.innerWidth <= 750) && !this.state.mobile){
-          this.setState({mobile:true})
+          this.setState({mobile:true, imgSize:800})
   
         }
         else if((window.innerWidth > 750) && this.state.mobile){
-          this.setState({mobile:false})
+          this.setState({mobile:false, imgSize:1500})
         }
       })
       
     }
 
     getTime=(start, noYear)=>{
-      var active = "";
-      var today = (this.date)
+
      
       var first = new Date(start+"T12:00"+":00-07:00")
       
@@ -120,7 +136,7 @@ class Main extends Component {
       var text = string.split(' ')
       let post = [];
       for (var i in text) {
-        post.push(<p className={cl}>{text[i]}</p>)
+        post.push(<p key={`justForm-${i}`}className={cl}>{text[i]}</p>)
       }
       return(post)
     
@@ -235,7 +251,146 @@ class Main extends Component {
   }
   
 
+  // cart
+    //cart edit
+    changeOpt=(e)=>{
+      var curr = (e.target).getAttribute('data-id')
+      var value = e.target.value;
+      var array = [...this.state.cart];
+      array[curr].option = value
+      ls.set("cart", array);
+      this.setState({cart: array},()=>{
+          this.setCart(array)
+          this.getSub();
+      });
+  
+  }
 
+  changeQ=(e)=>{
+    var curr = (e.target).getAttribute('data-id')
+    var value = e.target.value;
+    var array = [...this.state.cart];
+    array[curr].quantity = value
+    ls.set("cart", array);
+    this.setState({cart: array},()=>{
+        this.setCart(array)
+        this.getSub();
+    });
+
+}
+  
+  addCart=(item)=>{
+    let hold = this.state.cart;
+    console.log(item);
+    hold.push(item)
+    ls.set("cart", hold);
+    this.setState({cart: hold},()=>{
+      
+        this.getSub();
+    })
+  }
+  
+  setCart=(i)=>{
+    ls.set("cart", i);
+    this.setState({cart: i});
+  }
+  
+  removeItem=(e)=>{
+      
+    var curr = (e.target).getAttribute('data-id')
+    var array = [...this.state.cart];
+  
+    array.splice(curr, 1);
+    ls.set("cart", array);
+    this.setState({cart: array},()=>{
+        this.setCart(array)
+        this.getSub();
+    });
+  
+  }
+  
+  subIn=(e)=>{
+    var curr = (e.target).getAttribute('data-id')
+    var array = [...this.state.cart];
+    var val = array[curr].quantity
+    if(val > 1){
+        array[curr].quantity = val - 1;
+        ls.set("cart", array);
+        this.setState({cart: array},()=>{
+        this.setCart(array)
+        this.getSub();
+         });
+    }
+  
+  
+  }
+  
+  addIn=(e)=>{
+    var curr = (e.target).getAttribute('data-id')
+    var array = [...this.state.cart];
+    var val = parseInt(array[curr].quantity)
+    var op = parseInt(array[curr].option)
+    var stock = parseInt(array[curr].item.shopOptions[op].stock)
+    if(val < stock )
+        array[curr].quantity = val + 1;
+        ls.set("cart", array);
+        this.setState({cart: array},()=>{
+        this.setCart(array)
+        this.getSub();
+         });
+    
+  }
+
+  openCart=()=>{
+    this.setState({viewCart:true})
+  }
+
+  closeCart=()=>{
+    this.setState({viewCart:false})
+  }
+
+  cartCheck=(e)=>{
+    this.mapKeys[e.key] = e.type === 'keydown';
+   
+    if(this.state.viewCart && e.key==="Escape"){
+        this.closeCart();
+
+    }
+}
+
+
+
+  getSub=()=>{
+    var total = 0;
+    this.state.cart.forEach((item,i)=>{
+        var quantity = parseInt(item.quantity)
+        var cost = parseInt(item.item.shopOptions[item.option].cost)
+        var curr = quantity * cost
+        total = total + curr
+    })
+    this.setState({subTotal: total},()=>{
+      this.getTax();
+    })
+
+  }
+
+  getTax=()=>{
+    var tax = this.state.info[0].tax/10000;
+    var curr = Math.ceil(this.state.subTotal*tax)
+    this.setState({tax: curr},()=>{
+      this.getTotal()
+    })
+  }
+
+  getTotal=()=>{
+    var curr = this.state.tax + this.state.subTotal;
+    this.setState({total:curr})
+  }
+
+  getImg=(name)=>{
+    const url = `https://willes.imgix.net/${name}?auto=compress&w=${this.state.imgSize}&fit=clip`;
+    return(url)
+  }
 
     render() {
       const { info } = this.state;
@@ -253,13 +408,20 @@ class Main extends Component {
       <React.Fragment>
         
       {info.length ?(
-        <div id="appContain" style={{width: this.state.win[0]}} className={`relative ${newsActive?"inverse":""}`}>
+        <React.Fragment>
+          <Route path='/' render={()=><Cart closeCart={this.closeCart} shipping={this.state.shipping} subTotal={this.state.subTotal} tax={this.state.tax} total={this.state.total} removeItem={this.removeItem} addIn={this.addIn} subIn={this.subIn} changeQ={this.changeQ} changeOpt={this.changeOpt} cart={this.state.cart} resizeWin={this.resizeWin} mobile={this.state.mobile} viewCart={this.state.viewCart} info={this.state.info[0]} win={this.state.win}/>} />          
+          <div id="appContain" style={{width: this.state.win[0]}} className={`relative ${newsActive?"inverse":""}`}>
             <Link to="/"><div className={`smallLogo ${((this.state.page !== "home" && this.state.page !=="news") || (this.state.infoActive  ) )?"activeLogo":""}`} data-page="home" onClick={this.goHome.bind(this)}>
                 <img alt="willes-name" className={`fullWidth fullImg `} src={`/images/wordmark${mapActive?"-rust":''}.svg`} data-page="home"></img>
             </div></Link>
             {mobile?(
                 <React.Fragment>
-                    <div className={`tCTA ptSm pbSm tRight cPointer tUpper mobileButton tWhite ctaLink ${mapActive?"tRust":"tWhite"}`} onClick={this.checkMobileMenu.bind(this)}>{mobileMenu?"close":"menu"}</div>                  
+                    <div className={`tCTA ptSm pbSm tRight cPointer tUpper mobileButton tWhite ctaLink ${mapActive?"tRust":"tWhite"}`} onClick={this.checkMobileMenu.bind(this)}>{mobileMenu?"close":"menu"}
+                      {this.state.cart.length?(
+                        <div id="cartIcon" className="bgRust tWhite tBold mrSm relative" onClick={this.openCart.bind(this)}><p className="centeredContent tNumsSub">{this.state.cart.length}</p></div>
+                        ):('')}
+                    </div>                  
+                 
                   <div className={`fullScreen mobileMenu bgBlue ${mobileMenu?"active":""}`}>
                     <div className="fullStage centeredContent tWhite tUpper pbHuge">
                       <Link to="/"><h2 data-page="home" onClick={this.goHome.bind(this)} className="tCenter mbSm homeLink" >home</h2></Link>
@@ -271,7 +433,11 @@ class Main extends Component {
                   </div>
                 </React.Fragment>
             ):(
-            <div className={`nav ptSm pbSm  flex flexEnd col2 tUpper ${hideVen?"tRust":"tWhite"}`}>
+            <div className={`nav ptSm pbSm  flex flexEnd col23 tUpper ${hideVen?"tRust":"tWhite"}`}>
+                      {this.state.cart.length?(
+                        <div id="cartIcon" className="bgRust tWhite tBold mrSm relative" onClick={this.openCart.bind(this)}><p className="centeredContent tNumsSub">{this.state.cart.length}</p></div>
+                      ):('')}
+               
               <Link to="/"><div data-page="home" onClick={this.goHome.bind(this)} className=" tRight homeLink" >home</div></Link>    
               <Link to="/spirits"><div data-page="spirits" onClick={this.checkSection.bind(this)} className=" tRight plSm spiritsLink" >spirits</div></Link>     
               <Link to="/vendors"><div data-page="vendors" onClick={this.checkSection.bind(this)} className="tRight plSm vendorsLink" >vendors</div></Link>      
@@ -328,19 +494,20 @@ class Main extends Component {
               </div>
               </Link>
             ):('')}
+                <Route path='/checkout' render={()=><Checkout openRSVP={this.openRSVP} closeRSVP={this.closeRSVP} setCart={this.setCart} openCart={this.openCart} closeCart={this.closeCart} shipping={this.state.shipping} subTotal={this.state.subTotal} tax={this.state.tax} total={this.state.total} changeOpt={this.changeOpt} cart={this.state.cart} resizeWin={this.resizeWin} mobile={this.state.mobile} viewCart={this.state.viewCart} info={this.state.info[0]} win={this.state.win}/>} />          
                 <Route path='/invoice' render={()=><Invoice openRSVP={this.openRSVP} closeRSVP={this.closeRSVP} getTime={this.getTime} resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info[0]} win={this.state.win}/>} /> 
                 <Route path='/rsvp' render={()=><RSVP openRSVP={this.openRSVP} closeRSVP={this.closeRSVP} getTime={this.getTime} resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info[0]} win={this.state.win}/>} /> 
-              <div className={`relative fullWidth ${((newsActive || rsvpActive) ?"condenseStage":"")}`} style={{minHeight:win[1]}}>
+                <div className={`relative fullWidth ${((newsActive || rsvpActive) ?"condenseStage":"")}`} style={{minHeight:win[1]}}>
                 <Switch>
-                  <Route path='/vendors' render={()=><Vendors showVen={this.showVen} hideVen={this.state.hideVen} venToggle={this.venToggle} venOff={this.venOff} mapOff={this.mapOff} mapOn={this.mapOn} resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
-                  <Route path='/shop' render={()=><Shop resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
-                  <Route path='/spirits' render={()=><Spirits resizeWin={this.resizeWin} fadeIn={this.fadeIn} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
+                  <Route path='/vendors' render={()=><Vendors getImg={this.getImg} showVen={this.showVen} hideVen={this.state.hideVen} venToggle={this.venToggle} venOff={this.venOff} mapOff={this.mapOff} mapOn={this.mapOn} resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
+                  <Route path='/shop' render={()=><Shop getImg={this.getImg} addCart={this.addCart} urlText={this.urlText} resizeWin={this.resizeWin} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
+                  <Route path='/spirits' render={()=><Spirits getImg={this.getImg} resizeWin={this.resizeWin} fadeIn={this.fadeIn} checkSection={this.checkSection} mobile={this.state.mobile} infoActive={this.state.infoActive} info={this.state.info} win={this.state.win}/>} /> 
                   <Route path='/' render={()=><Home resizeWin={this.resizeWin} checkSection={this.checkSection} info={this.state.info} win={this.state.win}/>} />
 
                 </Switch>  
               </div>
               </div>
-              <div className={`footerHold fullWidth relative ${mapActive && !mobileMenu?('mapActive'):("")}`} style={{height:"100%"}}>
+              <div className={`footerHold fullWidth relative ${mapActive && !mobileMenu?('mapActive'):("")} ${mobileMenu?('highMenu'):''}`} style={{height:"100%"}}>
                 <div className="footer fullWidth ">
                   <div className="fullStage eCenter flex flexACenter bWhite bTopSm pbSm ptSm footerFlex">
                     <div className="col3 iconHold flex flexACenter">
@@ -378,7 +545,7 @@ class Main extends Component {
 
             </div>
         </div>
-
+        </React.Fragment>             
       ):("")}
       
        </React.Fragment>

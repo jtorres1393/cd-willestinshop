@@ -133,7 +133,7 @@ class Spirits extends Component {
                                     return(
                                       <React.Fragment>
                                     {item.type==="videos"?(
-                                      <video autoPlay playsInline muted loop className="spiritVid centeredContent" key={item.url} onPlay={this.props.fadeIn.bind(this)}>
+                                      <video  autoPlay playsInline muted loop className="spiritVid centeredContent" key={item.url} onPlay={this.props.fadeIn.bind(this)}>
                                       <source key="currSource" src={item.url} type="video/mp4" />
                                       </video>
 
@@ -159,9 +159,9 @@ class Spirits extends Component {
             <div className={`fullWidth ptHuge pbHuge spiritContainer relative flex flexStart ${spiritMode?('spiritMode'):('')}`} >
            {data.map((item,i)=>{
               return(
-                <React.Fragment>
+                <React.Fragment key={`spirit-${i}`}>
 
-                    {item.active?(
+                    {item.active === "true" ?(
                       <React.Fragment>
                       <Link id={`spirit${i}`} to={`/spirits?item=${item.subTitle}`} className="singleSpirit" data-id={i} data-name={item.subTitle} onClick={this.itemClick} style={{transitionDelay:(i*.2)+"s"}} >
                         <div className={`spiritImgHold fullWidth`} data-id={i} >
@@ -182,7 +182,7 @@ class Spirits extends Component {
                       <div className={`singleSpirit inactive`} data-id={i} style={{transitionDelay:(i*.2)+"s"}} >
                       {item.media.length?(
                          <div className="imageHold fullWidth" data-id={i}>
-                         <img alt="incoming-spirits" className="fullImg" onLoad={this.props.fadeIn.bind(this)} src={item.media[0].url} data-id={i}></img>
+                         <img alt="incoming-spirits" className="fullImg" onLoad={this.props.fadeIn.bind(this)} src={this.props.getImg(item.media[0].name)} data-id={i}></img>
                        </div>
                       ):("")}
                     </div>

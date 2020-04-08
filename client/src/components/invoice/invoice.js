@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Route, Switch, Link} from 'react-router-dom';
+import {Route, Link} from 'react-router-dom';
 import './invoice.css';
 import Checkout from './checkout.js';
 
@@ -130,11 +130,11 @@ getGrand=()=>{
                   <p className="tDetails tBold tBlue tUpper">invoice# {data[0].id}</p>
                 </div>
                 <div className="sealHold">
-                <img className="eCenter fullImg" src="/images/logo-service-blue.svg"></img>
+                <img alt="service-motto-seal" className="eCenter fullImg" src="/images/logo-service-blue.svg"></img>
                   </div>
                 <div className="invLogoHold fullWidth mtMed mbMed">
                     <div className="invLogo eCenter">
-                      <img className="eCenter fullImg" src="/images/logo-blue.svg"></img>
+                      <img alt="willes-logo" className="eCenter fullImg" src="/images/logo-blue.svg"></img>
                     </div>
                 </div>
                 <div className="fullWidth mbLrg">
@@ -209,10 +209,10 @@ getGrand=()=>{
                         <div className="colHalf bBlue bRight formCell bRight bBotSm flex totalBuff">
                         </div>
                         <div className="colFourth formCell bRight bBotSm relative totalDes">
-                          <p className="tNews tBlue tUpper tBold tRight fullWidth">Total</p>
+                          <p className="tNews tBlue tUpper tBold tRight fullWidth">Subtotal</p>
                           <p className="tNews tBlue tUpper tBold tRight">Tax</p>     
                           <p className="tNews tBlue tUpper tBold tRight">Shipping</p>  
-                          <p className="tNews tBlue tUpper tBold tRight">Grand</p>       
+                          <p className="tNews tBlue tUpper tBold tRight">Total</p>       
                         </div>
                         <div className="colFourth formCell bBotSm relative">
                              <p className="tNews tBlue tLeft tUpper tBold ">{(this.state.total/100).toFixed(2)}</p> 

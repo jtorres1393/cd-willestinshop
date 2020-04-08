@@ -884,6 +884,7 @@ img,video{
 }
 
 @media all and (max-width: 500px){
-
+	#newBuyer .col3 {width:100%}
 	.galleryHold .col3{width: 100%;}
+	
 }

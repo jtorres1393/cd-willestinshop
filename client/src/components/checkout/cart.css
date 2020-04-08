@@ -1,3 +1,49 @@
+
+#cart{
+    z-index: 999;
+    position:fixed;
+    top:0;
+    left:0;
+    transition: transform .45s ease-in;
+    transform: translateY(-110%);
+    box-shadow: 5px 5px 5px rgba(68,68,68,0.6);
+    overflow-x: hidden;
+    overflow-y:scroll;
+}
+
+#cart.active{
+    transform: translateY(0);
+    transition: transform .45s ease-out;
+}
+
+.cartOptionSelect{
+    border: 1px solid;
+}
+
+.selectFieldBlue::after{
+	display:block;
+	content:"";
+	pointer-events:none;
+	width:30px;
+	height:30px;
+	background: no-repeat 50% 50% url('/images/ui-drop-blue.svg');
+	position: absolute;
+	right: var(--xs);
+	top:50%;
+	transform: translateY(-50%);
+}
+
+.checkBut{
+    animation: point 2s infinite ease-in-out;
+}
+
+.hideCart{
+    position:absolute;
+    top:0;
+    right:0;
+    transform:translateY(-100%)
+}
+
 .rsvpStage{
     position:relative;
     z-index:510;
@@ -82,6 +128,7 @@ button{
     .cosInfo .colTwoThirds{width:100%;}
     .totalBuff{display:none;}
     .totalDes{width:75%}
+    .cartItemName,.cartOptionsHold,.cartTotal{width:100%;margin-bottom:var(--sm)}
 
 }
 @media all and (max-width: 700px){

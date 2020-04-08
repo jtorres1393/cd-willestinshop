@@ -23,14 +23,24 @@ block content
                         label title
                         p
                         input.prime-input(name="title", type="text", value=item.title, required)
-                    .fullWidth.mbSm
+                    .col2.mbSm
                         label sub-title
                         p
                         input.prime-input(name="subTitle", type="text", value=item.subTitle, required)
+                    .col2.mbSm
+                        label background color
+                        p
+                        input.prime-input(name="bg", type="text", value=item.bg)
                     .fullWidth.mbSm
                         label Description
                         p
                         textarea.prime-input(name="about", type="text",value=item.about, required)=item.about
+                    .col2.mbSm.relative.selectField
+                        label Active
+                        p
+                        select#typeCheck.fullWidth.tUpper(name="active")
+                            option(value="false" ) false
+                            option(value="true", selected=item.active === "true"  ) true
                     .col2.mbSm.relative.selectField
                         label Product Type
                         p
@@ -47,56 +57,43 @@ block content
                             label ALC/VOL %
                             p
                             input.prime-input(value=item.alcvol/100, name="alcvol", type="number", step="any")
-                        .col3.mbSm.relative.selectField
-                            label Active
-                            p
-                            select#typeCheck.fullWidth.tUpper(name="active")
-                                option(value=false ) false
-                                option(value=true, selected=item.active === true  ) true
                             
                     .fullWidth.mbSm
                         label Details
                         p
                         textarea.prime-input(name="details", type="text",value=item.details, required)=item.details
-                    .col2.mbMed
-                        label Price
-                        p
-                        input.prime-input(name="price", type="number", step="any",value=item.price/100, required)
-                    .col2.mbMed
-                        label Shipping
-                        p
-                        input.prime-input(name="shipping", type="number", step="any",value=item.shipping/100, required)
             
                 .tTitle.mbSm Stock Info
                 .stockHold.fullWidth.flex.tTitle.mbXs
-                    .col3
+                    .col4
                         p.tBold Option
-                    .col3
+                    .col4
+                        p.tBold Cost
+                    .col4
                         p.tBold Stock
-                    .col3
+                    .col4
                 -   var sortCount2 = 1
                 #sort2.fullWidth
                     input.form-control(name='sort2', type='hidden')
                     for opt in data[0].shopOptions
                         .sort2.singleOpt.flex.bBot.bBlack.mbSm.flexACenter(data-id=opt.id, data-order=sortCount2)
-                            .col3.relative
+                            .col4.relative
                                 .sortHandle.sortLeft
-                                p.plSm.tCap=sortCount2+". "+opt.title
-                            p.col3.tCap=opt.stock
-                            .col3.flex
-                                .col2
-                                    a(href="/admin/shopOption-edit?id="+opt.id+"&cat="+cat+"&itemID="+item.id)
-                                        .btn-sec.btn
-                                            p Edit
-                                .col2
+                                a(href="/admin/shopOption-edit?id="+opt.id+"&cat="+cat+"&itemID="+item.id)
+                                    p.plSm.tCap=sortCount2+". "+opt.title
+                            p.col4.tCap=(opt.cost/100).toFixed(2)
+                            p.col4.tCap=opt.stock
+                            .col4
+                                .fullWidth
                                     a(href="/admin/shopOption-delete?id="+opt.id+"&cat="+cat+"&item="+item.id, onclick="return confirm('Are you sure?')")
                                         .btn-sec.btn
                                             p Delete
                         -   sortCount2++
                 .newOption.fullWidth.flex
-                    input.col3(type="text", name="newOpt", placeholder="New Option")
-                    input.col3(type="number", name="newStock", placeholder="New Stock")
-                    input.col3.bgGray.tWhite(type="submit",  value="+ Add New Option")
+                    input.col4.mbSm(type="text", name="newOpt", placeholder="New Option")
+                    input.col4.mbSm(type="number", name="newCost", placeholder="New Cost")
+                    input.col4.mbSm(type="number", name="newStock", placeholder="New Stock")
+                    input.col4.bgGray.tWhite(type="submit",  value="+ Add")
 
                 .tTitle.mbMed.mtLrg Product Images
                 #sort1.galleryHold.flex.flexAStart

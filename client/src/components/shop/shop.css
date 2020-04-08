@@ -1,0 +1,134 @@
+.shopMenu.hide{
+    position: absolute;
+    top:0;
+    left:0;
+    transition: transform 1s ease-out;
+    transform: translateX(-120%)
+
+}
+
+.singleActive{
+    width:100%;
+}
+
+.singleProductStage{
+    flex-direction: row-reverse;
+}
+
+.optionHold{
+    border: 1px solid;
+    height:60px;
+}
+
+.proCTA{
+    height:60px;
+}
+
+.productInfoHold{
+    width: 22%;
+    position:fixed;
+    left:5%;
+    top:50%;
+    transform:translateY(-50%);
+}
+
+.productCTA{
+    width: 22%;
+    position:fixed;
+    right:5%;
+    top:50%;
+    transform:translateY(-50%);
+}
+
+.proCTA{
+    font-family:"futura", helvetica, arial;
+}
+
+.optionHold img{
+    height:50%;
+    width: auto;
+}
+
+.optionHold{
+    cursor: pointer;
+}
+
+img.singleProductImg{
+    border-radius: 15px;
+}
+
+.singleDetails{
+    white-space: pre-wrap;
+}
+
+.shopMenu.mobile{
+    position: fixed;
+    width:95%;
+    height:100%;
+    opacity:1;
+    z-index:991;
+    padding-left:var(--med);
+    padding-top:var(--huge);
+    top:0;
+    left:0;
+    transform:translateX(-120%);
+    box-shadow: 2px 2px 2px rgba(68,68,68,0.4);
+    transition:all .4s ease-out;
+
+}
+
+.shopMenu.mobile .catBlock{
+    margin-bottom: var(--med)
+}
+
+.catBut{
+    position:fixed;
+    bottom: var(--sm);
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 992;
+    border-radius: 100px;
+    box-shadow: 2px 2px 2px rgba(68,68,68,0.4);
+}
+
+.shopMenu.mobile.active{
+    opacity:1;
+    pointer-events:fill;
+    transform: translateX(0);
+}
+
+.spiritDeets{
+    margin-top:-10px;
+}
+
+.shopBG{
+    transition: all 1s ease-out;
+}
+
+
+@media all and (max-width:1200px){
+    .productInfoHold, .productCTA{width:100%;left:0;right:0;position:relative;transform:none}
+    .singleProductBuff{display:none;}
+    .singleProInfo{width: calc(100%/3 - (var(--gut)*.666));}
+    .singleGalleryHold{width: calc(100%/3*2 - (var(--gut)/2));}
+}
+
+@media all and (max-width:1000px){
+    .singleGalleryHold,.singleProInfo{width: calc(50% - (var(--gut)/2));}
+    .productSingle{width: calc(50% - (var(--gut)/2));}
+}
+
+@media all and (max-width:750px){
+    .singleGalleryHold,.singleProInfo{width:100%;}
+    .singleProInfo{margin-bottom:var(--med)}
+    .pbStart{padding-bottom: calc(var(--huge) * 4)}
+    .productSingle{width: calc(50% - (var(--gut)/2));}
+    .productStage{width:100%;}
+
+    
+}
+
+@media all and (max-width:600px){
+    .productSingle{width: 100%;} 
+}
+

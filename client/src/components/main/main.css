@@ -5,7 +5,7 @@
     position: fixed;
     top:var(--sm);
     right:var(--med);
-    z-index: 999;
+    z-index: 998;
 }
 .bgVid{
    z-index: 0;
@@ -33,10 +33,14 @@
 .footerHold{
     pointer-events: none;
     position: absolute;
-    z-index:999;
+    z-index:990;
     top:0;
     left:0;
     transition: .75s all ease-out;
+}
+
+.footerHold.highMenu{
+    z-index: 996;
 }
 .footer{
     position: absolute;
@@ -161,7 +165,7 @@ border: none;
     position:fixed;
     top:0;
     left:0;
-    z-index: 900;
+    z-index: 995;
     transition: opacity .5s ease-in;
     pointer-events: none;
     opacity:0;
@@ -202,6 +206,17 @@ border: none;
     width:200px;
 }
 
+#cartIcon {
+    width:40px;
+    height:40px;
+    border-radius:500px;
+    transform:translate(-100%,-40%);
+    cursor: pointer;
+    filter: drop-shadow(4px 4px 5px rgba(.68,.68,.68,.3));
+}
+
+
+
 @media all and (max-width:1000px){
     .infoHold .flex{display:block;position:relative;transform:none;top:0;left:0;}
     .goodSpiritsHold{width: 40vw; margin-bottom:var(--med);}
@@ -230,6 +245,8 @@ border: none;
     .textHold .info{width: 100%;}
     .infoHold{padding-top:var(--lrg)}
     .newsAct .newsHold{padding-bottom: 300px;}
+    #cartIcon {
+        width:30px;height:30px;transform:translate(-150%,-80%)}
     
   }
   @media all and (max-width:600px){

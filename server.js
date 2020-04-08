@@ -23,6 +23,8 @@ const { Location } = require('./models/location');
 const { Vendor } = require('./models/vendor');
 const { Buyer } = require('./models/buyer');
 const { Invoices } = require('./models/invoices');
+const { Customer } = require('./models/customer');
+const { Orders } = require('./models/orders');
 
 
 //backend routes
@@ -42,6 +44,7 @@ const emailRSVP = require('./routes/emailRSVP')
 const emailInvoice = require('./routes/emailInvoice')
 const emailPrint = require('./routes/emailPrint')
 const emailPaid = require('./routes/emailPaid')
+const emailOrder = require('./routes/emailOrder')
 const vendorDash = require('./routes/vendorDash')
 const vendorAdd = require('./routes/vendorAdd')
 const vendorEdit = require('./routes/vendorEdit')
@@ -56,11 +59,14 @@ const invoicesOpen = require('./routes/invoicesOpen')
 
 //frontend
 const APIinfo= require('./routes/APIinfo')
-const APIshopCat= require('./routes/APIshopCat')
 const APIrsvp= require('./routes/APIrsvp')
 const APIvendors= require('./routes/APIvendor')
 const APIinvoices= require('./routes/APIinvoices')
 const APIloc= require('./routes/APIloc')
+const APIshop= require('./routes/APIshop')
+const APIshopCat= require('./routes/APIshopCat')
+const APIshopPro= require('./routes/APIshopPro')
+const APIProduct= require('./routes/APIProduct')
 
 //login
 //login
@@ -103,7 +109,7 @@ app.set('view engine', 'pug');
 
 
 //AUTHENTICATION CARD
-app.get(['/','/news','/spirits', '/info', '/rsvp','/shop', '/vendors', '/vendors/*', '/invoice', '/invoice/*'], async function(request, response) {
+app.get(['/','/news','/spirits', '/info', '/rsvp','/shop', '/vendors', '/vendors/*', '/invoice', '/invoice/*','/shop','/shop/*'], async function(request, response) {
   var page = "default"
     mods.metaChange(response,page);
 });
@@ -410,14 +416,18 @@ app.post('/admin/shop-add?:id',m.fields([{name:"imgItems", maxCount: 10}]) ,asyn
   data.title = (req.body.title).toLowerCase();
   data.about = (req.body.about);
   data.details = req.body.details;
-  data.proof = req.body.proof;
+  data.bg = req.body.bg;
   data.type = req.body.type;
   data.active = req.body.active;
-  data.alcvol = req.body.alcvol*100;
   data.subTitle = req.body.subTitle;
   data.rootID = rootID;
-  data.shipping = (req.body.shipping)*100;
-  data.price = (req.body.price)*100;
+  if(req.body.alcvol){
+  data.alcvol = req.body.alcvol*100;
+  }
+  if(req.body.proof){
+  data.proof = req.body.proof;
+  }
+ 
 
   const upData = await ShopItems.query()
                 .insert(data)
@@ -446,14 +456,17 @@ app.post('/admin/shop-edit?:id',m.fields([{name:"imgItems", maxCount: 10}]) ,asy
   let data = {}
   data.title = (req.body.title).toLowerCase();
   data.about = (req.body.about);
+  data.bg = req.body.bg;
   data.details = req.body.details;
   data.subTitle = req.body.subTitle;
   data.type = req.body.type;
-  data.shipping = (req.body.shipping)*100;
-  data.price = (req.body.price)*100;
-  data.proof = req.body.proof;
-  data.alcvol = req.body.alcvol*100;
-  data.active = req.body.active;
+  data.active = (req.body.active);
+  if(req.body.alcvol){
+    data.alcvol = req.body.alcvol*100;
+    }
+  if(req.body.proof){
+    data.proof = req.body.proof;
+    }
 
   const upData = await ShopItems.query()
                 .where('id', rootID)
@@ -471,6 +484,7 @@ app.post('/admin/shop-edit?:id',m.fields([{name:"imgItems", maxCount: 10}]) ,asy
       let itemInfo = {}
       itemInfo.title = req.body.newOpt.toLowerCase()
       itemInfo.stock = req.body.newStock;
+      itemInfo.cost  = req.body.newCost*100;
       itemInfo.rootID = rootID
       const upItem = await ShopOptions.query()
                 .insert(itemInfo)
@@ -507,6 +521,7 @@ app.post('/admin/shopOption-edit?:id', isLogged, async function(req,res){
     const curr = req.query.id;
     data.title = req.body.title;
     data.stock = req.body.stock;
+    data.cost = req.body.cost*100
 
     const upData = await ShopOptions.query()
               .where('id', curr)
@@ -667,6 +682,7 @@ app.use('/admin/rsvp-email?:id', emailRSVP)
 app.use('/admin/email-invoice?:id', emailInvoice)
 app.use('/admin/email-print?:id', emailPrint)
 app.use('/admin/email-paid?:id', emailPaid)
+app.use('/admin/email-order?:id', emailOrder)
 
 
 //locations
@@ -987,13 +1003,14 @@ app.post(`/api/pay-invoice`, async (req,res)=>{
   var cardForeignId, transactionForeignId;
   var data = {
     cardNumber: (req.body.card.num).replace(/\s/g,''),
-    exp: `${req.body.card.month}/${req.body.card.year}`,
+    exp: `${req.body.card.date}`,
     cvv: (req.body.card.cvv).replace(/\s/g,''),
     firstName: req.body.bill.firstName,
     lastName: req.body.bill.lastName,
     address: req.body.bill.address,
     zipcode: (req.body.bill.zip).replace(/\s/g,'')
   }
+console.log(data)
  
 Converge.Card.Create(data).then(function(cardData){
       cardForeignId = cardData.foreignId
@@ -1023,6 +1040,102 @@ Converge.Card.Create(data).then(function(cardData){
   })
 
 })
+
+
+// Pay Order
+app.post(`/api/pay-order`, async (req,res)=>{
+  let buyer = {}
+  let order = {}
+  let outStock = false;
+  buyer.firstName = req.body.order.firstName
+  buyer.lastName = req.body.order.lastName
+  buyer.address = req.body.order.address
+  buyer.city = req.body.order.city
+  buyer.state = req.body.order.state
+  buyer.zip = req.body.order.zip
+  buyer.email = (req.body.order.email).toLowerCase();
+  order.cart = req.body.order.cart
+  order.cost = parseInt(req.body.order.total)
+  order.tax = parseInt(req.body.order.tax)
+  order.shipping = parseInt(req.body.order.shipping)
+
+
+  var grand = ((order.cost+order.tax+order.shipping)/100).toFixed(2)
+  var reEmail = buyer.email
+  console.log(buyer,order,grand)
+  var cardForeignId, transactionForeignId;
+  var data = {
+    cardNumber: (req.body.card.num).replace(/\s/g,''),
+    exp: `${req.body.card.date}`,
+    cvv: (req.body.card.cvv).replace(/\s/g,''),
+    firstName: req.body.order.firstName,
+    lastName: req.body.order.lastName,
+    address: req.body.order.address,
+    zipcode: (req.body.order.zip).replace(/\s/g,'')
+  }
+
+  order.cart.forEach(async (item,i)=>{
+    var currIn = parseInt(item.quantity)
+    var currOp = item.item.shopOptions[item.option].id
+    var getStock = await ShopOptions.query()
+      .where('id',currOp)
+      .limit(1)
+  
+    if(currIn > parseInt(getStock[0].stock)){
+      outStock = true
+    }
+  })
+  
+  if(!outStock){
+  Converge.Card.Create(data).then(function(cardData){
+        cardForeignId = cardData.foreignId
+
+        if(!cardForeignId){
+          console.log(`token failed`)
+          res.sendStatus(412).end()
+        }
+        else{
+        Converge.Card.Sale(
+          {
+              foreignKey: cardForeignId,
+              amount: grand
+          }).then(async function(saleData){
+            order.cart = JSON.stringify(order.cart)
+            const checkCust = await Customer.query()
+              .where('email', buyer.email)
+            
+            if(checkCust.length){
+              const upCust = await Customer.query()
+                .where('id', checkCust[0].id)
+                .patch(buyer)
+              order.rootID = checkCust[0].id
+            }
+            else{
+              const upCust = await Customer.query()
+                .insert(buyer)
+              const getCust = await Customer.query()
+                .orderBy('id','desc')
+                .limit(1)
+              order.rootID = getCust[0].id
+            }
+            const upOrder = await Orders.query()
+              .insert(order)
+            const getId = await Orders.query()
+              .orderBy('id','desc')
+          
+
+            sendOrder(getId[0].id, reEmail);
+            // console.log(inData, currID)
+            res.sendStatus(200).end()
+          })
+        }
+    })
+  }
+  else{res.sendStatus(404).end()}
+})
+
+
+
 
 ///functions
 //mod
@@ -1054,16 +1167,29 @@ async function sendPaid(id, email){
 
 }
 
+async function sendOrder(id, email){
+  const getInfo = await Info.query()
+  .where('id',1);
+
+  var sendEmail = getInfo[0].email;
+  mods.sendMail(email, sendEmail, `Wille's Tin Shop: Payment Complete`,`${config.url}/admin/email-order?id=${id}`)
+  mods.sendMail([sendEmail,'rortha@gmail.com'], sendEmail, `Wille's Tin Shop: New Order`,`${config.url}/admin/email-order?id=${id}`)
+
+}
+
 
 
 //////////////////////////////////
 //API
 app.use('/api/info', APIinfo);
-app.use('/api/shopCat', APIshopCat);
 app.use('/api/rsvp', APIrsvp);
 app.use('/api/vendors', APIvendors);
 app.use('/api/invoices', APIinvoices);
 app.use('/api/loc', APIloc);
+app.use('/api/shopCat', APIshopCat);
+app.use('/api/shopPro', APIshopPro);
+app.use('/api/shop', APIshop);
+app.use('/api/product', APIProduct);
 
 app.use('/api/rsvp-submit', async function(req,res){
   let data = {};

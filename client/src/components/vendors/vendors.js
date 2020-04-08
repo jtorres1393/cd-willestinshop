@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
-import {Route, Switch, Link} from 'react-router-dom';
+import {Route, Link} from 'react-router-dom';
 import './vendors.css';
 import WillesMark from './willesMark.js'
 import VenMark from './venMark.js'
@@ -53,12 +53,12 @@ class Vendors extends Component {
     genMarkers=()=>{
       let markers = []
       var data = this.state.data;
-      data.forEach((el)=>{
+      data.forEach((el,e)=>{
           if (el.location.length){
             el.location.forEach((loc, i)=>{
               markers.push(
                 
-                <VenMark
+                <VenMark key={`marker-${e}${i}`}
                 lat={loc.lat}
                 slug={el.slug}
                 loc={i+1}
@@ -289,14 +289,14 @@ class Vendors extends Component {
                       data.map((co,i)=>{
                         return(
                           
-                          <div className="singleVend tWhite pbSm bBot bWhite bBotSm ptSm" data-lat={co.location[0].lat} data-lng={co.location[0].long} data-id={co.location[0].id} >
+                          <div key={`company-${i}`} className="singleVend tWhite pbSm bBot bWhite bBotSm ptSm" data-lat={co.location[0].lat} data-lng={co.location[0].long} data-id={co.location[0].id} >
                             <Link className="fullWidth" to={`/vendors/${co.slug}?loc=1`}>
                             <p className="tCTA fullWidth mbXs tCap" data-lat={co.location[0].lat} data-lng={co.location[0].long} data-id={co.location[0].id} >{co.name}</p>
                             </Link>
                             <div className="fullWidth flex" data-lat={co.location[0].lat} data-lng={co.location[0].long} data-id={co.location[0].id} >
                                   {co.location.map((loc, l)=>{
                                     return(
-                                      <Link className="fullWidth" to={`/vendors/${co.slug}?loc=${l+1}`}>
+                                      <Link key={`location-${l}`} className="fullWidth" to={`/vendors/${co.slug}?loc=${l+1}`}>
                                     <div className="col2 tDetails tLeft tUpper fullWidth" data-lat={loc.lat} data-lng={loc.long} data-id={loc.id} >{loc.city} {loc.state}</div>
                                     </Link>
                                     )
@@ -311,7 +311,7 @@ class Vendors extends Component {
                 </div>
                 </div>
                 <div className={`fullWidth fullHeight tipListHold ${tipActive?"active":''}`}>
-                  <Route path='/vendors/*' render={()=><Tip  showVen={this.props.showVen} moveMap={this.moveMap} hideTip={this.hideTip} showTip={this.showTip} tipActive={this.state.tipActive} barOn={this.barOn} win={this.state.win}/>} />
+                  <Route path='/vendors/*' render={()=><Tip  getImg={this.props.getImg} showVen={this.props.showVen} moveMap={this.moveMap} hideTip={this.hideTip} showTip={this.showTip} tipActive={this.state.tipActive} barOn={this.barOn} win={this.state.win}/>} />
 
               </div>
               </div>

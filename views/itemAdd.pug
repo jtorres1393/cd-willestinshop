@@ -18,10 +18,14 @@ block content
                     label title
                     p
                     input.prime-input(name="title", type="text", required)
-                .fullWidth.mbSm
+                .col2.mbSm
                     label sub-title
                     p
                     input.prime-input(name="subTitle", type="text", required)
+                .col2.mbSm
+                    label background color
+                    p
+                    input.prime-input(name="bg", type="text")
                 .fullWidth.mbMed
                     label Description
                     p
@@ -51,14 +55,6 @@ block content
                     label Details
                     p
                     textarea.prime-input(name="details", type="text", required)
-                .col2.mbMed
-                    label Price
-                    p
-                    input.prime-input(name="price", type="number", step="any", required)
-                .col2.mbMed
-                    label Shipping
-                    p
-                    input.prime-input(name="shipping", type="number", step="any", required)
             .tTitle.mbMed Product Images
             #sort1.galleryHold.flex.flexAStart
                 input.form-control(name='sort1', type='hidden')
