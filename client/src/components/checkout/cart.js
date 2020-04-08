@@ -32,7 +32,7 @@ class Cart extends Component {
                                    <p className="tDetails tUpper">{item.item.subTitle}</p>
                                    
                                 </div>
-                                <div className="col23 flex cartOptionsHold">
+                                <div className="col23 flex cartOptionsHold ">
                                     <div className="col3 cartOptionSelect relative selectFieldBlue bBlue ">
                                         <select name="option" data-id={i} className="fullWidth prXs ptXs plXs pbXs tUpper fullHeight" value={item.option} onChange={this.props.changeOpt.bind(this)}>
                                             {item.item.shopOptions.map((op,o)=>{
@@ -47,14 +47,14 @@ class Cart extends Component {
                                             })}
                                         </select>
                                     </div>
-                                    <div className="col3 flex bBlue bSm fullHeight ">
-                                        <div onClick={this.props.subIn.bind(this)} data-id={i} className="colThird bBlue relative ptSm cPointer" ><img data-id={i} alt="subtract-inventory" className="centeredContent" src="/images/ui-sub-blue.svg"/></div>
+                                    <div className="col3 flex bBlue bSm fullHeight cartOptionQuantity">
+                                        <div onClick={this.props.subIn.bind(this)} data-id={i} className="colThird bBlue relative ptSm cPointer optionHold" ><img data-id={i} alt="subtract-inventory" className="centeredContent" src="/images/ui-sub-blue.svg"/></div>
                                             <input data-id={i} key={`quantity-${item.quantity}-${i}`} className="colThird bBlue bRight bLeft tBold tBlue tCenter tNews" name="quantity" type="number" min="1" defaultValue={item.quantity} onChange={this.props.changeQ.bind(this)}></input>
-                                        <div onClick={this.props.addIn.bind(this)} data-id={i} className="colThird relative ptSm cPointer" ><img alt="add-inventory" data-id={i} className="centeredContent" src="/images/ui-add-blue.svg"/></div>  
+                                        <div onClick={this.props.addIn.bind(this)} data-id={i} className="colThird relative ptSm cPointer optionHold" ><img alt="add-inventory" data-id={i} className="centeredContent" src="/images/ui-add-blue.svg"/></div>  
                                     </div>
-                                    <div className="col3 flex fullHeight ">
+                                    <div className="col3 flex fullHeight flexACenter cartLineCost">
                                         <div className="col2 relative"><p className="centeredContent fullWidth tNews tBold tRight">{`$${(item.item.shopOptions[item.option].cost*item.quantity/100).toFixed(2)}`}</p></div>
-                                        <div onClick={this.props.removeItem.bind(this)} className="col2 relative cPointer"><img alt="delete-line" data-id={i} className="centeredContent" src="/images/ui-delete-blue.svg"/></div>
+                                        <div onClick={this.props.removeItem.bind(this)} className="col2 relative cPointer optionHold"><img alt="delete-line" data-id={i} className="centeredContent" src="/images/ui-delete-blue.svg"/></div>
                                     </div>
                                    
                                 </div>

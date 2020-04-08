@@ -1109,6 +1109,7 @@ app.post(`/api/pay-order`, async (req,res)=>{
                 .where('id', checkCust[0].id)
                 .patch(buyer)
               order.rootID = checkCust[0].id
+              order.paid = true;
             }
             else{
               const upCust = await Customer.query()
@@ -1173,7 +1174,7 @@ async function sendOrder(id, email){
 
   var sendEmail = getInfo[0].email;
   mods.sendMail(email, sendEmail, `Wille's Tin Shop: Payment Complete`,`${config.url}/admin/email-order?id=${id}`)
-  mods.sendMail([sendEmail,'rortha@gmail.com'], sendEmail, `Wille's Tin Shop: New Order`,`${config.url}/admin/email-order?id=${id}`)
+  mods.sendMail([sendEmail,'mmolina@roxanneslounge.com'], sendEmail, `Wille's Tin Shop: New Order`,`${config.url}/admin/email-order?id=${id}`)
 
 }
 

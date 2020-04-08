@@ -957,7 +957,8 @@ text-align-last:center;
 	.tName{font-size: 2.5em;}
 	.tNews{font-size:1em;}
 	input,select{
-		font-size: 1em !important;
+		font-size: 1.5em !important;
+		font-weight: bold;
 	}
 }
 
