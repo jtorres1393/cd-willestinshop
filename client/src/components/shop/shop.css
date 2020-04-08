@@ -83,7 +83,7 @@ img.singleProductImg{
 
 .catBut{
     position:fixed;
-    bottom: var(--m);
+    bottom: var(--med);
     left: 50%;
     transform: translate(-50%);
     z-index: 992;
