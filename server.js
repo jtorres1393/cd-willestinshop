@@ -176,7 +176,7 @@ app.post('/admin/register', async function(req,res){
 //login
 app.use('/admin/login', function(req, res){
   if (req.isAuthenticated() && (req.user[0].role > 0)) {
-      res.redirect('/admin/users');
+      res.redirect('/admin/shop/orders');
   }
   else if(req.isAuthenticated() && (req.user[0].role === 0)){
     console.log(req.user.role)
@@ -197,7 +197,7 @@ app.use('/admin/login', function(req, res){
   }
 
 });
-app.post('/admin/logins', passport.authenticate('local', { successRedirect: '/admin/invoices', failureRedirect: '/admin/login',failureFlash: true }))
+app.post('/admin/logins', passport.authenticate('local', { successRedirect: '/admin/shop/orders', failureRedirect: '/admin/login',failureFlash: true }))
 
 
 //passport Local
