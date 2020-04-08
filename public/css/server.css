@@ -622,6 +622,8 @@ img,video{
 	left: 5%;
 	top:134px;
 	width: calc(90%/3 - var(--gut)/2);
+	overflow-y: scroll;
+	height: 100%;
 }
 .menuItem{
 	cursor: pointer;

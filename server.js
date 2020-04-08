@@ -45,6 +45,7 @@ const emailInvoice = require('./routes/emailInvoice')
 const emailPrint = require('./routes/emailPrint')
 const emailPaid = require('./routes/emailPaid')
 const emailOrder = require('./routes/emailOrder')
+const emailOrderAdmin = require('./routes/emailOrderAdmin')
 const vendorDash = require('./routes/vendorDash')
 const vendorAdd = require('./routes/vendorAdd')
 const vendorEdit = require('./routes/vendorEdit')
@@ -503,10 +504,10 @@ app.post('/admin/shop-edit?:id',m.fields([{name:"imgItems", maxCount: 10}]) ,asy
 
 })
 
-app.use('/admin/shop/orders', isLogged, orderDash)
-app.use('/admin/shop/archive', isLogged, archiveDash)
+app.use('/admin/shop/orders', orderDash)
+app.use('/admin/shop/archive', archiveDash)
 app.use('/admin/shop/order-view?:id', isLogged, orderView)
-app.use('/admin/shop/order-ship?:id', isLogged, async function(req,res){
+app.use('/admin/shop/order-ship?:id', async function(req,res){
     var currID = req.query.id;
     let data={}
     data.shipped = true;
@@ -515,7 +516,7 @@ app.use('/admin/shop/order-ship?:id', isLogged, async function(req,res){
       .where('id', currID)
       .patch(data)
     
-      res.redirect("/admin/shop/orders")
+      res.redirect("/admin/shop/archive")
 
 })
 
@@ -704,6 +705,7 @@ app.use('/admin/email-invoice?:id', emailInvoice)
 app.use('/admin/email-print?:id', emailPrint)
 app.use('/admin/email-paid?:id', emailPaid)
 app.use('/admin/email-order?:id', emailOrder)
+app.use('/admin/email-admin?:id', emailOrderAdmin)
 
 
 //locations
@@ -1195,7 +1197,7 @@ async function sendOrder(id, email){
 
   var sendEmail = getInfo[0].email;
   mods.sendMail(email, sendEmail, `Wille's Tin Shop: Payment Complete`,`${config.url}/admin/email-order?id=${id}`)
-  mods.sendMail([sendEmail,'mmolina@roxanneslounge.com'], sendEmail, `Wille's Tin Shop: New Order`,`${config.url}/admin/email-order?id=${id}`)
+  mods.sendMail([sendEmail,'mmolina@roxanneslounge.com'], sendEmail, `Wille's Tin Shop: New Order`,`${config.url}/admin/email-admin?id=${id}`)
 
 }
 

@@ -83,7 +83,7 @@ class Shop extends Component {
                         item.shopItems.map((shopI, s)=>{
                           return(
                             <div key={`cat-products-${s}`}className="mtXs">
-                              <Link onClick={this.shopToggle} to={`/shop/${item.title}/${this.props.urlText(shopI.title)}`}>
+                              <Link onClick={this.shopToggle} to={`/shop/${this.props.urlText(item.title)}/${this.props.urlText(shopI.title)}`}>
                                 <p className="tDetails tUpper">{shopI.title}</p>
                                 </Link>
                               </div>
