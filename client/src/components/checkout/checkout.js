@@ -12,6 +12,7 @@ class Checkout extends Component {
             success: false,
             error:false,
             message:"",
+            person:"",
             processing: false
         }
 
@@ -65,7 +66,7 @@ class Checkout extends Component {
             console.log(err)
           })
           if (response.status === 200){
-            this.setState({success:true},()=>{
+            this.setState({success:true, person:`${order.firstName} ${order.lastName}`},()=>{
               let curr = [];
               this.props.setCart(curr)
             })
@@ -156,6 +157,7 @@ class Checkout extends Component {
           {success?(
             <React.Fragment>
             <div className="fullWidth ptLrg pbLrg">
+                <h1 className="tCenter tRust"> {this.state.person}</h1>
                 <h1 className="tCenter tRust"> Thank you for your business! </h1>
               </div>
               <div className="fullWidth tCenter paidInFull success">
