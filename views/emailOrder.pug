@@ -25,7 +25,7 @@ block content
                         a(href=`mailto:${info.email}`)
                             p(style="color:#2f456b;text-align:center;")=info.email
                 tr
-                    td(colspan="4" style="background-color:#2f456b")
+                    td(colspan="4" style="background-color:#ae4d33")
                         p(style="font-family:sans-serif;font-weight:bold;text-align:center;color:#ffffff;font-size:1.5em") FOR PICK-UP ONLY
 
                 
@@ -109,13 +109,21 @@ block content
 
         
         -function prettyDate(dateString){
-            //if it's already a date object and not a string you don't need this line:
-            -var date = new Date(dateString);
-            -var d = date.getDate();
-            //- -var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
-            -var m = date.getMonth()+1;
-            -var y = date.getFullYear();
-            -return m+'/'+d+'/'+y;
+        //if it's already a date object and not a string you don't need this line:
+        -var date = new Date(dateString);
+        -date.setHours(date.getHours() - 7);
+        -var d = date.getDate();
+        //- -var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+        -var m = date.getMonth()+1;
+        -var y = date.getFullYear();
+        -var hours = date.getHours();
+        -var minutes = date.getMinutes();
+        -var ampm = hours >= 12 ? 'pm' : 'am';
+        -hours = hours % 12;
+        -hours = hours ? hours : 12; // the hour '0' should be '12'
+        -minutes = minutes < 10 ? '0'+minutes : minutes;
+        -var strTime = hours + ':' + minutes + ' ' + ampm;
+        -return m+'/'+d+'/'+y+" at "+strTime
         -}
 
 

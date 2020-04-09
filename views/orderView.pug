@@ -106,6 +106,7 @@ block content
         -function prettyDate(dateString){
         //if it's already a date object and not a string you don't need this line:
         -var date = new Date(dateString);
+        -date.setHours(date.getHours() - 7);
         -var d = date.getDate();
         //- -var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
         -var m = date.getMonth()+1;
@@ -118,6 +119,6 @@ block content
         -minutes = minutes < 10 ? '0'+minutes : minutes;
         -var strTime = hours + ':' + minutes + ' ' + ampm;
         -return m+'/'+d+'/'+y+" at "+strTime
-    -}
+        -}
 
 
