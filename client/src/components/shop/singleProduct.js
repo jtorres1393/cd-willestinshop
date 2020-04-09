@@ -126,13 +126,13 @@ class SingleProduct extends Component {
                 <form className="productCTA fullWidth flex" onChange={this.newTotal.bind(this)} onSubmit={this.submit.bind(this)}> 
                   {pro[0].type==="spirit"?(
                     <div className="fullWidth flex flexACenter tUpper mbMed">
-                        <div className="col3 tCenter plXs">
+                        <div className="tCenter plXs">
                           <p className="tBold tUpper">{pro[0].proof}</p>
                           <p className="tDetails tBold spiritDeets">proof</p>
                         </div>
-                        <div className="col3 onStage" style={{transitionDelay:".3s"}}>
+                        <div className="onStage" style={{transitionDelay:".3s"}}>
                           <p className="tNameSub">{pro[0].subTitle}</p></div>
-                        <div className="col3 onStage" style={{transitionDelay:".6s"}}>
+                        <div className="onStage" style={{transitionDelay:".6s"}}>
                           <p className="tBold tUpper">{pro[0].alcvol/100}%</p>
                           <p className="tDetails tUpper tBold spiritDeets">alc/vol</p>
                         </div>
