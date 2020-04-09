@@ -1123,6 +1123,21 @@ app.post(`/api/pay-order`, async (req,res)=>{
               foreignKey: cardForeignId,
               amount: grand
           }).then(async function(saleData){
+            order.cart.forEach(async (item,i)=>{
+              let newStock ={}
+              var currIn = parseInt(item.quantity)
+              var currOp = item.item.shopOptions[item.option].id
+              var getStock = await ShopOptions.query()
+                .where('id',currOp)
+                .limit(1)
+              var currStock = parseInt(getStock[0].stock)
+              newStock.stock = currStock - currIn
+              var getStock = await ShopOptions.query()
+                .where('id',currOp)
+                .patch(newStock)
+              
+            })
+            
             order.cart = JSON.stringify(order.cart)
             const checkCust = await Customer.query()
               .where('email', buyer.email)
@@ -1142,6 +1157,7 @@ app.post(`/api/pay-order`, async (req,res)=>{
                 .limit(1)
               order.rootID = getCust[0].id
             }
+
             const upOrder = await Orders.query()
               .insert(order)
             const getId = await Orders.query()
