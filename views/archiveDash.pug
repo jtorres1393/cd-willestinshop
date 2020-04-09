@@ -36,10 +36,17 @@ block content
 
         -function prettyDate(dateString){
         //if it's already a date object and not a string you don't need this line:
-        -var date = new Date(dateString);
+        -var date = new Date(`${dateString}`);
         -var d = date.getDate();
         //- -var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
         -var m = date.getMonth()+1;
         -var y = date.getFullYear();
-        -return m+'/'+d+'/'+y;
-    -}
+        -var hours = date.getHours();
+        -var minutes = date.getMinutes();
+        -var ampm = hours >= 12 ? 'pm' : 'am';
+        -hours = hours % 12;
+        -hours = hours ? hours : 12; // the hour '0' should be '12'
+        -minutes = minutes < 10 ? '0'+minutes : minutes;
+        -var strTime = hours + ':' + minutes + ' ' + ampm;
+        -return m+'/'+d+'/'+y+" at "+strTime
+        -}
