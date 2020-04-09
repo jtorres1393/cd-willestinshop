@@ -76,7 +76,7 @@ class Shop extends Component {
               {cat.map((item, i)=>{
                 return(
                   <div key={`cat-item-${i}`} className={`cat${item.title} mbSm catBlock`}>
-                    <Link onClick={this.shopToggle} to={`/shop/${((item.shopItems.length !== 1 )?(`${item.title}`):(`${item.title}/${this.props.urlText(item.shopItems[0].title)}`))}`}>
+                    <Link onClick={this.shopToggle} to={`/shop/${((item.shopItems.length !== 1 )?(`${this.props.urlText(item.title)}`):(`${this.props.urlText(item.title)}/${this.props.urlText(item.shopItems[0].title)}`))}`}>
                       <p className="tNews tBold tUpper">{item.title}</p>
                     </Link>
                     {item.shopItems.length > 1?(

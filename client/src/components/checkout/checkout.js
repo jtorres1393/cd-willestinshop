@@ -110,9 +110,9 @@ class Checkout extends Component {
                   <p className="tNews tCenter tBlue tUpper">{`${info.address} • ${info.city} ${info.state}`}</p>
                   <p className="tNews tCenter tBlue tUpper">{`${info.phone} • `} <a href={`mailto:${info.email}`}><span>{info.email}</span></a></p>
           </div>
-                      
+                      <h1 className="fullWidth tCenter tBlue pbLrg tCap"> Orders for Pick-up Only </h1>
                       <div className={`bBlue bTopSm flex mbSm`} >
-                        <h1 className="fullWidth tCenter tBlue pbLrg tCap"> Orders for Pick-up Only </h1>
+                       
                         <div className="colHalf bBlue bRight formCell bBotSm flex">
                           <p className="tNews tBlue pSmall tUpper tBold tCenter">Items</p>
                         </div>
