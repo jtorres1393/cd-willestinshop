@@ -10,15 +10,15 @@ router.get('/', async (req, res) => {
   const data = await ShopItems.query()
   .where('title', currID)
   .limit(1)
-  .eager('[shopOptions(orderDown), media(onlyItem, orderDown)]', {
+  .eager('[shopOptions(orderDown, onlyStock), media(onlyItem, orderDown)]', {
     onlyActive: (builder) => {
       builder.where('active', 'true');
       },
     onlyItem: (builder) => {
         builder.where('rootPage', 'items');
         },
-    onlyType: (builder) => {
-    builder.where('studio', 'thumb');
+    onlyStock: (builder) => {
+    builder.where('stock',">", 0);
     },
     orderDown: (builder) => {
     builder.orderBy('order','asc')
