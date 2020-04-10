@@ -330,8 +330,12 @@ class Main extends Component {
     var array = [...this.state.cart];
     var val = parseInt(array[curr].quantity)
     var op = parseInt(array[curr].option)
+    var max = parseInt(array[curr].item.shopOptions[op].limit)
+    if(!max){
+      max = 200
+    }
     var stock = parseInt(array[curr].item.shopOptions[op].stock)
-    if(val < stock )
+    if((val < stock) && (val < max))
         array[curr].quantity = val + 1;
         ls.set("cart", array);
         this.setState({cart: array},()=>{

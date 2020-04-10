@@ -12,6 +12,15 @@ class Cart extends Component {
 
     };
 
+
+    changeQ=(e)=>{
+        var max = parseInt(e.target.max)
+        var value = parseInt(e.target.value)
+        if(value > max){
+            e.target.value = max
+        }
+        this.props.changeQ(e);
+    }
   
     render() {
         const {cart} = this.props;
@@ -49,7 +58,7 @@ class Cart extends Component {
                                     </div>
                                     <div className="col3 flex bBlue bSm fullHeight cartOptionQuantity">
                                         <div onClick={this.props.subIn.bind(this)} data-id={i} className="colThird bBlue relative ptSm cPointer optionHold" ><img data-id={i} alt="subtract-inventory" className="centeredContent" src="/images/ui-sub-blue.svg"/></div>
-                                            <input data-id={i} key={`quantity-${item.quantity}-${i}`} className="colThird bBlue bRight bLeft tBold tBlue tCenter tNews" name="quantity" type="number" min="1" defaultValue={item.quantity} onChange={this.props.changeQ.bind(this)}></input>
+                                            <input data-id={i} key={`quantity-${item.quantity}-${i}`} className="colThird bBlue bRight bLeft tBold tBlue tCenter tNews" name="quantity" type="number" min="1" defaultValue={item.quantity} max={((item.item.shopOptions[item.option].limit)?(item.item.shopOptions[item.option].limit):("200"))} onChange={this.changeQ.bind(this)}></input>
                                         <div onClick={this.props.addIn.bind(this)} data-id={i} className="colThird relative ptSm cPointer optionHold" ><img alt="add-inventory" data-id={i} className="centeredContent" src="/images/ui-add-blue.svg"/></div>  
                                     </div>
                                     <div className="col3 flex fullHeight flexACenter cartLineCost">

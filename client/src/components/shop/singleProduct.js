@@ -42,7 +42,13 @@ class SingleProduct extends Component {
     addItem = ()=>{
       const el = document.getElementById('singleQuantity');
       if(el){
+      var limit = this.state.pro[0].shopOptions[this.state.option].limit;
+      if(!limit){
+        limit = 99;
+      }
+        if(el.value < limit){
         el.value ++
+        }
       }
       this.calcTotal();
       
@@ -58,6 +64,8 @@ class SingleProduct extends Component {
     newTotal = ()=>{
       const option = document.getElementById('singleOption');
       this.setState({option: parseInt(option.value)},()=>{
+        const el = document.getElementById('singleQuantity');
+        el.value=1;
         this.calcTotal();
       })
     }
@@ -111,6 +119,7 @@ class SingleProduct extends Component {
     
       const { pro } = this.state;
       const {added} = this.state;
+      const {option} = this.state;
 
     return (
     
@@ -156,7 +165,7 @@ class SingleProduct extends Component {
                     </div>
                     <div className="optionHold fullWidth flex mbXs">
                         <div className="colThird bWhite relative ptSm" onClick={this.subItem.bind(this)}><img alt="subtract-inventory" className="fullHeight centeredContent" src="/images/ui-sub.svg"/></div>
-                        <input id="singleQuantity" className="tNews colThird bWhite bRight bLeft tBold tWhite tCenter tNameSub" name="quantity" type="number" min="1" defaultValue="1"></input>
+                        <input id="singleQuantity" className="tNews colThird bWhite bRight bLeft tBold tWhite tCenter tNameSub" name="quantity" type="number" min="1" defaultValue="1" max={(pro[0].shopOptions[this.state.option].limit?(pro[0].shopOptions[this.state.option].limit):("200"))}></input>
                         <div className="colThird relative ptSm" onClick={this.addItem.bind(this)}><img alt="add-inventory" className="centeredContent" src="/images/ui-add.svg"/></div>
                         
                     </div>

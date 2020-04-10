@@ -80,7 +80,9 @@ block content
                             .col4.relative
                                 .sortHandle.sortLeft
                                 a(href="/admin/shopOption-edit?id="+opt.id+"&cat="+cat+"&itemID="+item.id)
-                                    p.plSm.tCap=sortCount2+". "+opt.title
+                                    p.plSm.tCap=`${sortCount2}. ${opt.title}`
+                                        if opt.limit
+                                            span.tRed=`( Limit ${opt.limit})`
                             p.col4.tCap=(opt.cost/100).toFixed(2)
                             p.col4.tCap=opt.stock
                             .col4

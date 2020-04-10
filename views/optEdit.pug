@@ -20,13 +20,19 @@ block content
                     span Stock Info Edit
             
                 .stockHold.fullWidth.flex.tTitle.mbXs
-                    .col3
-                        p.tBold Option
-                    .col3
-                        p.tBold Cost
-                    .col3
-                        p.tBold Stock
-                .newOption.fullWidth.flex
-                    input.col3(type="text", name="title", value=item.title)
-                    input.col3(type="number", name="cost", value=(item.cost/100).toFixed(2) step="any")
-                    input.col3(type="number", name="stock", value=item.stock)
+                    .fullWidth.mbSm
+                        label Title
+                        p
+                        input.fullWidth(type="text", name="title", value=item.title)
+                    .fullWidth.mbSm
+                        label Cost
+                        p
+                        input.fullWidth(type="number", name="cost", value=(item.cost/100).toFixed(2) step="any")
+                    .fullWidth.mbSm
+                        label Stock
+                        p
+                        input.fullWidth(type="number", name="stock", value=item.stock)
+                    .fullWidth.mbSm
+                        label Limit
+                        p
+                        input.fullWidth(type="number", name="limit", value=item.limit)
