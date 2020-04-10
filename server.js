@@ -543,8 +543,10 @@ app.post('/admin/shopOption-edit?:id', isLogged, async function(req,res){
     const curr = req.query.id;
     data.title = req.body.title;
     data.stock = req.body.stock;
-    data.limit = req.body.limit;
     data.cost = req.body.cost*100
+    if(req.body.limit){
+      data.limit = req.body.limit;
+    }
 
     const upData = await ShopOptions.query()
               .where('id', curr)
