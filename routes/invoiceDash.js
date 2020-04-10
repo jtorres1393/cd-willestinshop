@@ -4,6 +4,7 @@ const router = express.Router()
 
 router.get('/', async (req, res) => {
   const data = await Buyer.query()
+          .where('walkin', null)
           .orderBy('firstName','asc')
           .eager('invoices(orderDate, onlyActive)', {
             onlyActive: (builder) => {

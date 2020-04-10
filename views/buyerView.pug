@@ -15,13 +15,14 @@ block content
                 p.tTitle.mbMed
                     a(href="/admin/invoices")
                             span Invoices /
-                    if item.firstName
+                    if item.company
+                            span=` ${item.company}`
+                    else if item.firstName
                         span=` ${item.firstName}`
                         if item.lastName
                             span=` ${item.lastName}`
-                    else
-                        if item.company
-                        span=` ${item.company}`                 
+                    
+                                        
                 a.fullWidth(href=`/admin/invoice-add?id=${item.id}`)
                     .btn.btn-prime.fullWidth.relative.mbLrg
                                         p.tBold Add New Invoice
