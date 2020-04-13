@@ -145,6 +145,7 @@ class SingleProduct extends Component {
                           <p className="tBold tUpper">{pro[0].alcvol/100}%</p>
                           <p className="tDetails tUpper tBold spiritDeets">alc/vol</p>
                         </div>
+                        <p className="tNumsSub fullWidth mtSm">{(parseInt(this.state.pro[0].shopOptions[this.state.option].limit)>0)?`(Limit ${this.state.pro[0].shopOptions[this.state.option].limit} Per Person)`:''}</p>
                       </div>
                   ):('')}
                   <div className="fullWidth optionHold flex bWhite flexACenter mbXs">
