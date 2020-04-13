@@ -145,9 +145,12 @@ class SingleProduct extends Component {
                           <p className="tBold tUpper">{pro[0].alcvol/100}%</p>
                           <p className="tDetails tUpper tBold spiritDeets">alc/vol</p>
                         </div>
-                        <p className="tNumsSub fullWidth mtSm">{(parseInt(this.state.pro[0].shopOptions[this.state.option].limit)>0)?`(Limit ${this.state.pro[0].shopOptions[this.state.option].limit} Per Person)`:''}</p>
                       </div>
                   ):('')}
+                  {(parseInt(this.state.pro[0].shopOptions[this.state.option].limit)>0)?(
+                     <div className="fullWidth mbMed"><p className="tNumsSub fullWidth tUpper">Limit {parseInt(this.state.pro[0].shopOptions[this.state.option].limit)} per Person</p></div>
+                  ):('')}
+
                   <div className="fullWidth optionHold flex bWhite flexACenter mbXs">
                     <div className="fullWidth selectField relative">
                     <select id="singleOption" name="option" className="fullWidth tCenter tBold tWhite plXs ptXs prXs pbXs tUpper">
