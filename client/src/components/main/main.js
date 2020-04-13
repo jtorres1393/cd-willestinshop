@@ -280,6 +280,30 @@ class Main extends Component {
 }
   
   addCart=(item)=>{
+    var limit = false
+    var count = 0
+    var array = [...this.state.cart];
+    var quantity = parseInt(item.quantity)
+    var max = parseInt(item.item.shopOptions[item.option].limit)
+    if(max > 0){
+  
+    
+    array.map((currItem, i)=>{
+      var currOption = currItem.option;
+      var currID = currItem.item.shopOptions[currItem.option].id;
+      var currLimit = currItem.item.shopOptions[currItem.option].limit;
+
+      if((item.option === currOption)&&(item.item.shopOptions[item.option].id === currID)){
+        if((parseInt(item.quantity)+parseInt(currItem.quantity)+count) > max){
+          limit = true;
+        }
+      }
+      count = count+parseInt(currItem.quantity)
+
+    })
+
+    }
+    if(limit===false){
     let hold = this.state.cart;
     console.log(item);
     hold.push(item)
@@ -288,6 +312,7 @@ class Main extends Component {
       
         this.getSub();
     })
+  }
   }
   
   setCart=(i)=>{
