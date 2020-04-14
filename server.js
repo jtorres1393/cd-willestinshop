@@ -421,6 +421,7 @@ app.post('/admin/shop-add?:id',m.fields([{name:"imgItems", maxCount: 10}]) ,asyn
   data.about = (req.body.about);
   data.details = req.body.details;
   data.bg = req.body.bg;
+  data.notice = req.body.notice;
   data.type = req.body.type;
   data.active = req.body.active;
   data.subTitle = req.body.subTitle;
@@ -462,6 +463,7 @@ app.post('/admin/shop-edit?:id',m.fields([{name:"imgItems", maxCount: 10}]) ,asy
   data.about = (req.body.about);
   data.bg = req.body.bg;
   data.details = req.body.details;
+  data.notice = req.body.notice;
   data.subTitle = req.body.subTitle;
   data.type = req.body.type;
   data.active = (req.body.active);

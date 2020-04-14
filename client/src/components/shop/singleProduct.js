@@ -134,7 +134,7 @@ class SingleProduct extends Component {
                 </div>
                 <form className="productCTA fullWidth flex" onChange={this.newTotal.bind(this)} onSubmit={this.submit.bind(this)}> 
                   {pro[0].type==="spirit"?(
-                    <div className="fullWidth flex flexACenter tUpper mbMed">
+                    <div className="fullWidth flex flexACenter tUpper mbSm">
                         <div className="tCenter plXs">
                           <p className="tBold tUpper">{pro[0].proof}</p>
                           <p className="tDetails tBold spiritDeets">proof</p>
@@ -147,10 +147,15 @@ class SingleProduct extends Component {
                         </div>
                       </div>
                   ):('')}
+                  {(pro[0].notice)?(
+                      
+                      <div className="fullWidth mbSm"><p className="blink tNums">******</p><p className="fullWidth tUpper tDetails">{pro[0].notice}</p></div>
+                      
+                   ):('')}
                   {(parseInt(this.state.pro[0].shopOptions[this.state.option].limit)>0)?(
-                     <div className="fullWidth mbMed"><p className="tNumsSub fullWidth tUpper">Limit {parseInt(this.state.pro[0].shopOptions[this.state.option].limit)} per Person</p></div>
+                     <div className="fullWidth mbSm"><p className="tNumsSub fullWidth tUpper">Limit {parseInt(this.state.pro[0].shopOptions[this.state.option].limit)} per Person</p></div>
                   ):('')}
-
+              
                   <div className="fullWidth optionHold flex bWhite flexACenter mbXs">
                     <div className="fullWidth selectField relative">
                     <select id="singleOption" name="option" className="fullWidth tCenter tBold tWhite plXs ptXs prXs pbXs tUpper">
