@@ -149,7 +149,7 @@ class SingleProduct extends Component {
                   ):('')}
                   {(pro[0].notice)?(
                       
-                      <div className="fullWidth mbSm shopNotice"><p className="blink tNums">******</p><p className="fullWidth tUpper tDetails">{pro[0].notice}</p></div>
+                      <div className="fullWidth mbSm bgRust shopNotice"><p className="blink tNums">******</p><p className="fullWidth tUpper tDetails">{pro[0].notice}</p></div>
                       
                    ):('')}
                   {(parseInt(this.state.pro[0].shopOptions[this.state.option].limit)>0)?(

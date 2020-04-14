@@ -92,10 +92,9 @@ img.singleProductImg{
 }
 
 .shopNotice{
-    border: 1px solid var(--white);
-    padding: var(--xs)
+    padding: var(--xs);
     border-radius: 15px;
-    box-shadow: 2px 2px 2px rgba(68,68,68,0.4);
+    box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
 }
 
 .shopMenu.mobile.active{
