@@ -24,6 +24,11 @@ block content
                             span=info.phone                    
                         a(href=`mailto:${info.email}`)
                             p(style="color:#2f456b;text-align:center;")=info.email
+                if data.shipped !== true
+                    tr
+                        td(colspan="4" style="background-color:#ae4d33")
+                            a(href=`https://www.willestinshop.com/admin/shop/order-ship?id=${data.id}` style="text-decoration:none;")
+                                p(style="font-family:sans-serif;font-weight:bold;text-align:center;color:#ffffff;font-size:1.5em") Mark Shipped
                 tr
                     td( style="text-align:rigth;vertical-align:top")
                         p(style="font-weight:bold")=prettyDate(data.created_at)

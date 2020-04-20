@@ -398,21 +398,6 @@ app.post('/admin/shop/category?:id', isLogged, async function(req,res){
 
 //item
 app.use('/admin/shop-add?:id', isLogged, itemAdd)
-
-///functions
-//mod
-function isLogged(req, res, next) {
-  if (req.isAuthenticated() && req.user[0].role > 0)
-      return next();
-  res.redirect('/admin/login');
-}
-
-function isAdmin(req, res, next) {
-  if (req.isAuthenticated() && req.user[0].role === 2 )
-      return next();
-  res.redirect('/admin/login');
-}
-
 app.post('/admin/shop-add?:id',m.fields([{name:"imgItems", maxCount: 10}]) ,async function(req,res){
   var rootID = req.query.catID
   var cat = req.query.cat
@@ -518,7 +503,7 @@ app.use('/admin/shop/order-ship?:id', async function(req,res){
       .where('id', currID)
       .patch(data)
     
-      res.redirect("/admin/shop/archive")
+      res.redirect("/admin/shop/orders")
 
 })
 
