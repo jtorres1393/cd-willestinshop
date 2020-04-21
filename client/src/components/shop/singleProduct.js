@@ -87,19 +87,22 @@ class SingleProduct extends Component {
       .then(res => res.json())
       .then(data => this.setState({
           pro: data.data, currSec: currSec, option: 0, total: 0, added:false},()=>{
-            var total = 0;
-            const el = document.getElementById('singleQuantity');
-            el.value = 1;
-            
-            if(this.state.pro.length){
-              if(this.state.pro[0].bg){
-                this.props.changeBG(this.state.pro[0].bg)
+            if(this.state.pro[0].shopOptions.length){
+              var total = 0;
+              const el = document.getElementById('singleQuantity');
+              el.value = 1;
+              
+              if(this.state.pro.length){
+                if(this.state.pro[0].bg){
+                  this.props.changeBG(this.state.pro[0].bg)
+                }
+                if (this.state.pro[0].shopOptions.length){
+                  total = this.state.pro[0].shopOptions[0].cost
+                }
               }
-              if (this.state.pro[0].shopOptions.length){
-                total = this.state.pro[0].shopOptions[0].cost
-              }
+              this.setState({current: this.state.pro[0].title, total:total})
             }
-            this.setState({current: this.state.pro[0].title, total:total})
+           
           }));
 
     }
@@ -152,7 +155,10 @@ class SingleProduct extends Component {
                       <div className="fullWidth mbSm bgRust shopNotice"><p className="blink tNums">******</p><p className="fullWidth tUpper tDetails">{pro[0].notice}</p></div>
                       
                    ):('')}
-                  {(parseInt(this.state.pro[0].shopOptions[this.state.option].limit)>0)?(
+
+                  {this.state.pro[0].shopOptions.length?(
+                    <React.Fragment>
+                           {(parseInt(this.state.pro[0].shopOptions[this.state.option].limit)>0)?(
                      <div className="fullWidth mbSm"><p className="tNumsSub fullWidth tUpper">Limit {parseInt(this.state.pro[0].shopOptions[this.state.option].limit)} per Person</p></div>
                   ):('')}
               
@@ -186,6 +192,12 @@ class SingleProduct extends Component {
                       <input type="submit" value={`ADD TO CART: $${(this.state.total/100).toFixed(2)}`} className="bgWhite tNums fullWidth proCTA tUpper"></input>
 
                     )}
+                      
+                    </React.Fragment>
+                  ):(
+                    <div className="fullWidth mbSm"><p className="tNumsSub fullWidth tUpper">Out of inventory</p></div>
+                  )} 
+               
                    
                 </form>
 
