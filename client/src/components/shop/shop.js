@@ -69,7 +69,7 @@ class Shop extends Component {
         {cat.length?(
           <React.Fragment>
             {mobile?(
-                <div onClick={this.shopToggle.bind(this)} className={`catBut ptXs pbXs col23 cPointer ${active?"bgWhite tRust":'bgRust tWhite'}`}><p className="tCenter tCTA tUpper">Categories</p> </div>
+                <div onClick={this.shopToggle.bind(this)} className={`catBut ptXs pbXs col23 cPointer ${active?"bgRust tWhite":'bgWhite tRust'}`}><p className="tCenter tCTA tUpper">Categories</p> </div>
 
             ):('')}
               <div className={`shopMenu shopBG col4 ptMed ${single?('hide'):('')} ${mobile?'mobile':''} ${active?'active':''} ${bg?`bg${bg}`:`bgRust`}`}>
