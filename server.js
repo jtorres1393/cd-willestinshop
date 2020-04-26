@@ -1113,6 +1113,11 @@ app.post(`/api/pay-order`, async (req,res)=>{
               foreignKey: cardForeignId,
               amount: grand
           }).then(async function(saleData){
+            console.log(saleData)
+            if(!saleData.foreignId){
+              res.sendStatus(412).end()
+            }
+            else{
             order.cart.forEach(async (item,i)=>{
               let newStock ={}
               var currIn = parseInt(item.quantity)
@@ -1157,6 +1162,7 @@ app.post(`/api/pay-order`, async (req,res)=>{
             sendOrder(getId[0].id, reEmail);
             // console.log(inData, currID)
             res.sendStatus(200).end()
+            }
           })
         }
     })
