@@ -623,6 +623,7 @@ img,video{
 	top:134px;
 	width: calc(90%/3 - var(--gut)/2);
 	overflow-y: scroll;
+	padding-bottom:150px;
 	height: 100%;
 }
 .menuItem{
@@ -857,7 +858,7 @@ img,video{
 		.CTAviewItems{display:block;}
 		.orderRSVP.activeItem{display:block}
 		#sectionEditor, #menuPanel, #content, .loginItem{width:100%;margin-left:0; margin-bottom: var(--lrg)}
-		#menuPanel{border-right:1px solid var(--black);box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.15);position:fixed;top:0;left:0;height:100%;width:60%;z-index:900; padding: 5%;left:0; background-color:#ffffff; display:block;transition: all 0.5s ease;transform:translateX(-120%);}
+		#menuPanel{border-right:1px solid var(--black);box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.15);position:fixed;top:0;left:0;height:100%;width:60%;z-index:900; padding: 5%;padding-bottom:150px;left:0; background-color:#ffffff; display:block;transition: all 0.5s ease;transform:translateX(-120%);}
 		.loginItem .col2{width: 100%;}
 		#settings{display:block;}
 		#settings.active{background-image: url('/static/images/icon-gear-fill.svg');}
