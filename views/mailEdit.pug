@@ -18,7 +18,7 @@ block content
                     span="Edit Mail: "+item.title
                 .content-form.fullWidth.flex.mbSm
                     if !item.sent
-                        a.fullWidth.mbMed(href="/admin/send-mass?id="+item.id)
+                        a.fullWidth.mbMed(href="/admin/send-mass?id="+item.id onclick="return confirm('Are you sure?')")
                                     .btn.btn-prime.fullWidth.relative
                                         p.tBold Send Mass Email
                     else
