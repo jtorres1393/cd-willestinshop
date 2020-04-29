@@ -1,0 +1,129 @@
+extend layout
+
+block content
+    for item in data
+        form#mainForm.fullWidth.flex(method='POST', action='/admin/mail-edit?id='+item.id, enctype='multipart/form-data')
+            #menuPanel
+                p.mbMed.tTitle Settings
+                .menuSave.menuItem.mbXs
+                    input.menuOp.tCap(type="submit", value="Save Changes")
+                .menuTrash.menuItem.mbLrg
+                    a.tCap.menuOp(href="/admin/mail-delete?id="+item.id, onclick="return confirm('Are you sure?')")="Delete Article Item" 
+                .menuFold.menuItem.mbMed
+                    a.tCap.menuOp(href="/admin/mail-add?")=`Compose New Mail`
+            #content.col23.colSkip
+                p.mbMed.tTitle
+                    a(href="/admin/mail")
+                        span.tGray Mail /    
+                    span="Edit Mail: "+item.title
+                .content-form.fullWidth.flex.mbSm
+                    if !item.sent
+                        a.fullWidth.mbMed(href="/admin/send-mass?id="+item.id)
+                                    .btn.btn-prime.fullWidth.relative
+                                        p.tBold Send Mass Email
+                    else
+                        .btn.btn-prime.fullWidth.relative.mbMed(style="background-color:#ff0000;")
+                             p.tBold Email Sent
+                    .fullWidth.mbSm
+                        label title
+                        p
+                        input.prime-input(name="title", type="text", value=item.title, required)
+                    .fullWidth.mbSm
+                        label sub-title
+                        p
+                        input.prime-input(name="subTitle", type="text", value=item.subTitle, required)
+                    .fullWidth.mbHuge
+                        label Body
+                        p
+                        input.prime-input(name="about", type="hidden", value=item.about)
+                        div#quill1.quill!=item.about
+
+                .tTitle.mbMed.mtLrg Product Images
+                #sort1.galleryHold.flex.flexAStart
+                    input.form-control(name='sort1', type='hidden')
+                    input.form-control(name='currID', type='hidden', value=item.id)
+                    -   var sortCount1 = 1
+                    for img in data[0].media
+                        .sort1.singleImg.col3.tGray(data-id=img.id, data-order=sortCount1)
+                            img(src=img.url)
+                            .fullWidth.ptXs.pbXs.tBold.deleteBtn.flex.relative
+                                p.tBold=sortCount1+"."
+                                a(href="/admin/media-delete?id="+img.id+"&news="+item.id onclick="return confirm('Are you sure?')")
+                                    p.fullWidth.tBold.tRight.removeText × Remove
+                                    .sortHandle
+                        -   sortCount1++
+                    label.tBold.tWhite.col3.addButton.bgGray.relative(for="imgProject")
+                        .r34
+                        .cCenter
+                            p.menuItem.menuImgInvert.tBold add new image
+                        input#imgProject.menuOp(name="imgItems", type="file", style="display: none", accept="images/*", multiple="multiple")
+
+        script.
+                var form = document.getElementById('mainForm');
+                var quillBar = [
+                        [{ 'header': [1,2,3, false] }],
+                        ['bold', 'italic'],
+                        [{ list: 'ordered' }, { list: 'bullet' }]
+                        ]
+                var quill1 = new Quill('#quill1',{modules: {toolbar: quillBar},theme: 'snow'});
+
+                    
+
+                form.onsubmit = function() {
+                    var term1 = document.querySelector('input[name=about]');
+                    term1.value = (quill1.root.innerHTML);
+                        console.log(term1.value);
+                    var img =  document.querySelector('input[name=imgItems]');
+                    var currID =  document.querySelector('input[name=currID]')
+                    var contents = " ";
+                    if(img.files.length){
+                        contents = contents+" "+img.files[0].name
+                    }
+                    var formData = new FormData(form);
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', form.getAttribute('action'), true);
+                    xhr.upload.onprogress = function(e) {
+                            console.log(contents)
+                        if (e.lengthComputable) {
+                            var loader = document.querySelector('#vidLoader')
+                            var count = document.querySelector('#count')
+                            var percent = parseInt((e.loaded / e.total) * 100);
+                            loader.style.width = percent+"%";
+                            count.innerHTML = contents+": "+percent+"%";
+                        }
+                    };
+
+                    xhr.upload.onload = function() {
+                            window.location.href = "/admin/mail-edit?id="+currID.value
+                    };
+                    xhr.onerror = function(e) {
+                        console.log('Error');
+                        console.log(e);
+                    };
+                    xhr.send(formData)
+                    return false;
+
+                }
+
+                var el1 = document.getElementById('sort1');
+                var sortable1 = Sortable.create(el1,{handle:".sortHandle", ghostClass: "sortable-ghost", onEnd: function(){
+                var el = document.getElementsByClassName('sort1');
+                var currentNumber = 1;
+                let sort1Obj = [];
+                
+                
+                Array.prototype.forEach.call(el , function(elem){
+                            elem.setAttribute("data-order", currentNumber);
+                            currentNumber++
+                            
+
+                            sort1Obj.push( { id:elem.getAttribute("data-id"), "order":elem.getAttribute("data-order")} )
+
+                        });
+                        sort1 = document.querySelector('input[name=sort1]');
+                        sort1.value = JSON.stringify(sort1Obj);
+                
+                }
+            });
+
+                

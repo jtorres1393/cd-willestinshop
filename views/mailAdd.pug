@@ -1,0 +1,97 @@
+extend layout
+
+block content
+    form#mainForm.fullWidth.flex(method='POST', action='/admin/mail-add', enctype='multipart/form-data')
+        #menuPanel
+            p.mbMed.tTitle Settings
+            .menuSave.menuItem
+                input.menuOp.tCap(type="submit", value="Add New Email")
+        #content.col23.colSkip
+            p.mbMed.tTitle
+                a(href="/admin/mail")
+                    span.tGray  Mail /    
+                span Add New Mail
+            .content-form.fullWidth.flex.mbSm
+                .fullWidth.mbSm
+                    label Subject
+                    p
+                    input.prime-input(name="title", type="text", required)
+                .fullWidth.mbSm
+                    label Sub Title
+                    p
+                    input.prime-input(name="subTitle", type="text", required)
+                .fullWidth.mbHuge
+                    label Body
+                    p
+                    input.prime-input(name="about", type="hidden")
+                    div#quill1.quill
+                
+            .tTitle.mbMed Header Image
+            #sort1.galleryHold.flex.flexAStart
+                input.form-control(name='sort1', type='hidden')
+                label.tBold.tWhite.col3.addButton.bgGray.relative(for="imgProject")
+                    .r34
+                    .cCenter
+                        p.menuItem.menuImgInvert.tBold add new image
+                    input#imgProject.menuOp(name="imgItems", type="file", style="display: none", accept="images/*", multiple="multiple")
+
+    
+    script.
+            var form = document.getElementById('mainForm');
+            var quillBar = [
+                        [{ 'header': [1,2,3, false] }],
+                        ['bold', 'italic'],
+                        ['link'],
+                        [{ list: 'ordered' }, { list: 'bullet' }]
+                        ]
+            var quill1 = new Quill('#quill1',{modules: {toolbar: quillBar},theme: 'snow'});
+
+            var checkType = document.getElementById('typeCheck')
+            var spirit = document.getElementById('spirit')
+
+                checkType.onchange = function() {
+                    if (this.value === "spirit") {
+                            spirit.style.display="flex";
+                    }
+                    else{
+                            spirit.style.display="none";
+                        }
+                   
+
+                }
+                
+
+            form.onsubmit = function() {
+                var term1 = document.querySelector('input[name=about]');
+                    term1.value = (quill1.root.innerHTML);
+                var img =  document.querySelector('input[name=imgItems]');
+                var cat =  document.querySelector('input[name=cat]')
+                var contents = " ";
+                if(img.files.length){
+                    contents = contents+" "+img.files[0].name
+                }
+                var formData = new FormData(form);
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', form.getAttribute('action'), true);
+                xhr.upload.onprogress = function(e) {
+                        console.log(contents)
+                    if (e.lengthComputable) {
+                        var loader = document.querySelector('#vidLoader')
+                        var count = document.querySelector('#count')
+                        var percent = parseInt((e.loaded / e.total) * 100);
+                        loader.style.width = percent+"%";
+                        count.innerHTML = contents+": "+percent+"%";
+                    }
+                };
+
+                xhr.upload.onload = function() {
+                        window.location.href = "/admin/shop/category?cat="+cat.value;
+                };
+                xhr.onerror = function(e) {
+                    console.log('Error');
+                    console.log(e);
+                };
+                xhr.send(formData)
+                return false;
+
+            }

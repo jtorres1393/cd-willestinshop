@@ -117,6 +117,22 @@ sendMail: function(to, from, subject, html, url){
     
   })
 },
+sendMass: function(to, from, subject, html, url){
+  let msg = {
+    to: to,
+    from: from,
+    subject: subject
+  };
+
+  requestify.get(html).then(function (response) {
+    msg.html = response.body;
+    sgMail.sendMultiple(msg);
+
+    
+    
+    
+  })
+},
 metaChange: async function (response, page){
   String.prototype.trunc = String.prototype.trunc ||
   function(n){

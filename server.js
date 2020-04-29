@@ -25,6 +25,7 @@ const { Buyer } = require('./models/buyer');
 const { Invoices } = require('./models/invoices');
 const { Customer } = require('./models/customer');
 const { Orders } = require('./models/orders');
+const { Mail } = require('./models/mail');
 
 
 //backend routes
@@ -40,6 +41,7 @@ const newsAdd = require('./routes/newsAdd')
 const newsDash = require('./routes/newsDash')
 const newsEdit = require('./routes/newsEdit')
 const rsvpDash = require('./routes/rsvpDash')
+const emailMail = require('./routes/emailMail')
 const emailRSVP = require('./routes/emailRSVP')
 const emailInvoice = require('./routes/emailInvoice')
 const emailPrint = require('./routes/emailPrint')
@@ -59,6 +61,9 @@ const invoicesOpen = require('./routes/invoicesOpen')
 const orderDash = require('./routes/orderDash')
 const orderView = require('./routes/orderView')
 const archiveDash = require('./routes/archiveDash')
+const mailDash = require('./routes/mailDash')
+const mailAdd = require('./routes/mailAdd')
+const mailEdit = require('./routes/mailEdit')
 
 
 //frontend
@@ -690,7 +695,122 @@ app.use('/admin/rsvp-check?:id', isLogged, async function(req,res){
     res.redirect(`/admin/rsvp?id=${rsvp}`)
 })
 
+// EMAIL SYSTEM
+app.use('/admin/mail', isLogged, mailDash)
+app.post('/admin/mail', isLogged, async function(req,res){
+  if(req.body.sort1){
+    mods.sort(req.body.sort1, mail)
+  }
+  res.redirect('/admin/mail')
+})
+
+app.use('/admin/mail-add', isLogged, mailAdd)
+app.post('/admin/mail-add',m.fields([{name:"imgItems", maxCount: 10}]) ,async function(req,res){
+  let data = {}
+  data.title = (req.body.title).toLowerCase();
+  data.about = req.body.about;
+  data.subTitle = req.body.subTitle;
+
+  const upData = await Mail.query()
+                .insert(data)
+  
+  const getID = await Mail.query()
+        .orderBy("id", "desc")
+        .limit(1);         
+  if(req.files.imgItems){
+    (req.files.imgItems).forEach((e)=>{
+      mods.uploadMedia(e,"images","header" ,"mail",getID[0].id);
+    })
+  }
+
+  res.redirect(`/admin/mail-edit?id=${getID[0].id}`)
+
+})
+
+app.use('/admin/mail-edit?:id', isLogged, mailEdit)
+app.post('/admin/mail-edit?:id',m.fields([{name:"imgItems", maxCount: 10}]) ,async function(req,res){
+  const currID = req.query.id;
+  let data = {}
+  data.title = (req.body.title).toLowerCase();
+  data.about = req.body.about;
+  data.subTitle = req.body.subTitle;
+
+
+  const upData = await Mail.query()
+                .where('id', currID)
+                .patch(data)
+         
+  if(req.body.sort1){
+    mods.sort(req.body.sort1, Media)
+  }
+
+  if(req.files.imgItems){
+    (req.files.imgItems).forEach((e)=>{
+      mods.uploadMedia(e,"images","header" ,"mail",currID);
+    })
+  }
+
+  res.redirect('/admin/mail-edit?id='+currID)
+
+})
+
+app.use('/admin/mail-delete?:id', isLogged, async function(req,res){
+ 
+  if(req.query.id){
+     const currID = req.query.id;
+     const delData = await Mail.query()
+                 .where('id', currID)
+                 .delete()
+ 
+                 const media = await Media.query()
+                 .where("rootID", currID)
+                 .where("rootPage", "mail");
+           
+                 media.forEach((e)=>{
+                   mods.deleteFile(e.id)
+                 })
+                 
+                 res.redirect('/admin/mail')
+   }
+ })
+
+app.use(`/admin/send-mass?:id`, isLogged, async function(req,res){
+  const currID = req.query.id;
+  let data = {}
+  let list= []
+  data.sent = true
+  
+  const currMail = await Mail.query()
+    .where('id', currID)
+
+  const getData = await Customer.query();
+      getData.forEach((user,i)=>{
+        list.push(user.email)
+      })
+    
+
+  
+  const getInfo = await Info.query()
+    .where('id', 1)
+    .limit(1)
+
+
+    const infoEmail = getInfo[0].email;
+  
+    mods.sendMass(list, infoEmail, currMail[0].title,`${config.url}/admin/email-mail?id=${currID}`)
+    const upData = await Mail.query()
+    .where('id',currID)
+    .patch(data)
+    
+    res.redirect(`/admin/mail`)
+})
+
+
+
+
+// EMAIL CALLS
 app.use('/admin/rsvp-email?:id', emailRSVP)
+app.use('/admin/email-mail?:id', emailMail)
 app.use('/admin/email-invoice?:id', emailInvoice)
 app.use('/admin/email-print?:id', emailPrint)
 app.use('/admin/email-paid?:id', emailPaid)
@@ -1212,6 +1332,10 @@ async function sendOrder(id, email){
   mods.sendMail([sendEmail,'mmolina@roxanneslounge.com'], sendEmail, `Wille's Tin Shop: New Order`,`${config.url}/admin/email-admin?id=${id}`)
 
 }
+
+
+
+
 
 
 
