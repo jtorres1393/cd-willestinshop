@@ -9,13 +9,6 @@ block content
                     img(src="https://storage.googleapis.com/willestinshop/images/logo-blue.png", style="width:60%;height:auto;margin:0 auto;max-width:450px")
                     
             tr
-                td(colspan="4")
-                    p(style="color:#2f456b;text-align:center;")=info.address+" • "+info.city+" "+info.state
-                        br
-                        span=info.phone                    
-                    a(href=`mailto:${info.email}`)
-                        p(style="color:#2f456b;text-align:center;")=info.email
-            tr
                 td(style="height:20px")
             tr
                 for img in data.media
@@ -24,6 +17,15 @@ block content
             tr
                 td
                     .body(style="text-transform: none; padding:0px 20px;line-height:1.25em; font-size:1.2em;")!=data.about
+            tr
+                td(style="height:20px")
+            tr
+                td(colspan="4")
+                    p(style="color:#2f456b;text-align:center;")=info.address+" • "+info.city+" "+info.state
+                        br
+                        span=info.phone                    
+                    a(href=`mailto:${info.email}`)
+                        p(style="color:#2f456b;text-align:center;")=info.email
                         
         img(src="https://storage.googleapis.com/willestinshop/images/willes-icons.png", style="display:block;width:100%;height:auto; margin:0 auto; position:relative;box-sizing:border-box;box-sizing:border-box; max-width:500px;")
     
