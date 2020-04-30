@@ -785,7 +785,9 @@ app.use(`/admin/send-mass?:id`, isLogged, async function(req,res){
 
   const getData = await Customer.query();
       getData.forEach((user,i)=>{
-        list.push(user.email)
+        var test = valEmail(user.email)
+        
+        if(test){list.push(user.email)}
       })
     
 
@@ -1331,6 +1333,11 @@ async function sendOrder(id, email){
   mods.sendMail(email, sendEmail, `Wille's Tin Shop: Payment Complete`,`${config.url}/admin/email-order?id=${id}`)
   mods.sendMail([sendEmail,'mmolina@roxanneslounge.com'], sendEmail, `Wille's Tin Shop: New Order`,`${config.url}/admin/email-admin?id=${id}`)
 
+}
+
+function valEmail(email) {
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
 }
 
 
