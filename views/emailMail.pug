@@ -2,11 +2,11 @@ extend layoutEmail
 
 block content
     span.preheader(style="display: none !important; visibility: hidden; opacity: 0; color: transparent; height: 0; width: 0;")=`${data.subTitle}`
-    #mainForm(style="text-transform: uppercase; width: 100%; padding: 40px 0 40px 0; font-family: courier, monospace;text-transform:uppercase;box-sizing:border-box;background-color:#2f456b")
-        table.eCenter(style="text-transform: uppercase;width: 90%; background-color: #eae5d3; margin: 0 auto; padding: 30px 0 80px 0;position:relative;box-sizing:border-box;color:#2f456b;text-align:center;")
+    #mainForm(style="text-transform: uppercase; width: 100%; padding: 40px 0 40px 0; font-family: courier, monospace;text-transform:uppercase;box-sizing:border-box;background-color:#ae4d33")
+        table.eCenter(style="border-collapse: collapse;text-transform: uppercase;width: 100%; background-color: #ae4d33; margin: 0 auto; padding: 0 0 20px 0;position:relative;box-sizing:border-box;color:#eae5d3;text-align:center;")
             tr
-                td(colspan="4" style="position:relative")
-                    img(src="https://storage.googleapis.com/willestinshop/images/logo-blue.png", style="width:60%;height:auto;margin:0 auto;max-width:450px")
+                td(colspan="4" style="position:relative;padding-bottom:30px;")
+                    img(src="https://storage.googleapis.com/willestinshop/images/willes-wordmark-white.png", style="width:80%;height:auto;margin:0 auto;max-width:450px")
                     
             tr
                 td(style="height:20px")
@@ -16,16 +16,17 @@ block content
                         img(src=`https://willes.imgix.net/${img.name}?auto=compress&w=${1200}&fit=clip`, style="width:100%;height:auto;margin:0 auto")
             tr
                 td
-                    .body(style="text-transform: none; padding:0px 20px;line-height:1.25em; font-size:1.2em;")!=data.about
+                    h1(style="color:#eae5d3;text-transform:capitalize;font-family:helvetica,arial,sans;margin-bottom:40px;margin-top:40px")=data.title
+                    .body(style="text-transform: none; padding:0px 20px;line-height:1.25em;")!=data.about
             tr
                 td(style="height:20px")
             tr
                 td(colspan="4")
-                    p(style="color:#2f456b;text-align:center;")=info.address+" • "+info.city+" "+info.state
+                    p(style="color:#eae5d3;text-align:center;")=info.address+" • "+info.city+" "+info.state
                         br
                         span=info.phone                    
                     a(href=`mailto:${info.email}`)
-                        p(style="color:#2f456b;text-align:center;")=info.email
+                        p(style="color:#eae5d3;text-align:center;")=info.email
                         
         img(src="https://storage.googleapis.com/willestinshop/images/willes-icons.png", style="display:block;width:100%;height:auto; margin:0 auto; position:relative;box-sizing:border-box;box-sizing:border-box; max-width:500px;")
     

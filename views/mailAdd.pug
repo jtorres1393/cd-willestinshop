@@ -46,19 +46,6 @@ block content
                         ]
             var quill1 = new Quill('#quill1',{modules: {toolbar: quillBar},theme: 'snow'});
 
-            var checkType = document.getElementById('typeCheck')
-            var spirit = document.getElementById('spirit')
-
-                checkType.onchange = function() {
-                    if (this.value === "spirit") {
-                            spirit.style.display="flex";
-                    }
-                    else{
-                            spirit.style.display="none";
-                        }
-                   
-
-                }
                 
 
             form.onsubmit = function() {
@@ -85,7 +72,7 @@ block content
                 };
 
                 xhr.upload.onload = function() {
-                        window.location.href = "/admin/shop/category?cat="+cat.value;
+                        window.location.href = "/admin/mail"
                 };
                 xhr.onerror = function(e) {
                     console.log('Error');

@@ -5,9 +5,9 @@ block content
         form#mainForm.fullWidth.flex(method='POST', action='/admin/mail-edit?id='+item.id, enctype='multipart/form-data')
             #menuPanel
                 p.mbMed.tTitle Settings
-                .menuSave.menuItem.mbXs
+                .menuSave.menuItem.mbSm
                     input.menuOp.tCap(type="submit", value="Save Changes")
-                .menuTrash.menuItem.mbLrg
+                .menuTrash.menuItem.mbLrg.mtMed
                     a.tCap.menuOp(href="/admin/mail-delete?id="+item.id, onclick="return confirm('Are you sure?')")="Delete Article Item" 
                 .menuFold.menuItem.mbMed
                     a.tCap.menuOp(href="/admin/mail-add?")=`Compose New Mail`
@@ -16,13 +16,16 @@ block content
                     a(href="/admin/mail")
                         span.tGray Mail /    
                     span="Edit Mail: "+item.title
+                a.fullWidth.mbLrg(href="/admin/email-mail?id="+item.id)
+                    .btn.btn-prime.fullWidth.relative
+                        p.tBold Preview Email
                 .content-form.fullWidth.flex.mbSm
                     if !item.sent
-                        a.fullWidth.mbMed(href="/admin/send-mass?id="+item.id onclick="return confirm('Are you sure?')")
+                        a.fullWidth.mbMed.mbXs(href="/admin/send-mass?id="+item.id onclick="return confirm('Are you sure?')")
                                     .btn.btn-prime.fullWidth.relative
                                         p.tBold Send Mass Email
                     else
-                        .btn.btn-prime.fullWidth.relative.mbMed(style="background-color:#ff0000;")
+                        .btn.btn-prime.fullWidth.relative.mbMed.mtXs(style="background-color:#ff0000;")
                              p.tBold Email Sent
                     .fullWidth.mbSm
                         label title
