@@ -1,0 +1,214 @@
+extend layout
+
+block content
+    form#mainForm.fullWidth.flex(method='POST', action='/admin/ac')
+        #menuPanel
+            p.mbMed.tTitle Settings
+            .menuSave.menuItem.mbMed
+                input.menuOp.tCap(type="submit", value="View")
+            .fullWidth.flex.mbLrg.tBold.pbSm
+                .fullWidth.mbSm
+                    label Month
+                    input(name="month", type="month")
+                .fullWidth
+                    label Date
+                    input(name="date", type="date")
+    
+
+
+        #sectionEditor.edit.mbLrg.colSkip.col23
+            p.mbMed.tTitle
+                span=`Sales`
+
+                    if data
+                        - cost = 0
+                        - tax = 0
+                        p.mbXs.tBold=date
+                        .fullWidth.flex.bBlack.pbXs.ptXs.bBotSm.tBold
+                            .col4 Order No.
+                            .col4.tRight Sub-Total
+                            .col4.tRight Tax
+                            .col4.tRight Total
+                        for item in data
+                            .fullWidth.flex.bGray.pbXs.ptXs.bBotSm
+                                .col4
+                                    a(href=`/admin/shop/order-view?id=${item.id}` target="blank")
+                                        p=`${item.id}`
+                                .col4.tRight
+                                    p=(item.cost/100).toFixed(2)
+                                .col4.tRight
+                                    p=(item.tax/100).toFixed(2)
+                                .col4.tRight
+                                    p=((item.tax+item.cost)/100).toFixed(2)
+                            - cost = cost + item.cost
+                            - tax = tax + item.tax
+                    if invoices
+                        for inv in invoices
+                            .fullWidth.flex.bGray.pbXs.ptXs.bBotSm
+                                .col4
+                                    a(href=`/admin/invoice-view?id=${inv.id}` target="blank")
+                                        p.tRed=`${inv.id}`
+                                .col4.tRight
+                                    p.tRed=(inv.cost/100).toFixed(2)
+                                .col4.tRight
+                                    - cTax = (Math.ceil((inv.tax/10000)*inv.cost))
+                                    p.tRed=(cTax/100).toFixed(2)
+                                .col4.tRight
+                                    p.tRed=((cTax+inv.cost)/100).toFixed(2)
+                            - cost = cost + inv.cost
+                            - tax = tax + cTax
+                    if data || invoices
+                        .fullWidth.flex.bBlack.pbXs.ptXs.bBotSm.tBold
+                            .col4 Totals
+                            .col4.tRight=(cost/100).toFixed(2)
+                            .col4.tRight=(tax/100).toFixed(2)
+                            .col4.tRight=((cost+tax)/100).toFixed(2)
+            if sales
+                - gCost = 0
+                - gTax = 0
+                p.tTitle.mbXs=`Month of ${prettyMonth(month,year)}`
+                .fullWidth.flex.bBlack.pbXs.ptXs.bBotSm.tBold.mbXs
+                    .col4 Order No.
+                    .col4.tRight Sub-Total
+                    .col4.tRight Tax
+                    .col4.tRight Total
+                - days = tDays
+                - n = 1
+                while n <= days
+                    
+                    for item in sales
+                        if item.day === n
+                            if item.orders
+                                .fullWidth.mbXs.toggleBut
+                                    .fullWidth.flex.flexACenter
+                                        .col2
+                                        .but
+                                            .btn.btn-sec.plSm.prSm
+                                                p.tBold.toggleText +
+                                .toggleHold(style="display:none")
+                                    if item.type === "order"
+                                        - cost = 0
+                                        - tax = 0
+                                        for dItem in item.orders
+                                                .fullWidth.flex.bGray.pbXs.ptXs.bBotSm
+                                                    .col4
+                                                        a(href=`/admin/shop/order-view?id=${dItem.id}` target="blank")
+                                                            p=`${dItem.id}`
+                                                    .col4.tRight
+                                                        p=(dItem.cost/100).toFixed(2)
+                                                    .col4.tRight
+                                                        p=(dItem.tax/100).toFixed(2)
+                                                    .col4.tRight
+                                                        p=((dItem.tax+dItem.cost)/100).toFixed(2)
+                                                - cost = cost + dItem.cost
+                                                - tax = tax + dItem.tax
+                                                - gCost = gCost + dItem.cost
+                                                - gTax = gTax + dItem.tax
+                                    if item.type === "invoice"
+                                        - cost = 0
+                                        - tax = 0
+                                        for dItem in item.orders
+                                            .fullWidth.flex.bGray.pbXs.ptXs.bBotSm.tRed
+                                                .col4
+                                                    a(href=`/admin/invoice-view?id=${dItem.id}` target="blank")
+                                                        p.tRed=`${dItem.id}`
+                                                .col4.tRight
+                                                    p.tRed=(parseInt(dItem.cost)/100).toFixed(2)
+                                                .col4.tRight
+                                                    - cTax = (Math.ceil((parseInt(dItem.tax)/10000)*dItem.cost))
+                                                    p.tRed=(cTax/100).toFixed(2)
+                                                .col4.tRight
+                                                    p.tRed=((cTax+parseInt(dItem.cost))/100).toFixed(2)
+                                            - cost = cost + parseInt(dItem.cost)
+                                            - tax = tax + cTax
+                                            - gCost = gCost + parseInt(dItem.cost)
+                                            - gTax = gTax + cTax
+
+                                        
+                                .fullWidth.flex.bBlack.pbXs.ptXs.bBotSm.tBold.mbSm(style={"color":(item.type === "invoice")?"#ff0000":"#000000"})
+                                    .col4
+                                        p.tBold=`${month}/${n} ${prettyDay(year,month,n)}`
+                                    .col4.tRight=(cost/100).toFixed(2)
+                                    .col4.tRight=(tax/100).toFixed(2)
+                                    .col4.tRight=((cost+tax)/100).toFixed(2)
+                    -   n++
+                .fullWidth.flex.bBlack.pbXs.ptXs.bBotSm.tBold.bgBlack.tWhite
+                    .col4.plXs
+                        p.tBold=`${prettyMonth(month,year)} Totals`
+                    .col4.tRight=(gCost/100).toFixed(2)
+                    .col4.tRight=(gTax/100).toFixed(2)
+                    .col4.tRight.prSm=((gCost+gTax)/100).toFixed(2)
+
+
+    -
+
+        function prettyMonth(cm, cy){
+            var date = new Date(cy, cm, 0)
+            var monthNames = [ "January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December" ]
+            var month = date.getMonth()
+            return monthNames[month]
+        }
+
+        function prettyDay(cm, cy, cd){
+            var cday = 0
+            if(cd < 10){
+                cday = "0"+(cd.toString())
+            }
+            var date = new Date(cy, cm-1, cd-1)
+            var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];            var month = date.getMonth()
+            var nd = date.getDay()
+            return days[nd]
+        }
+
+        
+
+    script.
+        function toggleAdd (){
+                        document.querySelectorAll('.toggleBut').forEach(item => {
+                            item.addEventListener('click', e => {
+                                toggleInfo(e);
+                            })
+                        })
+                    }
+
+            function toggleInfo(e){
+                console.log('click')
+                var text = e.currentTarget.querySelectorAll('.toggleText')
+                var el = e.currentTarget.nextElementSibling
+                console.log(text)
+                if(el){
+                    if(el.style.display==="none"){
+                    el.style.display = "block"
+                    text[0].parentNode.classList.add('active')
+                    text[0].innerHTML = "-"
+                    }
+                    else{
+                        el.style.display = "none"
+                        text[0].parentNode.classList.remove('active')
+                        text[0].innerHTML = "+"
+                    }
+                }
+            }
+
+            function getClosest(elem, selector) {
+
+            
+                        if (!Element.prototype.matches) {
+                            Element.prototype.matches =
+                                Element.prototype.matchesSelector ||
+                                Element.prototype.mozMatchesSelector ||
+                                Element.prototype.msMatchesSelector ||
+                                Element.prototype.oMatchesSelector ||
+                                Element.prototype.webkitMatchesSelector ||
+                                function(s) {
+                                    var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+                                        i = matches.length;
+                                    while (--i >= 0 && matches.item(i) !== this) {}
+                                    return i > -1;
+                                };
+                        }
+            }
+            toggleAdd();
+
+
+            

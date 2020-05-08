@@ -64,6 +64,8 @@ const archiveDash = require('./routes/archiveDash')
 const mailDash = require('./routes/mailDash')
 const mailAdd = require('./routes/mailAdd')
 const mailEdit = require('./routes/mailEdit')
+const accountDash = require('./routes/accountDash')
+const accountView = require('./routes/accountView')
 
 
 //frontend
@@ -1341,7 +1343,21 @@ function valEmail(email) {
 }
 
 
-
+//accounting
+app.use(`/admin/ac`, isLogged, accountDash)
+app.post(`/admin/ac`, isLogged, async (req,res) =>{
+    date = req.body.date;
+    month = req.body.month;
+    if(date){
+      console.log(date)
+      res.redirect(`/admin/ac-view?date=${date}`)
+    }
+    else if(month){
+      console.log(month)
+      res.redirect(`/admin/ac-view?month=${month}`)
+    }
+} )
+app.use(`/admin/ac-view`, isLogged, accountView)
 
 
 

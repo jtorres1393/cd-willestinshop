@@ -1,0 +1,27 @@
+extend layout
+
+block content
+    form#mainForm.fullWidth.flex(method='POST', action='/admin/ac')
+        #menuPanel
+            p.mbMed.tTitle Settings
+            .menuSave.menuItem
+                input.menuOp.tCap(type="submit", value="View")
+    
+
+
+        #sectionEditor.edit.mbLrg.colSkip.col23
+            p.mbMed.tTitle
+                span=`Accounting`
+            
+                            
+
+
+            .fullWidth.flex.mbSm.tBold.bBlk.bBotSm.pbSm
+                .col2
+                    label Month
+                    br
+                    input(name="month", type="month")
+                .col2
+                    label Date
+                    br
+                    input(name="date", type="date")
