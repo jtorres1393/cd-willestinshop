@@ -38,6 +38,9 @@ block content
                         if data.buyer[0].firstName
                             .fullWidth(style="border-bottom:1px solid #2f456b")
                                 p(style="line-height:.5em")=`${data.buyer[0].firstName} ${data.buyer[0].lastName}`
+                        if data.buyer[0].license
+                            .fullWidth(style="border-bottom:1px solid #2f456b")
+                                p(style="line-height:.5em")=`License #: ${data.buyer[0].license} `
                         if data.buyer[0].company
                             .fullWidth(style="border-bottom:1px solid #2f456b")
                                 p(style="line-height:.5em")=`${data.buyer[0].company} `

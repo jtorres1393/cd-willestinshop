@@ -982,6 +982,7 @@ app.post(`/admin/invoices`, isLogged, async function(req,res){
   data.firstName = req.body.firstName;
   data.lastName = req.body.lastName;
   data.company = req.body.company;
+  data.license = req.body.license;
   data.phone = req.body.phone;
   data.email = req.body.email;
   data.address = req.body.address;
@@ -1009,6 +1010,7 @@ app.post(`/admin/buyer-view?:id`, isLogged, async function(req,res){
         const currID = req.query.id;
         data.firstName = req.body.firstName;
         data.lastName = req.body.lastName;
+        data.license = req.body.license;
         data.company = req.body.company;
         data.phone = req.body.phone;
         data.email = req.body.email;
