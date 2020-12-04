@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Freenjoy Website",
   "main": "server.js",
+  "engines": {
+    "node": "10.10.0"
+  },
   "scripts": {
     "client-install": "cd client && npm install",
     "start": "node server.js",

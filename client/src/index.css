@@ -392,7 +392,7 @@ a:hover, .ctaLink:hover{color: var(--rust);}
 	background-color: var(--gray)
 }
 
-.bgGreen, .bggreen{
+.bgGreen, .bggreen,.bgGin, .bggin{
 	background-color: var(--green)
 }
 .bgBlue, .bgblue,.bgvodka{
