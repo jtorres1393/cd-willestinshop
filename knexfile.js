@@ -1,6 +1,8 @@
 // Update with your config settings.
 const pg = require('pg');
-
+pg.defaults.ssl = {
+  rejectUnauthorized: false,
+}
 module.exports = {
     development:{
     client: 'pg',
@@ -22,6 +24,7 @@ module.exports = {
     production: {
         client: 'pg',
         connection: process.env.DATABASE_URL,
+        ssl: { rejectUnauthorized: false },
         pool: {
             afterCreate: function (conn, done) {
               // in this example we use pg driver's connection API
